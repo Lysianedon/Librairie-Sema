@@ -4,6 +4,44 @@
         <div :v-if="typeof bookSelection === Array"
             v-for="(book, index) in bookSelection" :key="index"
             class="book">
+            <div class="icons-options">
+              <b-tooltip
+                label="Voir"
+                type="is-black"
+                position="is-top">
+              <font-awesome-icon icon="fa-solid fa-eye" class="icon icon-eye"/>
+              </b-tooltip>
+              <b-tooltip
+                label="Ajouter à la bibliothèque"
+                type="is-black"
+                position="is-top"
+                v-if="fromGeneralCollection">
+              <font-awesome-icon
+                icon="fa-solid fa-circle-plus"
+                class="icon"
+                @click="addToCollection (book._id, 'library')"/>
+              </b-tooltip>
+
+              <b-tooltip
+                label="Ajouter aux favoris"
+                type="is-black"
+                position="is-top">
+              <font-awesome-icon
+                icon="fa-solid fa-heart"
+                color=" rgb(108, 105, 105)"
+                class="icon icon-red"
+                @click="addToCollection (book._id, 'favorites')"/>
+              </b-tooltip>
+
+              <b-tooltip
+                label="Supprimer"
+                type="is-black"
+                position="is-top"
+                v-if="!fromGeneralCollection">
+              <font-awesome-icon icon="fa-solid fa-trash-can" class="icon icon-trashcan"/>
+              </b-tooltip>
+
+            </div>
             <img
             class="img"
             :src="book.image"
@@ -57,6 +95,10 @@ export default {
     personalisedSuggestion: {
       type: Object,
       required: false
+    },
+    fromGeneralCollection: {
+      type: Boolean,
+      required: false
     }
   },
   methods: {
@@ -108,6 +150,9 @@ export default {
             return console.log(err)
           })
       }
+    },
+    sayHi () {
+      console.log('test')
     }
   }
 }
@@ -143,6 +188,7 @@ export default {
     margin: auto;
     border-radius: 3px;
     box-shadow: 0 8px 10px rgba(108, 106, 106, 0.25), 0 2px 7px rgba(188, 186, 186, 0.22);
+    position: relative !important;
 }
 
 h3{
@@ -194,4 +240,36 @@ button{
   font-weight: bold;
 }
 
+.icons-options{
+  display: flex;
+  justify-content: space-around;
+  width: 80%;
+  margin: auto 0 auto 10%;
+  background-color: white;
+  opacity: 0;
+  margin-bottom: 5%;
+  color: rgb(77, 76, 76);
+}
+
+.icon{
+  width: 19px;
+}
+
+.icon-trashcan{
+  width: 17px;
+}
+.icon-eye{
+  width: 21px;
+}
+
+.book:hover > * {
+  opacity: 1;
+}
+
+.icon:hover{
+  color: black;
+}
+.icon-red:hover{
+  color: red;
+}
 </style>

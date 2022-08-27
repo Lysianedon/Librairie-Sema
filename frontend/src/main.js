@@ -18,10 +18,10 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 /* import specific icons */
-import { faPowerOff, faHeart, faBook, faHome, faGear, faCircleInfo, faArrowUp, fa9 } from '@fortawesome/free-solid-svg-icons'
+import { faPowerOff, faHeart, faBook, faHome, faGear, faCircleInfo, faArrowUp, fa9, faEye, faTrashCan, faCirclePlus } from '@fortawesome/free-solid-svg-icons'
 
 /* add icons to the library */
-library.add(faPowerOff, faHeart, faBook, faHome, faGear, faCircleInfo, faArrowUp, fa9)
+library.add(faPowerOff, faHeart, faBook, faHome, faGear, faCircleInfo, faArrowUp, fa9, faEye, faTrashCan, faCirclePlus)
 
 /* add font awesome icon component */
 Vue.component('font-awesome-icon', FontAwesomeIcon)

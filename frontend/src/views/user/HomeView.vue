@@ -15,14 +15,16 @@
         <router-link to="/ma-bibliotheque" class="btn-afficher-tout">Afficher tout</router-link>
       </div>
       <Book
-      :bookSelection="userLibrary.allBooks"/>
+      :bookSelection="userLibrary.allBooks"
+      :fromGeneralCollection="false"/>
 
       <div class="title-button">
         <h2>NOUVEAUTÉS</h2>
         <router-link to="/livres/nouveautes" class="btn-afficher-tout">Afficher tout</router-link>
       </div>
-      <Book
-      :bookSelection="newBooks"/>
+        <Book
+        :bookSelection="newBooks"
+        :fromGeneralCollection="true"/>
 
       <div class="title-button">
         <h2>BIOGRAPHIES</h2>
@@ -30,7 +32,8 @@
       </div>
 
       <Book
-      :bookSelection="biographies"/>
+      :bookSelection="biographies"
+      :fromGeneralCollection="true"/>
 
         <div class="personalisedSelection" v-if="personalisedSuggestion.title">
           <h2 class="center">SÉLECTIONNÉ POUR VOUS</h2>
@@ -43,7 +46,8 @@
         <router-link to="/livres/tout-les-livres" class="btn-afficher-tout">Afficher tout</router-link>
       </div>
       <Book
-      :bookSelection="bookList"/>
+      :bookSelection="bookList"
+      :fromGeneralCollection="true"/>
     </div>
 
     <a href="#scrollToTop" class="haut-de-page">
