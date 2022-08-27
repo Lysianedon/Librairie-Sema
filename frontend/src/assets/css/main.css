@@ -1,0 +1,79 @@
+
+/*------------ DIV CONTENT ---------- */
+
+*, body{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  letter-spacing: 1.3px;
+  scroll-behavior: smooth !important;
+}
+
+body{
+  background-color: #fff;
+  scroll-behavior: smooth !important;
+}
+
+.wrapper {
+  height: 100vh;
+}
+.content{
+  width: 93vw;
+  max-width: 95vw;
+  margin: auto;
+}
+
+/* BUTTONS * BUTTONS * BUTTONS * BUTTONS * BUTTONS * --------- */
+.btn, .btn-valider, .btn-option {
+  background: #fff;
+  padding: .9rem;
+  font-size: 1rem;
+  letter-spacing: 2.5px;
+  background-color: #fff;
+  border: none;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease 0s;
+  cursor: pointer;
+  outline: none;
+  margin: 1rem;
+  border-radius: 7px;
+  font-family: 'Ibarra Real Nova', 'serif';
+}
+
+.btn-option:active, .btn-valider:active {
+  transform: translateY(4px);
+}
+
+.btn-valider:hover {
+  color: rgb(19, 16, 16);
+  background-color: #D8E0CF;
+  box-shadow: 0px 12px 20px rgba(216,224,207,1.00);
+  transform: translateY(-5px);
+}
+
+
+.btn-option, .btn-afficher-tout, .haut-de-page {
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  transition: all 0.4s cubic-bezier(.25,.8,.25,1);
+}
+
+.btn-option:hover {
+  background-color: #FFF1CC;
+  box-shadow: 0 4px 8px rgba(108, 106, 106, 0.25), 0 4px 15px rgba(136, 134, 134, 0.22);
+  /* box-shadow: 0px 12px 20px rgba(136, 134, 134, 0.22); */
+}
+
+.btn-afficher-tout, .haut-de-page{
+  color: black;
+  border-radius: 7px;
+  background-color: #D8E0CF;
+  padding: .8% .8% .2% .8%;
+}
+
+.btn-afficher-tout:hover, .haut-de-page:hover{
+  box-shadow: 2px 4px 6px rgba(108, 106, 106, 0.25), 2px 5px 8px rgba(136, 134, 134, 0.22);
+}
+
+.haut-de-page{
+  background-color: #FFF1CC;
+}
