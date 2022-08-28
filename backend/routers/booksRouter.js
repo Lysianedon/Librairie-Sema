@@ -31,13 +31,14 @@ router.get("/", async (req,res) => {
 
 // ------------------- GET A BOOK -----------------------------//
 router.get("/:selectedbook", async (req,res) => {
+    const bookId = req.params.selectedbook
     //Decoding URL's params (book title):
-    const decodedTitle = decodeURI(req.params.selectedbook);
-    let selectedBook;
+    // const decodedTitle = decodeURI(req.params.selectedbook);
+    // let selectedBook;
     // const encoded = encodeURI(str)
     // console.log(decodeURI(encoded));
     try {
-        selectedBook = await Book.findOne({title : decodedTitle});
+        selectedBook = await Book.findById(bookId);
     } catch (error) {
         return res.status(400).json({ message: "An error happened.", error});
     }

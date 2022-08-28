@@ -4,13 +4,16 @@
         <div :v-if="typeof bookSelection === Array"
             v-for="(book, index) in bookSelection" :key="index"
             class="book">
-            <div class="icons-options">
+            <div class="icons-options" v-if="isUserConnected">
               <b-tooltip
                 label="Voir"
                 type="is-black"
                 position="is-top">
-              <font-awesome-icon icon="fa-solid fa-eye" class="icon icon-eye"/>
+                <router-link :to="`/livres/${book._id}`" class="grey">
+                  <font-awesome-icon icon="fa-solid fa-eye" class="icon icon-eye"/>
+                </router-link>
               </b-tooltip>
+
               <b-tooltip
                 label="Ajouter à la bibliothèque"
                 type="is-black"
@@ -19,7 +22,7 @@
               <font-awesome-icon
                 icon="fa-solid fa-circle-plus"
                 class="icon"
-                @click="addToCollection (book._id, 'library')"/>
+                @click="addToLibrary(book._id)"/>
               </b-tooltip>
 
               <b-tooltip
@@ -30,7 +33,7 @@
                 icon="fa-solid fa-heart"
                 color=" rgb(108, 105, 105)"
                 class="icon icon-red"
-                @click="addToCollection (book._id, 'favorites')"/>
+                @click="addToFavorites(book._id)"/>
               </b-tooltip>
 
               <b-tooltip
@@ -38,22 +41,26 @@
                 type="is-black"
                 position="is-top"
                 v-if="!fromGeneralCollection">
-              <font-awesome-icon icon="fa-solid fa-trash-can" class="icon icon-trashcan"/>
+              <font-awesome-icon
+                icon="fa-solid fa-trash-can"
+                class="icon icon-trashcan"
+                @click="deleteFromCollection(book._id, currentCollection)"/>
               </b-tooltip>
 
             </div>
-            <img
-            class="img"
-            :src="book.image"
-            :alt="`page de couverture du livre : \'${book.title} \' `"
-            srcset="">
+            <router-link :to="`/livres/${book._id}`">
+              <img
+              class="img"
+              :src="book.image"
+              :alt="`page de couverture du livre : \'${book.title} \' `"
+              srcset="">
+            </router-link>
             <h3>{{book.title}}</h3>
             <h4>De: {{book.author}}</h4>
             <h4>Pays: {{book.country}}</h4>
         </div>
     </div>
-
-    <!-------------------------- USERS PERSONALISED SUGGESTION --------------->
+    <!-------------------------- USERS PERSONALISED SUGGESTION ----------------------->
 
     <div class="personalised-suggestion" v-if="personalisedSuggestion">
          <img
@@ -70,8 +77,8 @@
             <p> {{ personalisedSuggestion.synopsis}}</p>
 
             <div class="btns">
-              <button class="btn-option" @click="addToCollection(personalisedSuggestion._id, 'library')">Ajouter à ma bibliothèque</button>
-              <button class="btn-option" @click="addToCollection(personalisedSuggestion._id, 'favorites')">Ajouter à mes favoris</button>
+              <button class="btn-option" @click="addToLibrary(personalisedSuggestion._id)">Ajouter à ma bibliothèque</button>
+              <button class="btn-option" @click="addToFavorites(personalisedSuggestion._id)">Ajouter à mes favoris</button>
             </div>
           </div>
     </div>
@@ -84,7 +91,7 @@ export default {
   name: 'BookComponent',
   data () {
     return {
-
+      isUserConnected: false
     }
   },
   props: {
@@ -99,44 +106,85 @@ export default {
     fromGeneralCollection: {
       type: Boolean,
       required: false
+    },
+    currentCollection: {
+      type: String,
+      required: false
     }
   },
+  mounted () {
+    axios
+      .get('http://localhost:8001/user', { withCredentials: true })
+      .then(res => {
+        if (res.data.success) {
+          // console.log(res.data.user)
+          this.isUserConnected = true
+        }
+      })
+      .catch(err => {
+        return err
+      })
+  },
   methods: {
-    addToCollection (bookId, collection) {
+    addToLibrary (bookId) {
       // Adding the book to the corresponding collection : favorites or library:
-      if (collection === 'library') {
-        const bookToAddID = bookId
-        axios
-          .post('http://localhost:8001/user/library/allbooks', { bookToAddID }, { withCredentials: true })
-          .then(res => {
-            if (res.data.success) {
-              console.log(res.data)
-              // Displaying a success notification
-              this.$buefy.toast.open({
-                message: `Ajouté ${collection === 'library' ? 'à la bibliothèque' : 'aux favoris'}`,
-                type: 'is-success'
-              })
-            }
-          })
-          .catch(err => {
-            // Displaying an error notification
+      const bookToAddID = bookId
+      axios
+        .post('http://localhost:8001/user/library/allbooks', { bookToAddID }, { withCredentials: true })
+        .then(res => {
+          if (res.data.success) {
+            // console.log(res.data)
+            // Displaying a success notification
             this.$buefy.toast.open({
-              message: 'Livre déjà dans votre bibliothèque',
-              type: 'is-danger'
+              message: 'Ajouté à la bibliothèque',
+              type: 'is-success'
             })
-            return console.error(err)
+          }
+        })
+        .catch(err => {
+          // Displaying an error notification
+          this.$buefy.toast.open({
+            message: 'Livre déjà dans votre bibliothèque',
+            type: 'is-danger'
           })
-      }
-      if (collection === 'favorites') {
-        const bookToAddID = bookId
+          return console.error(err)
+        })
+    },
+    addToFavorites (bookId) {
+      const bookToAddID = bookId
+      axios
+        .post('http://localhost:8001/user/library/favorites', { bookToAddID }, { withCredentials: true })
+        .then(res => {
+          if (res.data.success) {
+            // console.log(res.data)
+            // Displaying a success notification
+            this.$buefy.toast.open({
+              message: 'Ajouté aux favoris',
+              type: 'is-success'
+            })
+          }
+        })
+        .catch(err => {
+          // Displaying an error notification
+          this.$buefy.toast.open({
+            message: 'Livre déjà dans vos favoris',
+            type: 'is-danger'
+          })
+          return console.log(err)
+        })
+    },
+    deleteFromCollection (bookId, collection) {
+      if (collection === 'library') {
+        const bookToDeleteID = bookId
         axios
-          .post('http://localhost:8001/user/library/favorites', { bookToAddID }, { withCredentials: true })
+          .delete('http://localhost:8001/user/library/allbooks', { withCredentials: true, data: { bookToDeleteID } })
           .then(res => {
+            console.log(res)
             if (res.data.success) {
               console.log(res.data)
               // Displaying a success notification
               this.$buefy.toast.open({
-                message: 'Ajouté aux favoris',
+                message: 'Supprimé de votre bibliothèque',
                 type: 'is-success'
               })
             }
@@ -144,15 +192,37 @@ export default {
           .catch(err => {
             // Displaying an error notification
             this.$buefy.toast.open({
-              message: 'Livre déjà dans vos favoris',
+              message: 'Oups...Erreur, veuillez réessayer',
               type: 'is-danger'
             })
             return console.log(err)
           })
       }
-    },
-    sayHi () {
-      console.log('test')
+      // --------------------------- IF COLLECTION = FAVORITES ---------------
+      if (collection === 'favorites') {
+        const bookToDeleteID = bookId
+        axios
+          .delete('http://localhost:8001/user/library/favorites', { withCredentials: true, data: { bookToDeleteID } })
+          .then(res => {
+            console.log(res)
+            if (res.data.success) {
+              console.log(res.data)
+              // Displaying a success notification
+              this.$buefy.toast.open({
+                message: 'Supprimé de vos favoris',
+                type: 'is-success'
+              })
+            }
+          })
+          .catch(err => {
+            // Displaying an error notification
+            this.$buefy.toast.open({
+              message: 'Oups...Erreur, veuillez réessayer',
+              type: 'is-danger'
+            })
+            return console.log(err)
+          })
+      }
     }
   }
 }
@@ -251,6 +321,9 @@ button{
   color: rgb(77, 76, 76);
 }
 
+.grey{
+  color: rgb(77, 76, 76);
+}
 .icon{
   width: 19px;
 }

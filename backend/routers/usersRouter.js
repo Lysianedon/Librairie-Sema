@@ -137,7 +137,7 @@ router.get('/library/allbooks', auth, async (req,res) => {
 })
 
 // ---------------- DELETE A BOOK IN USER'S LIBRARY ----------------
-router.delete('/library/allbooks', auth, async (req,res) => {
+router.delete('/library/allbooks', auth, checkIfBookAlreadyInList, async (req,res) => {
     //GET BOOK ID AND DELETE IT :
     const userId = req.userId;
     let userLibrary, deletedBook = req.body.bookToDeleteID, updatedLibrary;
@@ -255,7 +255,7 @@ router.delete('/library/favorites', auth,checkIfBookAlreadyInList, async (req,re
     //Guard
     if (!req.isBookAlreadyInFavoritesCategory) {
         console.log(req.isBookAlreadyInFavoritesCategory)
-        return res.status(404).json({ error: true, message: "Book not found." });     
+        return res.status(404).json({ error: true, bookNotFound: true, message: "Book not found." });     
     }
 
     //Finding the user:

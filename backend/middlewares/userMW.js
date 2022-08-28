@@ -269,11 +269,11 @@ const checkIfBookAlreadyInList = async (req,res,next) => {
     if (favoritesCategory.filter(bookId => bookId.toString() === deletedBook.toString()).length > 0) {
       req.isBookAlreadyInFavoritesCategory = true
     }
-    //If the added book is not already in the 'Already Read' category, a boolean 'true' is created: 
+    //If the added book is already in the 'Already Read' category, a boolean 'true' is created: 
     if (alreadyReadCategory.filter(bookId => bookId.toString() === deletedBook.toString()).length > 0) {
       req.isBookAlreadyInAlreadyReadCategory = true
     }
-    //If the added book is not already in the 'All Books' category, a boolean 'true' is created: 
+    //If the added book is already in the 'All Books' category, a boolean 'true' is created: 
     if (allBooksCategory.filter(bookId => bookId.toString() === deletedBook.toString()).length > 0) {
       req.isBookAlreadyInAllBooksCategory = true
     }

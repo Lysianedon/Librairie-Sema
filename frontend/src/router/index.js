@@ -8,6 +8,7 @@ import LibraryUserView from '@/views/user/LibraryUserView.vue'
 import FavoriteUserView from '@/views/user/FavoriteUserView.vue'
 import SettingsUserView from '@/views/user/SettingsUserView.vue'
 import HelpView from '@/views/HelpView.vue'
+import BookView from '@/views/BookView.vue'
 
 Vue.use(VueRouter)
 
@@ -54,6 +55,11 @@ const routes = [
     path: '/aide',
     name: 'HelpView',
     component: HelpView
+  },
+  {
+    path: '/livres/:bookId',
+    name: 'BookView',
+    component: BookView
   }
   // {
   //   path: '/livres/nouveautes',
@@ -77,11 +83,6 @@ const routes = [
   // },
   // {
   //   path: '/livres/bandes-dessinees',
-  //   name: 'home',
-  //   component: HomeView
-  // },
-  // {
-  //   path: '/livres/:livre',
   //   name: 'home',
   //   component: HomeView
   // },

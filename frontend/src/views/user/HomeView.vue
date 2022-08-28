@@ -16,7 +16,8 @@
       </div>
       <Book
       :bookSelection="userLibrary.allBooks"
-      :fromGeneralCollection="false"/>
+      :fromGeneralCollection="false"
+      :currentCollection="'library'"/>
 
       <div class="title-button">
         <h2>NOUVEAUTÉS</h2>
@@ -93,7 +94,7 @@ export default {
       .get('http://localhost:8001/user', { withCredentials: true })
       .then(res => {
         if (res.data.success) {
-          console.log(res.data.user)
+          // console.log(res.data.user)
           this.username = res.data.user.firstname
           this.userInfos = res.data.user
         }
@@ -144,12 +145,12 @@ export default {
           // Step 2 : sorting the books:
           const newlyAddedBooks = flattenBooksOjects.slice().sort((a, b) => b.dateAddedparsedFormat - a.dateAddedparsedFormat)
           newlyAddedBooks.length = 4
-          console.log('newlyAddedBooks', newlyAddedBooks)
+          // console.log('newlyAddedBooks', newlyAddedBooks)
           this.newBooks = newlyAddedBooks
 
-          const date = 'Wed Nov 09 2022'
-          console.log(`stringFormat:${date} => parsedFormat:${Date.parse(date)}`)
-          console.log('date to String', new Date(1665612000000).toDateString())
+          // const date = 'Wed Nov 09 2022'
+          // console.log(`stringFormat:${date} => parsedFormat:${Date.parse(date)}`)
+          // console.log('date to String', new Date(1665612000000).toDateString())
           // const books = [1661431787000, 1661429232332, 1661429717940, 1661429717988, 1661429717993, 1660924717993]
 
           // Getting a selection of 4 biographies:
@@ -178,7 +179,12 @@ export default {
             .then(res => {
               if (res.data.success) {
                 // console.log(res.data)
-                this.userLibrary = res.data.userLibrary
+                const userLibrary = res.data.userLibrary
+                // console.log('userLibrary.allBooks', userLibrary)
+                if (userLibrary.allBooks.length > 4) {
+                  userLibrary.allBooks.length = 4
+                }
+                this.userLibrary = userLibrary
               }
             })
         }
