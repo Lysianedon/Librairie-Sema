@@ -3,6 +3,9 @@
     <div class="nav">
       <NavbarUser/>
     </div>
+    <div class="sidebar-mobile">
+      <SidebarMobile/>
+    </div>
       <a href="" id="scrollToTop"></a>
 
     <div class="content">
@@ -14,27 +17,32 @@
         <h2>MA BIBLIOTHÈQUE</h2>
         <router-link to="/ma-bibliotheque" class="btn-afficher-tout">Afficher tout</router-link>
       </div>
-      <Book
-      :bookSelection="userLibrary.allBooks"
-      :fromGeneralCollection="false"
-      :currentCollection="'library'"/>
+      <div class="container-books">
+        <Book
+        :bookSelection="userLibrary.allBooks"
+        :fromGeneralCollection="false"
+        :currentCollection="'library'"/>
+      </div>
 
       <div class="title-button">
         <h2>NOUVEAUTÉS</h2>
         <router-link to="/livres/nouveautes" class="btn-afficher-tout">Afficher tout</router-link>
       </div>
-        <Book
-        :bookSelection="newBooks"
-        :fromGeneralCollection="true"/>
+        <div class="container-books">
+          <Book
+          :bookSelection="newBooks"
+          :fromGeneralCollection="true"/>
+        </div>
 
       <div class="title-button">
         <h2>BIOGRAPHIES</h2>
         <router-link to="/livres/biographies" class="btn-afficher-tout">Afficher tout</router-link>
       </div>
-
-      <Book
-      :bookSelection="biographies"
-      :fromGeneralCollection="true"/>
+      <div class="container-books">
+        <Book
+        :bookSelection="biographies"
+        :fromGeneralCollection="true"/>
+      </div>
 
         <div class="personalisedSelection" v-if="personalisedSuggestion.title">
           <h2 class="center">SÉLECTIONNÉ POUR VOUS</h2>
@@ -46,9 +54,12 @@
         <h2>TOUS LES LIVRES</h2>
         <router-link to="/livres/tout-les-livres" class="btn-afficher-tout">Afficher tout</router-link>
       </div>
-      <Book
-      :bookSelection="bookList"
-      :fromGeneralCollection="true"/>
+
+      <div class="container-books">
+        <Book
+        :bookSelection="bookList"
+        :fromGeneralCollection="true"/>
+      </div>
     </div>
 
     <a href="#scrollToTop" class="haut-de-page">
@@ -70,6 +81,7 @@ import axios from 'axios'
 import NavbarUser from '@/components/NavbarUser.vue'
 import Book from '@/components/Book.vue'
 import FooterComponent from '@/components/FooterComponent.vue'
+import SidebarMobile from '@/components/SidebarMobile.vue'
 
 export default {
   name: 'HomeView',
@@ -87,7 +99,8 @@ export default {
   components: {
     NavbarUser,
     Book,
-    FooterComponent
+    FooterComponent,
+    SidebarMobile
   },
   beforeMount () {
     axios
@@ -116,14 +129,11 @@ export default {
 
           // Step 1 : Flatten the obj before sorting them:
           const flattenObj = (ob) => {
-            // The object which contains the
-            // final result
+            // The object which contains the final result
             const result = {}
             // loop through the object "ob"
             for (const i in ob) {
-              // We check the type of the i using
-              // typeof() function and recursively
-              // call the function again
+              // We check the type of the i using typeof() function and recursively call the function again
               if ((typeof ob[i]) === 'object' && !Array.isArray(ob[i])) {
                 const temp = flattenObj(ob[i])
                 for (const j in temp) {
@@ -208,6 +218,10 @@ export default {
   top: 6%;
 }
 
+.sidebar-mobile{
+  display: none;
+}
+
 .banner{
   width: 82%;
   margin: auto;
@@ -241,5 +255,107 @@ h2{
 
 .haut-de-page{
   margin-left: 95vw;
+}
+
+/* RESPONSIVE --  RESPONSIVE -- RESPONSIVE -- RESPONSIVE -- RESPONSIVE -- */
+
+@media(max-width: 1170px){
+  .nav{
+    display: none;
+  }
+
+  .sidebar-mobile{
+    display: block;
+    position: fixed;
+    top: 3%;
+    left: 2%;
+    z-index: 2;
+  }
+
+  .content{
+    margin: auto;
+    width: 95vw;
+  }
+
+  .banner{
+    width: 95%;
+    margin: 3% 2% !important;
+    height: 42vh;
+  }
+  .title-button{
+  justify-content: space-between;
+  margin: 3% 0 0 2%;
+  width: 90vw;
+  }
+
+  .center{
+    width: 50%;
+    margin-bottom: 5%;
+  }
+
+  .personalisedSelection{
+  margin: 8% auto 8% 4%;
+  }
+  .haut-de-page{
+    padding:2%;
+    margin-left: 88vw;
+  }
+}
+/*-------------  TABLET MODE ------------ */
+@media(max-width: 770px){
+  .center{
+    width: 80%;
+    margin-left: 15%;
+    margin-bottom: 5%;
+  }
+}
+
+/*-------------  MOBILE MODE ------------ */
+@media(max-width: 450px){
+
+  .container-books{
+    width: 75%;
+    margin: auto;
+  }
+  .btn-afficher-tout{
+    padding: 3% 2% .1% 2%;
+    height: 7vh;
+    text-align: center;
+    overflow-wrap: break-word;
+  }
+
+  h2{
+    font-size: 1.9rem;
+  }
+
+  .title-button{
+    width: 92vw;
+  }
+
+  .center{
+    width: 90%;
+    margin: 10% 4%;
+    text-align: center;
+  }
+
+  .haut-de-page{
+    padding:6%;
+     margin-left: 75vw;
+  }
+}
+@media(max-width: 330px){
+    .title-button{
+      flex-direction: column;
+      width: 80vw;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-afficher-tout{
+    padding: 3% 2% .1% 2%;
+    height: 5vh;
+    text-align: center;
+    overflow-wrap: break-word;
+  }
 }
 </style>

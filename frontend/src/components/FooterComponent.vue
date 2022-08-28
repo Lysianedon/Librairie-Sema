@@ -63,4 +63,38 @@ svg{
   display: inline;
   margin-right: 15%;
 }
+
+/* RESPONSIVE --  RESPONSIVE -- RESPONSIVE -- RESPONSIVE -- RESPONSIVE -- */
+
+@media(max-width: 1030px){
+  .footer{
+    padding: 2% 12% ;
+    margin: 5vh 0 0 0;
+    width: 100vw;
+    justify-content: space-between;
+  }
+}
+
+@media(max-width: 450px){
+  .footer{
+    padding: 2% 10% 2% 0;
+  }
+
+  svg{
+  max-width: 20px;
+  display: inline;
+  margin-right: 15%;
+}
+}
+
+@media(max-width: 330px){
+  .footer{
+    padding: 2% 2% 2% 0;
+    margin: 5vh 0 0 0;
+    width: 100vw;
+  }
+  .links{
+    font-size: 15px;
+  }
+}
 </style>

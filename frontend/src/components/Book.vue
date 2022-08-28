@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="wrap">
     <div class="books" v-if="bookSelection">
         <div :v-if="typeof bookSelection === Array"
             v-for="(book, index) in bookSelection" :key="index"
@@ -55,7 +55,10 @@
               :alt="`page de couverture du livre : \'${book.title} \' `"
               srcset="">
             </router-link>
-            <h3>{{book.title}}</h3>
+            <router-link :to="`/livres/${book._id}`">
+              <h3>{{book.title}}</h3>
+            </router-link>
+
             <h4>De: {{book.author}}</h4>
             <h4>Pays: {{book.country}}</h4>
         </div>
@@ -229,6 +232,9 @@ export default {
 </script>
 
 <style scoped>
+.wrap{
+  /* flex-wrap: wrap; */
+}
 .book{
     /* border: 1px solid black; */
     height: 75vh;
@@ -345,4 +351,54 @@ button{
 .icon-red:hover{
   color: red;
 }
+/* RESPONSIVE --  RESPONSIVE -- RESPONSIVE -- RESPONSIVE -- RESPONSIVE -- */
+
+@media(max-width: 850px){
+  .btns{
+    flex-direction: column;
+    width: 90%;
+  }
+
+  .book:nth-child(3){
+    display: none;
+  }
+}
+
+@media(max-width: 500px){
+  .books{
+    flex-direction: column;
+    width: 100vw;
+    overflow-x: hidden;
+  }
+  p{
+    text-align: left;
+    width: 95%;
+  }
+}
+
+@media(max-width: 1250px){
+  .book{
+    /* height: 75vh; */
+    height: fit-content;
+    width: 95%;
+    margin: 1%;
+  }
+
+  .book:nth-child(4){
+    display: none;
+  }
+
+  .personalised-suggestion{
+    flex-direction: column;
+    align-items: center;
+    width: 80vw;
+    padding: 2.5% 1.5% 3% 1.5%;
+  }
+
+  .book-infos{
+    margin-left: 16%;
+    margin-top: 7%;
+  }
+}
+
 </style>
