@@ -314,8 +314,10 @@ h2{
 @media(max-width: 450px){
 
   .container-books{
-    width: 75%;
-    margin: auto;
+    width: 50%;
+    /* margin: auto; */
+    /* margin: 0 0 0 12%; */
+    padding: 0;
   }
   .btn-afficher-tout{
     padding: 3% 2% .1% 2%;
@@ -346,7 +348,7 @@ h2{
 @media(max-width: 330px){
     .title-button{
       flex-direction: column;
-      width: 80vw;
+      width: 90vw;
       align-items: center;
       justify-content: center;
     }
