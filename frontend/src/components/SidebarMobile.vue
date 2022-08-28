@@ -6,8 +6,7 @@
       :fullwidth="fullwidth"
       :overlay="overlay"
       :right="right"
-      v-model="open"
-    >
+      v-model="open">
       <div class="p-1">
         <img
           src="@/assets/logo-2.png" alt="logo"
