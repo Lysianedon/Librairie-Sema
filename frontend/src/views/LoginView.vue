@@ -1,10 +1,11 @@
 <template>
     <div class="wrapper">
         <div class="content">
-            <div class="notification is-danger is-light column is-6" v-if="errorLogin || errorSignup || UserAlreadyExists" >
+            <div class="notification is-danger is-light column is-6" v-if="errorLogin || errorSignup || UserAlreadyExists || errorEmailFormat" >
                 <p class="error-notif" v-if="errorLogin">Oups... Identifiants incorrects..!</p>
                 <p class="error-notif" v-if="errorSignup">Les deux mots de passe doivent être identiques </p>
                 <p class="error-notif" v-if="UserAlreadyExists">Compte déjà existant. Essayez de vous connecter. </p>
+                <p class="error-notif" v-if="errorEmailFormat">Format d'email incorect. </p>
                 <button class="delete"></button>
             </div>
 
@@ -65,6 +66,7 @@ export default ({
       user: {},
       errorLogin: false,
       errorSignup: false,
+      errorEmailFormat: false,
       UserAlreadyExists: false
     }
   },
@@ -73,6 +75,14 @@ export default ({
       this.userHasAnAccount = !this.userHasAnAccount
     },
     handleLoginOrSignUp () {
+      // If the email format is incorrect, an error message is displayed:
+      if (!this.email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+        this.errorEmailFormat = true
+        setTimeout(() => {
+          this.errorEmailFormat = false
+        }, 2600)
+        return null
+      }
       // If the user tries to log in :
       if (this.userHasAnAccount) {
         axios
@@ -159,13 +169,11 @@ export default ({
     overflow: hidden;
 }
 .content{
-    /* background: url('@/assets/logo.png') no-repeat, url('@/assets/books.png') no-repeat; */
     background: url('@/assets/logo.png') no-repeat;
     background-position-x: center;
     background-position-y: 3vh;
     background-size: 20%;
     text-align: center;
-    /* border: 1px solid black; */
     margin: 0 auto;
 }
 
@@ -190,7 +198,6 @@ box-shadow: 0px 0px 0px rgba(216,224,207,1.00);
 }
 
 .login-form{
-    /* border: 1px solid black; */
     font-family: 'Ibarra Real Nova', 'serif';
     background-color: RGB(255, 248, 227);
     background-color: #fff1cc9a;;
@@ -202,7 +209,6 @@ box-shadow: 0px 0px 0px rgba(216,224,207,1.00);
 }
 
 .quote-block{
-    /* border: 1px solid black; */
     margin: 2%;
     width: 50%;
 }
@@ -243,6 +249,7 @@ a{
     -webkit-animation: 4s ease 0s normal forwards 1 fadein;
     animation: 4s ease 0s normal forwards 1 fadein;
 }
+/* QUOTE FADE IN ANIMATION */
 @keyframes fadein{
     0% { opacity:0; }
     50% { opacity:.5; }
@@ -283,6 +290,7 @@ a{
   }
 
 }
+/* TABLET MODE */
 @media(max-width: 768px){
   .wrapper{
     background-position-x: 110%;
@@ -306,7 +314,7 @@ a{
     font-size: .8rem;
   }
 }
-
+/* MOBILE MODE */
 @media(max-width: 425px){
   .wrapper{
     background-position-x: 30%;
