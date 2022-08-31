@@ -43,6 +43,17 @@ export default new Vuex.Store({
           state.preferences.interests.splice(index, 1)
         }
       })
+    },
+    putWordsToSingular (state) {
+      const interests = state.preferences.interests
+      const singularInterests = interests.map(word => {
+        if (word[word.length - 1] === 's') {
+          word = word.substr(0, word.length - 1)
+        }
+        return word
+      })
+      console.log(singularInterests)
+      state.preferences.interests = singularInterests
     }
   },
   actions: {
@@ -51,7 +62,8 @@ export default new Vuex.Store({
     addNewGoals: ({ commit }) => commit('addNewGoals'),
     removeGoals: ({ commit }) => commit('removeGoals'),
     addNewInterests: ({ commit }) => commit('addNewInterests'),
-    removeInterests: ({ commit }) => commit('removeInterests')
+    removeInterests: ({ commit }) => commit('removeInterests'),
+    putWordsToSingular: ({ commit }) => commit('putWordsToSingular')
   },
   modules: {
 
