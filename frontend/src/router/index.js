@@ -4,7 +4,8 @@ import VueRouter from 'vue-router'
 import HomeView from '@/views/user/HomeView.vue'
 import LoginView from '@/views/LoginView.vue'
 import InscriptionView from '@/views/user/InscriptionView.vue'
-import LibraryUserView from '@/views/user/LibraryUserView.vue'
+// import LibraryUserView from '@/views/user/LibraryUserView.vue'
+import SectionView from '@/views/user/SectionView.vue'
 import FavoriteUserView from '@/views/user/FavoriteUserView.vue'
 import SettingsUserView from '@/views/user/SettingsUserView.vue'
 import HelpView from '@/views/HelpView.vue'
@@ -36,10 +37,15 @@ const routes = [
     name: 'inscription',
     component: InscriptionView
   },
+  // {
+  //   path: '/section/ma-bibliotheque',
+  //   name: 'LibraryUserView',
+  //   component: LibraryUserView
+  // },
   {
-    path: '/ma-bibliotheque',
-    name: 'LibraryUserView',
-    component: LibraryUserView
+    path: '/section/:sectionview',
+    name: 'SectionView',
+    component: SectionView
   },
   {
     path: '/favoris',
@@ -83,11 +89,6 @@ const routes = [
   // },
   // {
   //   path: '/livres/bandes-dessinees',
-  //   name: 'home',
-  //   component: HomeView
-  // },
-  // {
-  //   path: '/ma-librairie/a-lire',
   //   name: 'home',
   //   component: HomeView
   // },

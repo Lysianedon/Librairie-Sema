@@ -53,16 +53,11 @@ export default {
       .then(res => {
         if (res.data.success) {
           console.log(res.data.user)
-          // this.userInfos.firstname = res.data.user.firstname
-          // this.userInfos = res.data.user
         }
       })
       .catch(err => {
         return console.log(err)
       })
-  },
-  methods: {
-
   }
 }
 </script>

@@ -15,7 +15,7 @@
         class="title-button"
         v-if="userLibrary && userLibrary.allBooks && userLibrary.allBooks.length > 0">
         <h2>MA BIBLIOTHÈQUE</h2>
-        <router-link to="/ma-bibliotheque" class="btn-afficher-tout">Afficher tout</router-link>
+        <router-link to="/section/ma-bibliotheque" class="btn-afficher-tout">Afficher tout</router-link>
       </div>
       <div class="container-books">
         <Book

@@ -8,20 +8,20 @@
       :right="right"
       v-model="open">
       <div class="p-1">
-        <img
-          src="@/assets/logo-2.png" alt="logo"
-          class="logo"
-        />
         <b-menu>
-            <div class="container">
-                <div class="power-icon" @click="logout" v-if="isConnected">
+          <div class="container">
+            <div class="power-icon" @click="logout" v-if="isConnected">
                     <b-tooltip
                         label="Se déconnecter"
-                        type="is-white"
+                        type="is-black"
                         position="is-right">
                     <font-awesome-icon icon="fa-solid fa-power-off" />
                     </b-tooltip>
                 </div>
+              <img
+                src="@/assets/logo-2.png" alt="logo"
+                class="logo"
+              />
 
                 <h2 class="username" v-if="isConnected">{{username}}</h2>
                 <router-link to="/login" class="loginInvitation">
@@ -101,6 +101,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   data () {
     return {
@@ -108,13 +109,45 @@ export default {
       overlay: true,
       fullheight: false,
       fullwidth: false,
-      right: false
+      right: false,
+      username: '',
+      isConnected: false,
+      loginInvitation: 'Connectez - vous'
+    }
+  },
+  mounted () {
+    axios
+      .get('http://localhost:8001/user/', { withCredentials: true })
+      .then(res => {
+        // console.log(res.data)
+        this.username = res.data.user.firstname
+        this.isConnected = true
+      })
+      .catch(err => console.error(err))
+  },
+  methods: {
+    logout () {
+      axios
+        .get('http://localhost:8001/logout/', { withCredentials: true })
+        .then(res => {
+          if (res.data.success) {
+            this.$router.push('/login')
+          }
+        })
+        .catch(err => {
+          return console.log(err)
+        })
     }
   }
 }
 </script>
 
 <style scoped>
+.power-icon{
+  position: fixed;
+  top: 3%;
+  left: 5%;
+}
 .p-1 {
   padding: 1em;
 }

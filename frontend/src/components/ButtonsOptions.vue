@@ -69,7 +69,7 @@ export default {
     axios
       .get('http://localhost:8001/user/', { withCredentials: true })
       .then(res => {
-        console.log(res.data)
+        // console.log(res.data)
         this.age = res.data.user.age
         this.goals = res.data.user.preferences.goals
         this.interests = res.data.user.preferences.interests
