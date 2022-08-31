@@ -83,7 +83,7 @@ export default {
       })
   },
   methods: {
-    ...mapActions(['updateAge', 'addNewGoals', 'removeGoals', 'addNewInterests', 'removeInterests']),
+    ...mapActions(['updateAge', 'addNewGoals', 'removeGoals', 'addNewInterests', 'removeInterests', 'putWordsToSingular']),
     validateForm () {
       const firstname = this.firstname
       const age = this.$store.state.age
@@ -98,6 +98,8 @@ export default {
         }, 1800)
         return console.error('Champ(s) vide(s)')
       }
+      // Putting interests in singular:
+      this.$store.commit('putWordsToSingular')
 
       // Creating updated user's infos object:
       const userInfos = {
