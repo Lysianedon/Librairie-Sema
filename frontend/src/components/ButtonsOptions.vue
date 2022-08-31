@@ -5,7 +5,7 @@
         <button class="delete"></button>
       </div>
 
-      <h2 class="is-size-4 has-text-centered">Je m'appelle:</h2>
+      <h2 class="is-size-4 has-text-centered is-size-4-mobile">Je m'appelle:</h2>
       <input type="text" name="firstname" id="firstname" v-model="firstname" class="input input-firstname is-medium">
 
       <h2 class="is-size-4 has-text-centered">J'ai:</h2>
@@ -198,7 +198,11 @@ export default {
 .btn-option{
   font-family: 'Roboto', sans-serif;
   height: 7vh;
-  min-width: 8vw;
+  max-width: 15vw;
+  min-width: 12vw;
+  line-height: 140%;
+  height: auto;
+  min-height: 8vh;
 }
 
 h2{
@@ -225,5 +229,37 @@ h2{
   text-transform: uppercase;
   /* margin: auto !important; */
   margin: 3% auto 0 40%;
+}
+/* RESPONSIVE --  RESPONSIVE -- RESPONSIVE -- RESPONSIVE -- RESPONSIVE -- */
+
+@media(max-width: 1030px){
+  .input-firstname{
+    width: 55%;
+  }
+  .btn-option{
+    max-width: 45vw;
+    min-width: 30vw;
+  }
+  .btn-valider{
+    width: 40%;
+    margin: 3% auto 0 30%;
+  }
+}
+@media(max-width: 430px){
+    .input-firstname{
+    width: 85%;
+  }
+  .btn-valider{
+    width: 70%;
+    margin: 3% auto 0 13%;
+  }
+  .buttons{
+    flex-direction: column;
+  }
+  .btn-option{
+    max-width: 65vw;
+    min-width: 63vw;
+    box-sizing: border-box;
+  }
 }
 </style>
