@@ -7,15 +7,12 @@
                 <p class="error-notif" v-if="UserAlreadyExists">Compte déjà existant. Essayez de vous connecter. </p>
                 <button class="delete"></button>
             </div>
-            <!-- <h1>LOGIN PAGE</h1> -->
-            <!-- <img src="@/assets/logo.png"
-                alt=""
-                class="logo"> -->
+
             <div class="white-space"></div>
             <div class="login-quote">
                 <div class="login-form">
-                    <h2 class="is-size-2">Bienvenue</h2>
-                    <h4 class="is-size-4"> {{userHasAnAccount ? 'Connectez - vous' : 'Inscrivez - vous'}}</h4>
+                    <h2 class="is-size-2 is-size-3-mobile">Bienvenue</h2>
+                    <h4 class="is-size-4 is-size-5-mobile"> {{userHasAnAccount ? 'Connectez - vous' : 'Inscrivez - vous'}}</h4>
 
                     <input class="input is-medium" type="email" placeholder="Email" v-model="email">
 
@@ -275,5 +272,50 @@ a{
 }
 .proverbe{
     padding-bottom: -15vh;
+}
+
+/* RESPONSIVE --  RESPONSIVE -- RESPONSIVE -- RESPONSIVE -- RESPONSIVE -- */
+
+@media(max-width: 1024px){
+    .content{
+      background-position-y: 2.5vh;
+      background-size: 35%;
+  }
+
+}
+@media(max-width: 768px){
+  .wrapper{
+    background-position-x: 110%;
+    background-size: 79%;
+  }
+  .content{
+      background-position-y: 2.5vh;
+      background-size: 40%;
+  }
+  .quote-block{
+    display: none;
+  }
+
+  .login-form{
+    width: 100%;
+  }
+  input[type="text"]{
+    font-size: 1rem;
+  }
+  input::placeholder {
+    font-size: .8rem;
+  }
+}
+
+@media(max-width: 425px){
+  .wrapper{
+    background-position-x: 30%;
+    background-size: 100%;
+  }
+  .content{
+    background-position-x: center;
+    background-position-y: 2.5vh;
+    background-size: 80%;
+  }
 }
 </style>
