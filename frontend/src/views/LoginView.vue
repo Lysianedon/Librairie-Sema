@@ -300,7 +300,7 @@ a{
     width: 100%;
   }
   input[type="text"]{
-    font-size: 1rem;
+    font-size: 17px;
   }
   input::placeholder {
     font-size: .8rem;
@@ -316,6 +316,12 @@ a{
     background-position-x: center;
     background-position-y: 2.5vh;
     background-size: 80%;
+  }
+}
+
+@media(max-width: 320px){
+  input{
+    width: 83%;
   }
 }
 </style>
