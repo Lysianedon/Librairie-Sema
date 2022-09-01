@@ -91,6 +91,16 @@
               <h4>Pays: {{book.country}}</h4>
           </div>
       </div>
+
+      <a href="#scrollToTop" class="haut-de-page">
+        <b-tooltip
+                label="Remonter"
+                type="is-white"
+                position="is-top">
+            <font-awesome-icon icon="fa-solid fa-arrow-up" />
+        </b-tooltip>
+      </a>
+
       <div class="footer-component">
           <FooterComponent/>
       </div>
@@ -540,11 +550,6 @@ h4{
   cursor: default;
 }
 
-.book-infos{
-  margin-left: 6%;
-  margin-top: 7%;
-}
-
 p{
   line-height: 190%;
   width: 90%;
@@ -599,7 +604,16 @@ button{
   color: red;
 }
 
+.haut-de-page{
+  margin-left: 72vw;
+  padding-bottom: .8%;
+}
+.footer-component{
+    margin-top: 3%;
+}
+
 /* RESPONSIVE --  RESPONSIVE -- RESPONSIVE -- RESPONSIVE -- RESPONSIVE -- */
+
 @media(max-width: 1170px){
   .nav{
     display: none;
@@ -629,11 +643,6 @@ button{
     width: 29vw;
   }
 
-  .center{
-    width: 50%;
-    margin-bottom: 5%;
-  }
-
   .haut-de-page{
     padding:2%;
     margin-left: 88vw;
@@ -644,13 +653,6 @@ button{
   }
 }
 /*-------------  TABLET MODE ------------ */
-@media(max-width: 770px){
-  .center{
-    width: 80%;
-    margin-left: 15%;
-    margin-bottom: 5%;
-  }
-}
 
 @media(max-width: 630px){
   .book{
@@ -660,6 +662,17 @@ button{
   }
 }
 
+@media(max-width: 500px){
+  .books{
+    flex-direction: column;
+    width: 100vw;
+    overflow-x: hidden;
+  }
+  p{
+    text-align: left;
+    width: 95%;
+  }
+}
 /*-------------  MOBILE MODE ------------ */
 @media(max-width: 450px){
 
@@ -678,12 +691,6 @@ button{
     font-size: 1.9rem;
   }
 
-  .center{
-    width: 90%;
-    margin: 10% 4%;
-    text-align: center;
-  }
-
   .haut-de-page{
     padding:6%;
      margin-left: 75vw;
@@ -695,26 +702,6 @@ button{
     width: 80vw;
     margin-left:5%;
   }
-
 }
 
-@media(max-width: 500px){
-  .books{
-    flex-direction: column;
-    width: 100vw;
-    overflow-x: hidden;
-  }
-  p{
-    text-align: left;
-    width: 95%;
-  }
-}
-
-@media(max-width: 1250px){
-
-  .book-infos{
-    margin-left: 16%;
-    margin-top: 7%;
-  }
-}
 </style>
