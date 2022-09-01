@@ -137,6 +137,10 @@ export default {
         .then(res => {
           if (res.data.success) {
             // console.log(res.data)
+            this.$emit('updated-library',
+              {
+                updatedLibrary: res.data.userLibrary
+              })
             // Displaying a success notification
             this.$buefy.toast.open({
               message: 'Ajouté à la bibliothèque',
@@ -159,7 +163,24 @@ export default {
         .post('http://localhost:8001/user/library/favorites', { bookToAddID }, { withCredentials: true })
         .then(res => {
           if (res.data.success) {
+            // If the book is successfully added to the favorites categ., the updated userlibrary (allBooks) is sent to the parent component too:
+            axios
+              .get('http://localhost:8001/user/library/', { withCredentials: true })
+              .then(resp => {
+                if (resp.data.success) {
+                  // console.log('resp', resp.data.userLibrary)
+                  this.$emit('updated-library',
+                    {
+                      updatedLibrary: resp.data.userLibrary.allBooks
+                    })
+                }
+              })
+              .catch(err => console.log('err', err))
             // console.log(res.data)
+            this.$emit('updated-favorites',
+              {
+                updatedFavorites: res.data.userFavoritesLibrary
+              })
             // Displaying a success notification
             this.$buefy.toast.open({
               message: 'Ajouté aux favoris',
@@ -182,9 +203,13 @@ export default {
         axios
           .delete('http://localhost:8001/user/library/allbooks', { withCredentials: true, data: { bookToDeleteID } })
           .then(res => {
-            console.log(res)
+            // console.log(res)
             if (res.data.success) {
               console.log(res.data)
+              this.$emit('updated-library',
+                {
+                  updatedLibrary: res.data.userLibrary
+                })
               // Displaying a success notification
               this.$buefy.toast.open({
                 message: 'Supprimé de votre bibliothèque',
@@ -200,6 +225,17 @@ export default {
             })
             return console.log(err)
           })
+        // Deleting the book from the favorites too, if found in the collection:
+        axios
+          .delete('http://localhost:8001/user/library/favorites', { withCredentials: true, data: { bookToDeleteID } })
+          .catch(err => {
+            // Displaying an error notification
+            this.$buefy.toast.open({
+              message: 'Oups...Erreur, veuillez réessayer',
+              type: 'is-danger'
+            })
+            return console.log(err)
+          })
       }
       // --------------------------- IF COLLECTION = FAVORITES ---------------
       if (collection === 'favorites') {
@@ -207,9 +243,13 @@ export default {
         axios
           .delete('http://localhost:8001/user/library/favorites', { withCredentials: true, data: { bookToDeleteID } })
           .then(res => {
-            console.log(res)
+            // console.log(res)
             if (res.data.success) {
               console.log(res.data)
+              this.$emit('updated-favorites',
+                {
+                  updatedFavorites: res.data.userFavoritesLibrary
+                })
               // Displaying a success notification
               this.$buefy.toast.open({
                 message: 'Supprimé de vos favoris',
@@ -232,9 +272,6 @@ export default {
 </script>
 
 <style scoped>
-.wrap{
-  /* flex-wrap: wrap; */
-}
 .book{
     /* border: 1px solid black; */
     height: 75vh;

@@ -21,7 +21,8 @@
         <Book
         :bookSelection="userLibrary.allBooks"
         :fromGeneralCollection="false"
-        :currentCollection="'library'"/>
+        :currentCollection="'library'"
+        @updated-library="updateLibrary"/>
       </div>
 
       <div class="title-button">
@@ -31,7 +32,8 @@
         <div class="container-books">
           <Book
           :bookSelection="newBooks"
-          :fromGeneralCollection="true"/>
+          :fromGeneralCollection="true"
+          @updated-library="updateLibrary"/>
         </div>
 
       <div class="title-button">
@@ -41,13 +43,15 @@
       <div class="container-books">
         <Book
         :bookSelection="biographies"
-        :fromGeneralCollection="true"/>
+        :fromGeneralCollection="true"
+        @updated-library="updateLibrary"/>
       </div>
 
         <div class="personalisedSelection" v-if="personalisedSuggestion.title">
           <h2 class="center">SÉLECTIONNÉ POUR VOUS</h2>
           <Book
-          :personalisedSuggestion="personalisedSuggestion"/>
+          :personalisedSuggestion="personalisedSuggestion"
+          @updated-library="updateLibrary"/>
         </div>
 
       <div class="title-button">
@@ -58,7 +62,8 @@
       <div class="container-books">
         <Book
         :bookSelection="bookList"
-        :fromGeneralCollection="true"/>
+        :fromGeneralCollection="true"
+        @updated-library="updateLibrary"/>
       </div>
     </div>
 
@@ -204,6 +209,14 @@ export default {
       .catch(err => {
         return console.log(err)
       })
+  },
+  methods: {
+    updateLibrary (payload) {
+      this.userLibrary.allBooks = payload.updatedLibrary
+      if (this.userLibrary.allBooks.length > 4) {
+        this.userLibrary.allBooks.length = 4
+      }
+    }
   }
 }
 </script>
