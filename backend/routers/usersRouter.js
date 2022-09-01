@@ -253,35 +253,37 @@ router.delete('/library/favorites', auth,checkIfBookAlreadyInList, async (req,re
     let userFavoritesLibrary, deletedBook = req.body.bookToDeleteID, updatedLibrary;
     
     //Guard
-    if (!req.isBookAlreadyInFavoritesCategory) {
-        console.log(req.isBookAlreadyInFavoritesCategory)
-        return res.status(404).json({ error: true, bookNotFound: true, message: "Book not found." });     
-    }
-
-    //Finding the user:
-    try {
-        userFavoritesLibrary = await User.findById(userId)
-    } catch (error) {
-        return res.status(400).json({ error: true, message: "Bad request."});   
-        
-    }
-    //Selecting user's "to read" category:
-    userFavoritesLibrary = userFavoritesLibrary.books.favorites;
-    //Removing ID of book to delete from user's "to read" category:
-    updatedLibrary = userFavoritesLibrary.filter( id => id.toString() !== deletedBook);
-    
-    try {
-        userFavoritesLibrary = await User.findByIdAndUpdate(userId, 
-            {
-                $set : {
-                    'books.favorites': updatedLibrary //Updating user's library in user Schema
-                }
-            }, {new: true}).populate({path: 'books.favorites', model: 'Books'});
+    // if (!req.isBookAlreadyInFavoritesCategory) {
+    //     console.log(req.isBookAlreadyInFavoritesCategory)
+    //     return res.status(404).json({ error: true, bookNotFound: true, message: "Book not found." });     
+    // }
+    if (req.isBookAlreadyInFavoritesCategory) {
+        //Finding the user:
+        try {
+            userFavoritesLibrary = await User.findById(userId)
         } catch (error) {
             return res.status(400).json({ error: true, message: "Bad request."});   
+            
         }
+        //Selecting user's "to read" category:
+        userFavoritesLibrary = userFavoritesLibrary.books.favorites;
+        //Removing ID of book to delete from user's "to read" category:
+        updatedLibrary = userFavoritesLibrary.filter( id => id.toString() !== deletedBook);
+        
+        try {
+            userFavoritesLibrary = await User.findByIdAndUpdate(userId, 
+                {
+                    $set : {
+                        'books.favorites': updatedLibrary //Updating user's library in user Schema
+                    }
+                }, {new: true}).populate({path: 'books.favorites', model: 'Books'});
+            } catch (error) {
+                return res.status(400).json({ error: true, message: "Bad request."});   
+            }
         userFavoritesLibrary = userFavoritesLibrary.books.favorites;
         return res.status(200).json({success: true, userFavoritesLibrary})
+    }
+    return res.status(200).json({success: true, userFavoritesLibrary})
 })
 
 // ---------------- ADD A BOOK IN USER'S "ALREADY READ" CATEGORY ----------------
