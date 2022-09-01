@@ -22,8 +22,10 @@
           </div>
       </div>
       <div class="content" v-if="isUserConnected">
+
         <img :src="getImgUrl(banner)" alt="banniere de page" srcset="" class="banner">
-        <h2 class="is-size-1"> {{sectionTitle}}</h2>
+
+        <h2 class="is-size-1 is-size-2-mobile has-text-centered-mobile"> {{sectionTitle}}</h2>
         <div class="books" v-if="bookSelection">
             <div :v-if="typeof bookSelection === Array"
                 v-for="(book, index) in bookSelection" :key="index"
@@ -52,7 +54,8 @@
                     <b-tooltip
                     label="Ajouter aux favoris"
                     type="is-black"
-                    position="is-top">
+                    position="is-top"
+                    v-if="currentCollection !== 'favoris'">
                     <font-awesome-icon
                     icon="fa-solid fa-heart"
                     color=" rgb(108, 105, 105)"
@@ -108,7 +111,7 @@ export default {
       banner: 'banner.png',
       sectionTitle: '',
       backendRouteName: '',
-      currentSection: '',
+      currentCollection: '',
       bookSelection: [],
       fromGeneralCollection: false
     }
@@ -125,15 +128,20 @@ export default {
       .then(res => {
         if (res.data.success) {
           this.isUserConnected = true
+        } else {
+          this.isUserConnected = false
         }
       })
-      .catch(err => console.error(err))
+      .catch(err => {
+        this.isUserConnected = false
+        return console.error(err)
+      })
     const params = this.$route.params.sectionview
     // IF THE ROUTE IS REDIRECTING TO THE USER'S LIBRARY, WE GET THE INFOS AND SET THE PARAMETERS ACCORDINGLY (SECTION TITLE, BACKEND'S ROUTE URL, ETC):
     if (params === 'ma-bibliotheque') {
       this.sectionTitle = 'Ma bibliothèque'
       this.backendRouteName = 'user/library'
-      this.currentSection = 'ma bibliotheque'
+      this.currentCollection = 'ma bibliotheque'
       this.banner = 'banner-library.png'
 
       // Getting the book selection:
@@ -152,7 +160,7 @@ export default {
     if (params === 'favoris') {
       this.sectionTitle = 'Mes favoris'
       this.backendRouteName = 'user/library'
-      this.currentSection = 'favoris'
+      this.currentCollection = 'favoris'
       this.banner = 'banner-favorites.png'
 
       // Getting the book selection:
@@ -171,7 +179,7 @@ export default {
     if (params === 'contes') {
       this.sectionTitle = 'Tous les contes'
       this.backendRouteName = 'books'
-      this.currentSection = 'contes'
+      this.currentCollection = 'contes'
       this.fromGeneralCollection = true
 
       // Getting the book selection:
@@ -190,7 +198,7 @@ export default {
     if (params === 'romans') {
       this.sectionTitle = 'Tous les romans'
       this.backendRouteName = 'books'
-      this.currentSection = 'romans'
+      this.currentCollection = 'romans'
       this.fromGeneralCollection = true
 
       // Getting the book selection:
@@ -209,7 +217,7 @@ export default {
     if (params === 'bandes-dessinees') {
       this.sectionTitle = 'Toutes les bandes-dessinées'
       this.backendRouteName = 'books'
-      this.currentSection = 'bandes dessinées'
+      this.currentCollection = 'bandes dessinées'
       this.fromGeneralCollection = true
 
       // Getting the book selection:
@@ -228,7 +236,7 @@ export default {
     if (params === 'biographies') {
       this.sectionTitle = 'Toutes les biographies'
       this.backendRouteName = 'books'
-      this.currentSection = 'biographies'
+      this.currentCollection = 'biographies'
       this.fromGeneralCollection = true
 
       // Getting the book selection:
@@ -247,7 +255,7 @@ export default {
     if (params === 'tous-les-livres') {
       this.sectionTitle = 'Tous les livres'
       this.backendRouteName = 'books/'
-      this.currentSection = 'tous les livres'
+      this.currentCollection = 'tous les livres'
       this.fromGeneralCollection = true
 
       // Getting the book selection:
@@ -265,7 +273,7 @@ export default {
     if (params === 'nouveautes') {
       this.sectionTitle = 'Nouveautés'
       this.backendRouteName = 'books'
-      this.currentSection = 'nouveautes'
+      this.currentCollection = 'nouveautes'
       this.fromGeneralCollection = true
 
       // Getting the book selection:
@@ -311,6 +319,109 @@ export default {
   methods: {
     getImgUrl (pic) {
       return require('@/assets/' + pic)
+    },
+    addToLibrary (bookId) {
+      // Adding the book to the corresponding collection : favorites or library:
+      const bookToAddID = bookId
+      axios
+        .post('http://localhost:8001/user/library/allbooks', { bookToAddID }, { withCredentials: true })
+        .then(res => {
+          if (res.data.success) {
+            // console.log(res.data)
+            // Displaying a success notification
+            this.$buefy.toast.open({
+              message: 'Ajouté à la bibliothèque',
+              type: 'is-success'
+            })
+          }
+        })
+        .catch(err => {
+          // Displaying an error notification
+          this.$buefy.toast.open({
+            message: 'Livre déjà dans votre bibliothèque',
+            type: 'is-danger'
+          })
+          return console.error(err)
+        })
+    },
+    addToFavorites (bookId) {
+      const bookToAddID = bookId
+      // Adding the book to the general library first, and then to the favorites:
+      this.addToLibrary(bookId)
+      axios
+        .post('http://localhost:8001/user/library/favorites', { bookToAddID }, { withCredentials: true })
+        .then(res => {
+          if (res.data.success) {
+            // console.log(res.data)
+            // Displaying a success notification
+            this.$buefy.toast.open({
+              message: 'Ajouté aux favoris',
+              type: 'is-success'
+            })
+          }
+        })
+        .catch(err => {
+          // Displaying an error notification
+          this.$buefy.toast.open({
+            message: 'Livre déjà dans vos favoris',
+            type: 'is-danger'
+          })
+          return console.log(err)
+        })
+    },
+    deleteFromCollection (bookId, currentCollection) {
+      if (currentCollection === 'ma bibliotheque') {
+        const bookToDeleteID = bookId
+        axios
+          .delete('http://localhost:8001/user/library/allbooks', { withCredentials: true, data: { bookToDeleteID } })
+          .then(res => {
+            console.log(res)
+            if (res.data.success) {
+              console.log(res.data)
+              // Displaying a success notification
+              this.$buefy.toast.open({
+                message: 'Supprimé de votre bibliothèque',
+                type: 'is-success'
+              })
+            }
+          })
+        // Deleting the book from the favorites too, if found in the collection:
+        axios
+          .delete('http://localhost:8001/user/library/favorites', { withCredentials: true, data: { bookToDeleteID } })
+          .catch(err => {
+            // Displaying an error notification
+            this.$buefy.toast.open({
+              message: 'Oups...Erreur, veuillez réessayer',
+              type: 'is-danger'
+            })
+            return console.log(err)
+          })
+      }
+      // --------------------------- IF COLLECTION = FAVORITES ---------------
+      if (currentCollection === 'favoris') {
+        const bookToDeleteID = bookId
+        axios
+          .delete('http://localhost:8001/user/library/favorites', { withCredentials: true, data: { bookToDeleteID } })
+          .then(res => {
+            console.log(res)
+            if (res.data.success) {
+              console.log(res.data)
+              // Displaying a success notification
+              this.$buefy.toast.open({
+                message: 'Supprimé de vos favoris',
+                type: 'is-success'
+              })
+            }
+          })
+          .catch(err => {
+            // Displaying an error notification
+            this.$buefy.toast.open({
+              message: 'Oups...Erreur, veuillez réessayer',
+              type: 'is-danger'
+            })
+            return console.log(err)
+          })
+      }
     }
   }
 }
@@ -512,10 +623,10 @@ button{
     margin: 3% 2% !important;
     height: 42vh;
   }
-  .title-button{
-  justify-content: space-between;
-  margin: 3% 0 0 2%;
-  width: 90vw;
+
+  .book{
+    height: fit-content;
+    width: 29vw;
   }
 
   .center{
@@ -523,12 +634,13 @@ button{
     margin-bottom: 5%;
   }
 
-  .personalisedSelection{
-  margin: 8% auto 8% 4%;
-  }
   .haut-de-page{
     padding:2%;
     margin-left: 88vw;
+  }
+
+  .footer-component{
+    width: 100vw;
   }
 }
 /*-------------  TABLET MODE ------------ */
@@ -540,28 +652,30 @@ button{
   }
 }
 
+@media(max-width: 630px){
+  .book{
+    height: fit-content;
+    width: 40vw;
+    margin: 3%;
+  }
+}
+
 /*-------------  MOBILE MODE ------------ */
 @media(max-width: 450px){
 
   .container-books{
     width: 50%;
-    /* margin: auto; */
-    /* margin: 0 0 0 12%; */
     padding: 0;
   }
-  .btn-afficher-tout{
-    padding: 3% 2% .1% 2%;
-    height: 7vh;
-    text-align: center;
-    overflow-wrap: break-word;
+
+  .book{
+    height: fit-content;
+    width: 80vw;
+    margin:auto;
   }
 
   h2{
     font-size: 1.9rem;
-  }
-
-  .title-button{
-    width: 92vw;
   }
 
   .center{
@@ -576,30 +690,12 @@ button{
   }
 }
 @media(max-width: 330px){
-    .title-button{
-      flex-direction: column;
-      width: 90vw;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .btn-afficher-tout{
-    padding: 3% 2% .1% 2%;
-    height: 5vh;
-    text-align: center;
-    overflow-wrap: break-word;
-  }
-}
-
-@media(max-width: 850px){
-  .btns{
-    flex-direction: column;
-    width: 90%;
+  .book{
+    height: fit-content;
+    width: 80vw;
+    margin-left:5%;
   }
 
-  .book:nth-child(3){
-    display: none;
-  }
 }
 
 @media(max-width: 500px){
@@ -615,23 +711,6 @@ button{
 }
 
 @media(max-width: 1250px){
-  .book{
-    /* height: 75vh; */
-    height: fit-content;
-    width: 95%;
-    margin: 1%;
-  }
-
-  .book:nth-child(4){
-    display: none;
-  }
-
-  .personalised-suggestion{
-    flex-direction: column;
-    align-items: center;
-    width: 80vw;
-    padding: 2.5% 1.5% 3% 1.5%;
-  }
 
   .book-infos{
     margin-left: 16%;
