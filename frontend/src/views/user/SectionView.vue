@@ -1,129 +1,376 @@
 <template>
-    <div class="wrap">
-        <h1 class="is-size-1"> {{sectionTitle}}</h1>
-    <div class="books" v-if="bookSelection">
-        <div :v-if="typeof bookSelection === Array"
-            v-for="(book, index) in bookSelection" :key="index"
-            class="book">
-            <div class="icons-options" v-if="isUserConnected">
-              <b-tooltip
-                label="Voir"
-                type="is-black"
-                position="is-top">
-                <router-link :to="`/livres/${book._id}`" class="grey">
-                  <font-awesome-icon icon="fa-solid fa-eye" class="icon icon-eye"/>
-                </router-link>
-              </b-tooltip>
-
-              <b-tooltip
-                label="Ajouter à la bibliothèque"
-                type="is-black"
-                position="is-top"
-                v-if="fromGeneralCollection">
-              <font-awesome-icon
-                icon="fa-solid fa-circle-plus"
-                class="icon"
-                @click="addToLibrary(book._id)"/>
-              </b-tooltip>
-
-              <b-tooltip
-                label="Ajouter aux favoris"
-                type="is-black"
-                position="is-top">
-              <font-awesome-icon
-                icon="fa-solid fa-heart"
-                color=" rgb(108, 105, 105)"
-                class="icon icon-red"
-                @click="addToFavorites(book._id)"/>
-              </b-tooltip>
-
-              <b-tooltip
-                label="Supprimer"
-                type="is-black"
-                position="is-top"
-                v-if="!fromGeneralCollection">
-              <font-awesome-icon
-                icon="fa-solid fa-trash-can"
-                class="icon icon-trashcan"
-                @click="deleteFromCollection(book._id, currentCollection)"/>
-              </b-tooltip>
-
-            </div>
-            <router-link :to="`/livres/${book._id}`">
-              <img
-              class="img"
-              :src="book.image"
-              :alt="`page de couverture du livre : \'${book.title} \' `"
-              srcset="">
-            </router-link>
-            <router-link :to="`/livres/${book._id}`">
-              <h3>{{book.title}}</h3>
-            </router-link>
-
-            <h4>De: {{book.author}}</h4>
-            <h4>Pays: {{book.country}}</h4>
+    <div class="sectionview">
+        <div class="nav">
+          <NavbarUser/>
         </div>
+        <div class="sidebar-mobile">
+        <SidebarMobile/>
+        </div>
+
+      <a href="" id="scrollToTop"></a>
+      <div class="login-wrapper" v-if="!isUserConnected">
+          <img :src="getImgUrl(banner)" alt="banniere de page" srcset="" class="banner">
+          <div class="login-invitation">
+            <h2>Qui va là ?
+                <font-awesome-icon icon="fa-solid fa-eye" />
+                <font-awesome-icon icon="fa-solid fa-eye" />
+            </h2>
+            <h2>Vous devez être connecté pour accéder à cette page </h2>
+            <router-link to="/login" class="router-link">
+                <h2 class="login-link">Connectez-vous ou inscrivez vous ici</h2>
+            </router-link>
+          </div>
+      </div>
+      <div class="content" v-if="isUserConnected">
+        <img :src="getImgUrl(banner)" alt="banniere de page" srcset="" class="banner">
+        <h2 class="is-size-1"> {{sectionTitle}}</h2>
+        <div class="books" v-if="bookSelection">
+            <div :v-if="typeof bookSelection === Array"
+                v-for="(book, index) in bookSelection" :key="index"
+                class="book">
+                <div class="icons-options" v-if="isUserConnected">
+                    <b-tooltip
+                    label="Voir"
+                    type="is-black"
+                    position="is-top">
+                    <router-link :to="`/livres/${book._id}`" class="grey">
+                        <font-awesome-icon icon="fa-solid fa-eye" class="icon icon-eye"/>
+                    </router-link>
+                    </b-tooltip>
+
+                    <b-tooltip
+                    label="Ajouter à la bibliothèque"
+                    type="is-black"
+                    position="is-top"
+                    v-if="fromGeneralCollection">
+                    <font-awesome-icon
+                    icon="fa-solid fa-circle-plus"
+                    class="icon"
+                    @click="addToLibrary(book._id)"/>
+                    </b-tooltip>
+
+                    <b-tooltip
+                    label="Ajouter aux favoris"
+                    type="is-black"
+                    position="is-top">
+                    <font-awesome-icon
+                    icon="fa-solid fa-heart"
+                    color=" rgb(108, 105, 105)"
+                    class="icon icon-red"
+                    @click="addToFavorites(book._id)"/>
+                    </b-tooltip>
+
+                    <b-tooltip
+                    label="Supprimer"
+                    type="is-black"
+                    position="is-top"
+                    v-if="!fromGeneralCollection">
+                    <font-awesome-icon
+                    icon="fa-solid fa-trash-can"
+                    class="icon icon-trashcan"
+                    @click="deleteFromCollection(book._id, currentCollection)"/>
+                    </b-tooltip>
+
+                </div>
+              <router-link :to="`/livres/${book._id}`">
+                <img
+                class="img"
+                :src="book.image"
+                :alt="`page de couverture du livre : \'${book.title} \' `"
+                srcset="">
+              </router-link>
+              <router-link :to="`/livres/${book._id}`">
+                <h3>{{book.title}}</h3>
+              </router-link>
+
+              <h4>De: {{book.author}}</h4>
+              <h4>Genre: {{book.genre}}</h4>
+              <h4>Pays: {{book.country}}</h4>
+          </div>
+      </div>
+      <div class="footer-component">
+          <FooterComponent/>
+      </div>
     </div>
-  </div>
+      </div>
 </template>
 
 <script>
 import axios from 'axios'
+import NavbarUser from '@/components/NavbarUser.vue'
+import FooterComponent from '@/components/FooterComponent.vue'
+import SidebarMobile from '@/components/SidebarMobile.vue'
 export default {
   name: 'SectionView',
   data () {
     return {
+      isUserConnected: false,
+      banner: 'banner.png',
       sectionTitle: '',
       backendRouteName: '',
       currentSection: '',
       bookSelection: [],
-      isUserConnected: false,
       fromGeneralCollection: false
     }
   },
+  components: {
+    NavbarUser,
+    FooterComponent,
+    SidebarMobile
+  },
   mounted () {
+    // CHECKING IF USER IS CONNECTED:
+    axios
+      .get('http://localhost:8001/user/', { withCredentials: true })
+      .then(res => {
+        if (res.data.success) {
+          this.isUserConnected = true
+        }
+      })
+      .catch(err => console.error(err))
     const params = this.$route.params.sectionview
     // IF THE ROUTE IS REDIRECTING TO THE USER'S LIBRARY, WE GET THE INFOS AND SET THE PARAMETERS ACCORDINGLY (SECTION TITLE, BACKEND'S ROUTE URL, ETC):
     if (params === 'ma-bibliotheque') {
       this.sectionTitle = 'Ma bibliothèque'
       this.backendRouteName = 'user/library'
-      this.currentSection = 'Ma bibliothèque'
+      this.currentSection = 'ma bibliotheque'
+      this.banner = 'banner-library.png'
 
       // Getting the book selection:
       axios
         .get(`http://localhost:8001/${this.backendRouteName}`, { withCredentials: true })
         .then(res => {
-          console.log(res.data)
-          this.bookSelection = res.data.userLibrary.allBooks
-          this.isUserConnected = true
+          if (res.data.success) {
+            this.bookSelection = res.data.userLibrary.allBooks
+          }
+        })
+        .catch(err => {
+          return err
         })
     }
     // IF THE ROUTE IS REDIRECTING TO THE USER'S FAVORITES:
-    if (params === '') {
-      this.sectionTitle = 'Ma bibliothèque'
+    if (params === 'favoris') {
+      this.sectionTitle = 'Mes favoris'
       this.backendRouteName = 'user/library'
-      this.currentSection = 'Ma bibliothèque'
+      this.currentSection = 'favoris'
+      this.banner = 'banner-favorites.png'
 
       // Getting the book selection:
       axios
         .get(`http://localhost:8001/${this.backendRouteName}`, { withCredentials: true })
         .then(res => {
-          console.log(res.data)
-          this.bookSelection = res.data.userLibrary.allBooks
-          this.isUserConnected = true
+          if (res.data.success) {
+            this.bookSelection = res.data.userLibrary.favorites
+          }
         })
+        .catch(err => {
+          return err
+        })
+    }
+    // IF THE ROUTE IS REDIRECTING TO THE TALES:
+    if (params === 'contes') {
+      this.sectionTitle = 'Tous les contes'
+      this.backendRouteName = 'books'
+      this.currentSection = 'contes'
+      this.fromGeneralCollection = true
+
+      // Getting the book selection:
+      axios
+        .get(`http://localhost:8001/${this.backendRouteName}`, { withCredentials: true })
+        .then(res => {
+          if (res.data.success) {
+            let bookSelection = res.data.bookList
+            bookSelection = bookSelection.filter(book => book.genre.toLowerCase() === 'conte')
+            this.bookSelection = bookSelection
+          }
+        })
+        .catch(err => err)
+    }
+    // IF THE ROUTE IS REDIRECTING TO THE NOVELS:
+    if (params === 'romans') {
+      this.sectionTitle = 'Tous les romans'
+      this.backendRouteName = 'books'
+      this.currentSection = 'romans'
+      this.fromGeneralCollection = true
+
+      // Getting the book selection:
+      axios
+        .get(`http://localhost:8001/${this.backendRouteName}`, { withCredentials: true })
+        .then(res => {
+          if (res.data.success) {
+            let bookSelection = res.data.bookList
+            bookSelection = bookSelection.filter(book => book.genre.toLowerCase() === 'roman')
+            this.bookSelection = bookSelection
+          }
+        })
+        .catch(err => err)
+    }
+    // IF THE ROUTE IS REDIRECTING TO THE COMICS:
+    if (params === 'bandes-dessinees') {
+      this.sectionTitle = 'Toutes les bandes-dessinées'
+      this.backendRouteName = 'books'
+      this.currentSection = 'bandes dessinées'
+      this.fromGeneralCollection = true
+
+      // Getting the book selection:
+      axios
+        .get(`http://localhost:8001/${this.backendRouteName}`, { withCredentials: true })
+        .then(res => {
+          if (res.data.success) {
+            let bookSelection = res.data.bookList
+            bookSelection = bookSelection.filter(book => book.genre.toLowerCase() === 'bande dessinée')
+            this.bookSelection = bookSelection
+          }
+        })
+        .catch(err => err)
+    }
+    // IF THE ROUTE IS REDIRECTING TO THE BIOGRAPHIES:
+    if (params === 'biographies') {
+      this.sectionTitle = 'Toutes les biographies'
+      this.backendRouteName = 'books'
+      this.currentSection = 'biographies'
+      this.fromGeneralCollection = true
+
+      // Getting the book selection:
+      axios
+        .get(`http://localhost:8001/${this.backendRouteName}`, { withCredentials: true })
+        .then(res => {
+          if (res.data.success) {
+            let bookSelection = res.data.bookList
+            bookSelection = bookSelection.filter(book => book.genre.toLowerCase() === 'biographie' || book.genre.toLowerCase() === 'autobiographie')
+            this.bookSelection = bookSelection
+          }
+        })
+        .catch(err => err)
+    }
+    // IF THE ROUTE IS REDIRECTING TO SEMA'S WHOLE BOOK LIST:
+    if (params === 'tous-les-livres') {
+      this.sectionTitle = 'Tous les livres'
+      this.backendRouteName = 'books/'
+      this.currentSection = 'tous les livres'
+      this.fromGeneralCollection = true
+
+      // Getting the book selection:
+      axios
+        .get(`http://localhost:8001/${this.backendRouteName}`, { withCredentials: true })
+        .then(res => {
+          if (res.data.success) {
+            console.log(res.data)
+            this.bookSelection = res.data.bookList
+          }
+        })
+        .catch(err => err)
+    }
+    // IF THE ROUTE IS REDIRECTING TO THE NEWLY ADDED BOOKS:
+    if (params === 'nouveautes') {
+      this.sectionTitle = 'Nouveautés'
+      this.backendRouteName = 'books'
+      this.currentSection = 'nouveautes'
+      this.fromGeneralCollection = true
+
+      // Getting the book selection:
+      axios
+        .get(`http://localhost:8001/${this.backendRouteName}`, { withCredentials: true })
+        .then(res => {
+          if (res.data.success) {
+            console.log(res.data)
+            this.bookSelection = res.data.bookList
+            const bookSelection = res.data.bookList
+            // Step 1 : Flatten the obj before sorting them:
+            const flattenObj = (ob) => {
+            // The object which contains the final result
+              const result = {}
+              // loop through the object "ob"
+              for (const i in ob) {
+                // We check the type of the i using typeof() function and recursively call the function again
+                if ((typeof ob[i]) === 'object' && !Array.isArray(ob[i])) {
+                  const temp = flattenObj(ob[i])
+                  for (const j in temp) {
+                  // Store temp in result
+                    result[i + j] = temp[j]
+                  }
+                } else { // Else store ob[i] in result directly
+                  result[i] = ob[i]
+                }
+              }
+              return result
+            }
+            const flattenBooksOjects = bookSelection.map(book => {
+              book = flattenObj(book)
+              return book
+            })
+            // Step 2 : sorting the books:
+            const newlyAddedBooks = flattenBooksOjects.slice().sort((a, b) => b.dateAddedparsedFormat - a.dateAddedparsedFormat)
+            console.log('newlyAddedBooks', newlyAddedBooks)
+            this.bookSelection = newlyAddedBooks
+          }
+        })
+        .catch(err => err)
+    }
+  },
+  methods: {
+    getImgUrl (pic) {
+      return require('@/assets/' + pic)
     }
   }
 }
 </script>
 
 <style scoped>
-.wrap{
-  /* flex-wrap: wrap; */
-  /* flex-wrap: wrap; */
+.content, .login-wrapper{
+  margin: 3% auto 0 22vw;
+  width: 91vw;
 }
-.book{
+
+.nav{
+  position: fixed;
+  top: 6%;
+}
+
+.sidebar-mobile{
+  display: none;
+}
+
+.banner{
+  width: 82%;
+  margin: auto;
+  height: 42vh;
+  border: 2px solid rgb(88, 88, 88);
+  border-radius: 15px;
+}
+
+.login-invitation{
+    cursor: pointer;
     /* border: 1px solid black; */
+    border-radius: 9px;
+    box-shadow: 0 1px 7px rgba(0,0,0,0.12), 0 1px 4px rgba(0,0,0,0.24);
+    width: 60%;
+    margin: 10vh auto;
+    margin-left: 10%;
+    /* height: 0vh; */
+    display: flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content: center;
+    background-color: #FFF1CC;
+}
+
+.login-invitation h2{
+    font-size: 1.6rem;
+    line-height: 300%;
+}
+.login-invitation h2:nth-child(1){
+    font-size: 1.7rem;
+}
+
+.login-link{
+    cursor: pointer;
+}
+.login-link:hover{
+    font-weight: bold;
+}
+
+.book{
     height: 75vh;
     height: fit-content;
     width: 17vw;
@@ -140,6 +387,7 @@ export default {
 
 .books{
   display: flex;
+  flex-wrap: wrap;
 }
 
 .img{
@@ -147,6 +395,12 @@ export default {
     border-radius: 3px;
     box-shadow: 0 8px 10px rgba(108, 106, 106, 0.25), 0 2px 7px rgba(188, 186, 186, 0.22);
     position: relative !important;
+}
+
+h2{
+  font-family: 'Ibarra Real Nova', serif;
+  color: black;
+  cursor: default;
 }
 
 h3{
@@ -233,7 +487,109 @@ button{
 .icon-red:hover{
   color: red;
 }
+
 /* RESPONSIVE --  RESPONSIVE -- RESPONSIVE -- RESPONSIVE -- RESPONSIVE -- */
+@media(max-width: 1170px){
+  .nav{
+    display: none;
+  }
+
+  .sidebar-mobile{
+    display: block;
+    position: fixed;
+    top: 3%;
+    left: 2%;
+    z-index: 2;
+  }
+
+  .content{
+    margin: auto;
+    width: 95vw;
+  }
+
+  .banner{
+    width: 95%;
+    margin: 3% 2% !important;
+    height: 42vh;
+  }
+  .title-button{
+  justify-content: space-between;
+  margin: 3% 0 0 2%;
+  width: 90vw;
+  }
+
+  .center{
+    width: 50%;
+    margin-bottom: 5%;
+  }
+
+  .personalisedSelection{
+  margin: 8% auto 8% 4%;
+  }
+  .haut-de-page{
+    padding:2%;
+    margin-left: 88vw;
+  }
+}
+/*-------------  TABLET MODE ------------ */
+@media(max-width: 770px){
+  .center{
+    width: 80%;
+    margin-left: 15%;
+    margin-bottom: 5%;
+  }
+}
+
+/*-------------  MOBILE MODE ------------ */
+@media(max-width: 450px){
+
+  .container-books{
+    width: 50%;
+    /* margin: auto; */
+    /* margin: 0 0 0 12%; */
+    padding: 0;
+  }
+  .btn-afficher-tout{
+    padding: 3% 2% .1% 2%;
+    height: 7vh;
+    text-align: center;
+    overflow-wrap: break-word;
+  }
+
+  h2{
+    font-size: 1.9rem;
+  }
+
+  .title-button{
+    width: 92vw;
+  }
+
+  .center{
+    width: 90%;
+    margin: 10% 4%;
+    text-align: center;
+  }
+
+  .haut-de-page{
+    padding:6%;
+     margin-left: 75vw;
+  }
+}
+@media(max-width: 330px){
+    .title-button{
+      flex-direction: column;
+      width: 90vw;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-afficher-tout{
+    padding: 3% 2% .1% 2%;
+    height: 5vh;
+    text-align: center;
+    overflow-wrap: break-word;
+  }
+}
 
 @media(max-width: 850px){
   .btns{

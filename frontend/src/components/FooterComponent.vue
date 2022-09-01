@@ -37,9 +37,8 @@ export default {
 <style scoped>
 .footer{
   padding: 2% 0 ;
-  margin: 5vh 0 0 21vw;
   width: 77vw;
-  align-self: right;
+  /* align-self: right; */
   background-color: #FFF1CC;
   display: flex;
   justify-content: space-evenly;

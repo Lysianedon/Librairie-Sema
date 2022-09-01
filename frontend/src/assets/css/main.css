@@ -77,3 +77,9 @@ body{
 .haut-de-page{
   background-color: #FFF1CC;
 }
+
+/*----------------- FOOTER COMPONENT ----------------- */
+.footer-component{
+  background-color: none;
+  /* border: 1px solid black; */
+ }

@@ -26,7 +26,7 @@
 
       <div class="title-button">
         <h2>NOUVEAUTÉS</h2>
-        <router-link to="/livres/nouveautes" class="btn-afficher-tout">Afficher tout</router-link>
+        <router-link to="/section/nouveautes" class="btn-afficher-tout">Afficher tout</router-link>
       </div>
         <div class="container-books">
           <Book
@@ -36,7 +36,7 @@
 
       <div class="title-button">
         <h2>BIOGRAPHIES</h2>
-        <router-link to="/livres/biographies" class="btn-afficher-tout">Afficher tout</router-link>
+        <router-link to="/section/biographies" class="btn-afficher-tout">Afficher tout</router-link>
       </div>
       <div class="container-books">
         <Book
@@ -52,7 +52,7 @@
 
       <div class="title-button">
         <h2>TOUS LES LIVRES</h2>
-        <router-link to="/livres/tout-les-livres" class="btn-afficher-tout">Afficher tout</router-link>
+        <router-link to="/section/tous-les-livres" class="btn-afficher-tout">Afficher tout</router-link>
       </div>
 
       <div class="container-books">
@@ -71,7 +71,9 @@
         </b-tooltip>
     </a>
 
-    <FooterComponent/>
+    <div class="footer-component">
+        <FooterComponent/>
+    </div>
 
   </div>
 </template>
@@ -255,6 +257,12 @@ h2{
 
 .haut-de-page{
   margin-left: 95vw;
+  padding-bottom: .8%;
+}
+
+.footer-component{
+  margin-left: 22vw;
+  margin-top: 3%;
 }
 
 /* RESPONSIVE --  RESPONSIVE -- RESPONSIVE -- RESPONSIVE -- RESPONSIVE -- */
@@ -299,6 +307,9 @@ h2{
   .haut-de-page{
     padding:2%;
     margin-left: 88vw;
+  }
+  .footer-component{
+    margin-left: 0;
   }
 }
 /*-------------  TABLET MODE ------------ */

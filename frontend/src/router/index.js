@@ -46,6 +46,7 @@ const routes = [
     path: '/section/:sectionview',
     name: 'SectionView',
     component: SectionView
+
   },
   {
     path: '/favoris',
