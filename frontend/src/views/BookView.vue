@@ -11,7 +11,9 @@
     <img src="@/assets/banner.png" alt="banniere de page d'accueil" srcset="" class="banner">
 
     <div class="personalised-suggestion">
-      <router-link to="/" class="btn-retour"> &lt;&lt; Retour </router-link>
+
+      <a class="btn-retour" @click="$router.go(-1)"> &lt;&lt; Retour</a>
+      <div class="white-space"></div>
       <Book
          :personalisedSuggestion="book"
          @updated-library="updateLibrary"/>
@@ -128,6 +130,18 @@ export default {
   }
   .footer-component{
     margin-left: 0;
+  }
+  .btn-retour{
+    padding: 2%;
+  }
+  .white-space{
+    height: 6vh;
+  }
+
+  @media(max-width: 425px){
+    .btn-retour{
+      padding: 4%;
+    }
   }
 }
 

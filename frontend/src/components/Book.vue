@@ -228,6 +228,14 @@ export default {
         // Deleting the book from the favorites too, if found in the collection:
         axios
           .delete('http://localhost:8001/user/library/favorites', { withCredentials: true, data: { bookToDeleteID } })
+          .then(res => {
+            if (res.data.success) {
+              this.$emit('updated-favorites',
+                {
+                  updatedFavorites: res.data.userFavoritesLibrary
+                })
+            }
+          })
           .catch(err => {
             // Displaying an error notification
             this.$buefy.toast.open({
@@ -245,7 +253,7 @@ export default {
           .then(res => {
             // console.log(res)
             if (res.data.success) {
-              console.log(res.data)
+              // console.log(res.data)
               this.$emit('updated-favorites',
                 {
                   updatedFavorites: res.data.userFavoritesLibrary
