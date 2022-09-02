@@ -52,7 +52,7 @@ body{
 }
 
 
-.btn-option, .btn-afficher-tout, .haut-de-page {
+.btn-option, .btn-afficher-tout, .haut-de-page, .btn-retour {
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
   transition: all 0.4s cubic-bezier(.25,.8,.25,1);
 }
@@ -63,19 +63,22 @@ body{
   /* box-shadow: 0px 12px 20px rgba(136, 134, 134, 0.22); */
 }
 
-.btn-afficher-tout, .haut-de-page{
+.btn-afficher-tout, .haut-de-page, .btn-retour{
   color: black;
   border-radius: 7px;
   background-color: #D8E0CF;
   padding: .8% .8% .2% .8%;
 }
 
-.btn-afficher-tout:hover, .haut-de-page:hover{
+.btn-afficher-tout:hover, .haut-de-page:hover, .btn-retour:hover{
   box-shadow: 2px 4px 6px rgba(108, 106, 106, 0.25), 2px 5px 8px rgba(136, 134, 134, 0.22);
 }
 
 .haut-de-page{
   background-color: #FFF1CC;
+}
+.btn-retour{
+  padding: 1%;
 }
 
 /*----------------- FOOTER COMPONENT ----------------- */
