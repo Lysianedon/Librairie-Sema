@@ -1,28 +1,36 @@
 <template>
-   <div class="personalised-suggestion">
-         <img
-            class="img"
-            :src="book.image"
-            :alt="`page de couverture du livre : \'${book.title} \' `"
-            srcset="">
-          <div class="book-infos">
-            <h3>{{book.title}}</h3>
-            <h4>De: {{book.author}}</h4>
-            <h4>Genre: {{book.genre}}</h4>
-            <h4>Pays: {{book.country}}</h4>
-            <h4 class="synopsis-title">Synopsis:</h4>
-            <p> {{ book.synopsis}}</p>
 
-            <div class="btns">
-              <button class="btn-option" @click="addToLibrary(book._id)">Ajouter à ma bibliothèque</button>
-              <button class="btn-option" @click="addToFavorites(book._id)">Ajouter à mes favoris</button>
-            </div>
-          </div>
+<div class="wrapper">
+    <div class="nav">
+      <NavbarUser/>
     </div>
+    <div class="sidebar-mobile">
+      <SidebarMobile/>
+    </div>
+  <div class="content">
+    <img src="@/assets/banner.png" alt="banniere de page d'accueil" srcset="" class="banner">
+
+    <div class="personalised-suggestion">
+      <router-link to="/" class="btn-retour"> &lt;&lt; Retour </router-link>
+      <Book
+         :personalisedSuggestion="book"
+         @updated-library="updateLibrary"/>
+    </div>
+
+      <div class="footer-component">
+        <FooterComponent/>
+      </div>
+
+   </div>
+</div>
 </template>
 
 <script>
 import axios from 'axios'
+import NavbarUser from '@/components/NavbarUser.vue'
+import SidebarMobile from '@/components/SidebarMobile.vue'
+import Book from '@/components/Book.vue'
+import FooterComponent from '@/components/FooterComponent.vue'
 export default {
   name: 'BookView',
   data () {
@@ -48,49 +56,79 @@ export default {
       .catch(err => {
         return console.error(err)
       })
-  }
+  },
+  components: { NavbarUser, SidebarMobile, Book, FooterComponent }
 }
 </script>
 
 <style scoped>
 .personalised-suggestion{
-  display: flex;
-  justify-content: space-between;
-  width: 65vw;
-  padding: 2.5% 1.5% 3% 1.5%;
-  border-radius: 5px;
-  cursor: default;
+  width: 90%;
+  margin: 3% auto;
 }
 
-.img{
-    margin: auto;
-    border-radius: 3px;
-    box-shadow: 0 8px 10px rgba(108, 106, 106, 0.25), 0 2px 7px rgba(188, 186, 186, 0.22);
-    position: relative !important;
+.content{
+  margin: 3% auto 0 22vw;
+  width: 91vw;
 }
 
-.book-infos{
-  margin-left: 6%;
-  margin-top: 7%;
+.nav{
+  position: fixed;
+  top: 6%;
 }
 
-.synopsis-title{
-  font-weight: bold !important;
-  margin-top: 6%;
+.sidebar-mobile{
+  display: none;
 }
 
-.btns{
-  display: flex;
+.banner{
+  width: 82%;
+  margin: auto;
+  height: 42vh;
+  border: 2px solid rgb(88, 88, 88);
+  border-radius: 15px;
 }
-button{
-  font-weight: bold;
-}
-
 /* RESPONSIVE --  RESPONSIVE -- RESPONSIVE -- RESPONSIVE -- RESPONSIVE -- */
-@media(max-width: 850px){
-  .btns{
+
+@media(max-width: 1250px){
+  .personalised-suggestion{
     flex-direction: column;
-    width: 90%;
+    align-items: center;
+    width: 80vw;
+    padding: 2.5% 1.5% 3% 1.5%;
   }
 }
+
+@media(max-width: 1170px){
+  .nav{
+    display: none;
+  }
+
+  .sidebar-mobile{
+    display: block;
+    position: fixed;
+    top: 3%;
+    left: 2%;
+    z-index: 2;
+  }
+
+  .content{
+    margin: auto;
+    width: 95vw;
+  }
+
+  .banner{
+    width: 95%;
+    margin: 3% 2% !important;
+    height: 42vh;
+  }
+
+  .personalised-suggestion{
+    margin: 12% auto 8% 4%;
+  }
+  .footer-component{
+    margin-left: 0;
+  }
+}
+
 </style>

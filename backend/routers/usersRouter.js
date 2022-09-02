@@ -252,11 +252,6 @@ router.delete('/library/favorites', auth,checkIfBookAlreadyInList, async (req,re
     const userId = req.userId;
     let userFavoritesLibrary, deletedBook = req.body.bookToDeleteID, updatedLibrary;
     
-    //Guard
-    // if (!req.isBookAlreadyInFavoritesCategory) {
-    //     console.log(req.isBookAlreadyInFavoritesCategory)
-    //     return res.status(404).json({ error: true, bookNotFound: true, message: "Book not found." });     
-    // }
     if (req.isBookAlreadyInFavoritesCategory) {
         //Finding the user:
         try {
