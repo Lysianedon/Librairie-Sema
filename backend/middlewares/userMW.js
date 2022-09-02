@@ -115,8 +115,8 @@ const joiBookValidation = (req, res, next) => {
       parsedFormat: Joi.number.min(1).max(30).required(),
     }).required(),
     bookStore: Joi.object({
-      name: Joi.string().min(1).max(50),
-      link: Joi.string().min(1).max(100),
+      name: Joi.string().min(1).max(50).required(),
+      link: Joi.string().min(1).max(100).required(),
     })
   })
 
