@@ -44,7 +44,7 @@ export default {
         'Effectuer des \nrecherches',
         'Par curiosité'
       ],
-      interestsArr: ['Biographies', 'Contes', 'Tout !']
+      interestsArr: ['Biographies', 'Contes', 'Romans', 'Tout !']
     }
   },
   beforeMount () {

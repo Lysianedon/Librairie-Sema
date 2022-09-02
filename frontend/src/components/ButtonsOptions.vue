@@ -5,8 +5,8 @@
         <button class="delete"></button>
       </div>
 
-      <h2 class="is-size-4 has-text-centered is-size-4-mobile">Je m'appelle:</h2>
-      <input type="text" name="firstname" id="firstname" v-model="firstname" class="input input-firstname is-medium">
+      <h2 class="is-size-4 has-text-centered is-size-4-mobile" v-if="!hideName">Je m'appelle:</h2>
+      <input type="text" name="firstname" id="firstname" v-model="firstname" class="input input-firstname is-medium" v-if="!hideName">
 
       <h2 class="is-size-4 has-text-centered">J'ai:</h2>
       <div class="buttons">
@@ -63,6 +63,10 @@ export default {
     ValidateButtonValue: {
       type: String,
       required: true
+    },
+    hideName: {
+      type: Boolean,
+      required: false
     }
   },
   mounted () {

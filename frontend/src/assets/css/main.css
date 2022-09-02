@@ -23,6 +23,15 @@ body{
   margin: auto;
 }
 
+.nav{
+  position: fixed;
+  top: 6%;
+}
+
+.sidebar-mobile{
+  display: none;
+}
+
 /* BUTTONS * BUTTONS * BUTTONS * BUTTONS * BUTTONS * --------- */
 .btn, .btn-valider, .btn-option {
   background: #fff;
@@ -79,6 +88,11 @@ body{
 }
 .btn-retour{
   padding: 1%;
+}
+
+.haut-de-page{
+  margin-left: 95vw;
+  padding-bottom: .8%;
 }
 
 /*----------------- FOOTER COMPONENT ----------------- */

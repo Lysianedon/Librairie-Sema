@@ -228,15 +228,6 @@ export default {
   width: 91vw;
 }
 
-.nav{
-  position: fixed;
-  top: 6%;
-}
-
-.sidebar-mobile{
-  display: none;
-}
-
 .banner{
   width: 82%;
   margin: auto;
@@ -266,11 +257,6 @@ h2{
   margin: auto;
   /* border: 1px solid green; */
   width: 70%;
-}
-
-.haut-de-page{
-  margin-left: 95vw;
-  padding-bottom: .8%;
 }
 
 .footer-component{
