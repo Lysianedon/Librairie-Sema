@@ -56,7 +56,8 @@ const bookSchema = mongoose.Schema({
         minlength: 1,
         trim: true 
     },
-    dateAdded: {stringFormat: String, parsedFormat: Number}
+    dateAdded: {stringFormat: String, parsedFormat: Number},
+    bookStore: {name: String, link: String}
 })
 
 const Books = mongoose.model('Books', bookSchema);

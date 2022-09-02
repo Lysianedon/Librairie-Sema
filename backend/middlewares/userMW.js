@@ -113,7 +113,11 @@ const joiBookValidation = (req, res, next) => {
     dateAdded: Joi.object({
       stringFormat: Joi.string().min(1).max(90).required(),
       parsedFormat: Joi.number.min(1).max(30).required(),
-    }).required()
+    }).required(),
+    bookStore: Joi.object({
+      name: Joi.string().min(1).max(50),
+      link: Joi.string().min(1).max(100),
+    })
   })
 
   const validateBookSchema = bookSchema.validate(newBook)

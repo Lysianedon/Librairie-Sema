@@ -76,6 +76,14 @@
             <h4>De: {{personalisedSuggestion.author}}</h4>
             <h4>Genre: {{personalisedSuggestion.genre}}</h4>
             <h4>Pays: {{personalisedSuggestion.country}}</h4>
+
+            <h4 v-if="personalisedSuggestion.bookStore" class="ou-acheter">
+              Où acheter ce livre:
+                <a :href="`${personalisedSuggestion.bookStore.link}`"
+                  target="_blank" rel="noopener noreferrer">
+                    {{personalisedSuggestion.bookStore.name}}
+                </a>
+            </h4>
             <h4 class="synopsis-title">Synopsis:</h4>
             <p> {{ personalisedSuggestion.synopsis}}</p>
 
@@ -292,7 +300,6 @@ export default {
 }
 
 .book:hover{
-  /* border: 1px solid rgb(207, 203, 203); */
     box-shadow: 0 2px 4px rgba(128, 124, 124, 0.25), 0 2px 7px rgba(100, 98, 98, 0.22);
 }
 
@@ -301,11 +308,6 @@ export default {
 }
 
 .img{
-    /* width: 93% !important; */
-    /* height: 90% !important; */
-    /* width: 275px !important; */
-    /* height: 340px !important; */
-    /* border: 1px solid black; */
     margin: auto;
     border-radius: 3px;
     box-shadow: 0 8px 10px rgba(108, 106, 106, 0.25), 0 2px 7px rgba(188, 186, 186, 0.22);
@@ -329,6 +331,15 @@ h4{
     margin-bottom: 3%;
 }
 
+h4:nth-child(5), h4:nth-child(6) {
+  font-weight: bold !important;
+  text-transform: none;
+  line-height: 190%;
+}
+h4 a {
+  color: green;
+}
+
 .personalised-suggestion{
   display: flex;
   justify-content: space-between;
@@ -349,7 +360,7 @@ p{
   text-align: justify;
 }
 .synopsis-title{
-  font-weight: bold !important;
+  font-weight: bold;
   margin-top: 6%;
 }
 
