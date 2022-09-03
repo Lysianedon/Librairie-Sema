@@ -75,6 +75,7 @@
 
 <script>
 import axios from 'axios'
+import { ref } from 'vue'
 export default {
   name: 'NavbarUser',
   data () {
@@ -106,6 +107,12 @@ export default {
         .catch(err => {
           return console.log(err)
         })
+    },
+    navigateToPage () {
+      const componentKey = ref(0)
+      componentKey.value += 1
+      console.log(componentKey.value)
+      return componentKey.value
     }
   }
 }

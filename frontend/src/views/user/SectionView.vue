@@ -9,7 +9,8 @@
 
       <a href="" id="scrollToTop"></a>
       <div class="login-wrapper" v-if="!isUserConnected">
-          <img :src="getImgUrl(banner)" alt="banniere de page" srcset="" class="banner">
+          <img :src="getImgUrl(getCurrentBanner)" alt="banniere" srcset="" class="banner">
+
           <div class="login-invitation">
             <h2>Qui va là ?
                 <font-awesome-icon icon="fa-solid fa-eye" />
@@ -23,12 +24,12 @@
       </div>
       <div class="content" v-if="isUserConnected">
 
-        <img :src="getImgUrl(banner)" alt="banniere de page" srcset="" class="banner">
+        <img :src="getImgUrl(getCurrentBanner)" alt="banniere" srcset="" class="banner">
 
-        <h2 class="is-size-1 is-size-2-mobile has-text-centered-mobile"> {{sectionTitle}}</h2>
-        <div class="books" v-if="bookSelection">
-            <div :v-if="typeof bookSelection === Array"
-                v-for="(book, index) in bookSelection" :key="index"
+        <h2 class="is-size-1 is-size-2-mobile has-text-centered-mobile"> {{getCurrentSectionTitle}}</h2>
+        <div class="books" v-if="getCurrentBookCollection">
+            <div :v-if="typeof getCurrentBookCollection === Array"
+                v-for="(book, index) in getCurrentBookCollection" :key="index"
                 class="book">
                 <div class="icons-options" v-if="isUserConnected">
                     <b-tooltip
@@ -55,7 +56,7 @@
                     label="Ajouter aux favoris"
                     type="is-black"
                     position="is-top"
-                    v-if="currentCollection !== 'favoris'">
+                    v-if="getCurrentCollection !== 'favoris'">
                     <font-awesome-icon
                     icon="fa-solid fa-heart"
                     color=" rgb(108, 105, 105)"
@@ -71,7 +72,7 @@
                     <font-awesome-icon
                     icon="fa-solid fa-trash-can"
                     class="icon icon-trashcan"
-                    @click="deleteFromCollection(book._id, currentCollection)"/>
+                    @click="deleteFromCollection(book._id, getCurrentCollection)"/>
                     </b-tooltip>
 
                 </div>
@@ -118,10 +119,35 @@ export default {
   data () {
     return {
       isUserConnected: false,
-      banner: 'banner.png',
-      sectionTitle: '',
-      backendRouteName: '',
-      currentCollection: '',
+      banners: {
+        default: 'banner.png',
+        favoris: 'banner-favorites.png',
+        bibliotheque: 'banner-library.png'
+      },
+      sectionTitles: {
+        bibliotheque: 'Ma bibliothèque',
+        favoris: 'Mes favoris',
+        contes: 'Tous les contes',
+        romans: 'Tous les romans',
+        nouveautes: 'Toutes les nouveautés',
+        biographies: 'Toutes les biographies',
+        bandesDessinees: 'Toutes les bandes dessinées',
+        tousLesLivres: 'Tous les livres'
+      },
+      currentCollections: {
+        bibliotheque: 'ma bibliotheque',
+        favoris: 'favoris',
+        contes: 'Tous les contes',
+        romans: 'Tous les romans',
+        nouveautes: 'Toutes les nouveautés',
+        biographies: 'Toutes les biographies',
+        bandesDessinees: 'Toutes les bandes dessinées',
+        tousLesLivres: 'Tous les livres'
+      },
+      backendRouteNames: {
+        userLibrary: 'user/library',
+        books: 'books'
+      },
       bookSelection: [],
       fromGeneralCollection: false
     }
@@ -130,6 +156,71 @@ export default {
     NavbarUser,
     FooterComponent,
     SidebarMobile
+  },
+  computed: {
+    getCurrentSectionTitle (sectionview) {
+      sectionview = this.$route.params.sectionview
+      if (sectionview === 'favoris') {
+        return this.sectionTitles.favoris
+      } else if (sectionview === 'ma-bibliotheque') {
+        return this.sectionTitles.bibliotheque
+      } else if (sectionview === 'contes') {
+        return this.sectionTitles.contes
+      } else if (sectionview === 'romans') {
+        return this.sectionTitles.romans
+      } else if (sectionview === 'nouveautes') {
+        return this.sectionTitles.nouveautes
+      } else if (sectionview === 'biographies') {
+        return this.sectionTitles.biographies
+      } else if (sectionview === 'tous-les-livres') {
+        return this.sectionTitles.tousLesLivres
+      } else if (sectionview === 'bandes-dessinees') {
+        return this.sectionTitles.bandesDessinees
+      }
+      return 'Tous les résultats'
+    },
+    getCurrentCollection (sectionview) {
+      sectionview = this.$route.params.sectionview
+      if (sectionview === 'favoris') {
+        return this.currentCollections.favoris
+      } else if (sectionview === 'ma-bibliotheque') {
+        return this.currentCollections.bibliotheque
+      } else if (sectionview === 'contes') {
+        return this.currentCollections.contes
+      } else if (sectionview === 'romans') {
+        return this.currentCollections.romans
+      } else if (sectionview === 'nouveautes') {
+        return this.currentCollections.nouveautes
+      } else if (sectionview === 'biographies') {
+        return this.currentCollections.biographies
+      } else if (sectionview === 'tous-les-livres') {
+        return this.currentCollections.tousLesLivres
+      } else if (sectionview === 'bandes-dessinees') {
+        return this.currentCollections.bandesDessinees
+      }
+      return 'not found'
+    },
+    getCurrentBanner (sectionview) {
+      sectionview = this.$route.params.sectionview
+      if (sectionview === 'favoris') {
+        return this.banners.favoris
+      } else if (sectionview === 'ma-bibliotheque') {
+        return this.banners.bibliotheque
+      }
+      return this.banners.default
+    },
+    getBackendRoute (sectionview) {
+      sectionview = this.$route.params.sectionview
+      if (sectionview === 'favoris' || sectionview === 'ma-bibliotheque') {
+        return this.backendRouteNames.userLibrary
+      }
+      return this.backendRouteNames.books
+    },
+    getCurrentBookCollection (sectionview) {
+      sectionview = this.$route.params.sectionview
+      // console.log(' this.getBackendRoute: ', this.getBackendRoute)
+      return this.getBookCollection(sectionview, this.getBackendRoute)
+    }
   },
   mounted () {
     // CHECKING IF USER IS CONNECTED:
@@ -149,10 +240,7 @@ export default {
     const params = this.$route.params.sectionview
     // IF THE ROUTE IS REDIRECTING TO THE USER'S LIBRARY, WE GET THE INFOS AND SET THE PARAMETERS ACCORDINGLY (SECTION TITLE, BACKEND'S ROUTE URL, ETC):
     if (params === 'ma-bibliotheque') {
-      this.sectionTitle = 'Ma bibliothèque'
-      this.backendRouteName = 'user/library'
-      this.currentCollection = 'ma bibliotheque'
-      this.banner = 'banner-library.png'
+      this.fromGeneralCollection = false
 
       // Getting the book selection:
       axios
@@ -168,10 +256,7 @@ export default {
     }
     // IF THE ROUTE IS REDIRECTING TO THE USER'S FAVORITES:
     if (params === 'favoris') {
-      this.sectionTitle = 'Mes favoris'
-      this.backendRouteName = 'user/library'
-      this.currentCollection = 'favoris'
-      this.banner = 'banner-favorites.png'
+      this.fromGeneralCollection = false
 
       // Getting the book selection:
       axios
@@ -187,9 +272,6 @@ export default {
     }
     // IF THE ROUTE IS REDIRECTING TO THE TALES:
     if (params === 'contes') {
-      this.sectionTitle = 'Tous les contes'
-      this.backendRouteName = 'books'
-      this.currentCollection = 'contes'
       this.fromGeneralCollection = true
 
       // Getting the book selection:
@@ -206,9 +288,6 @@ export default {
     }
     // IF THE ROUTE IS REDIRECTING TO THE NOVELS:
     if (params === 'romans') {
-      this.sectionTitle = 'Tous les romans'
-      this.backendRouteName = 'books'
-      this.currentCollection = 'romans'
       this.fromGeneralCollection = true
 
       // Getting the book selection:
@@ -225,9 +304,6 @@ export default {
     }
     // IF THE ROUTE IS REDIRECTING TO THE COMICS:
     if (params === 'bandes-dessinees') {
-      this.sectionTitle = 'Toutes les bandes-dessinées'
-      this.backendRouteName = 'books'
-      this.currentCollection = 'bandes dessinées'
       this.fromGeneralCollection = true
 
       // Getting the book selection:
@@ -244,9 +320,6 @@ export default {
     }
     // IF THE ROUTE IS REDIRECTING TO THE BIOGRAPHIES:
     if (params === 'biographies') {
-      this.sectionTitle = 'Toutes les biographies'
-      this.backendRouteName = 'books'
-      this.currentCollection = 'biographies'
       this.fromGeneralCollection = true
 
       // Getting the book selection:
@@ -263,9 +336,6 @@ export default {
     }
     // IF THE ROUTE IS REDIRECTING TO SEMA'S WHOLE BOOK LIST:
     if (params === 'tous-les-livres') {
-      this.sectionTitle = 'Tous les livres'
-      this.backendRouteName = 'books/'
-      this.currentCollection = 'tous les livres'
       this.fromGeneralCollection = true
 
       // Getting the book selection:
@@ -281,9 +351,6 @@ export default {
     }
     // IF THE ROUTE IS REDIRECTING TO THE NEWLY ADDED BOOKS:
     if (params === 'nouveautes') {
-      this.sectionTitle = 'Nouveautés'
-      this.backendRouteName = 'books'
-      this.currentCollection = 'nouveautes'
       this.fromGeneralCollection = true
 
       // Getting the book selection:
@@ -329,6 +396,187 @@ export default {
   methods: {
     getImgUrl (pic) {
       return require('@/assets/' + pic)
+    },
+    getBookCollection (sectionview, backendRoute) {
+      // IF THE ROUTE IS REDIRECTING TO THE USER'S LIBRARY, WE GET THE INFOS AND SET THE PARAMETERS ACCORDINGLY (SECTION TITLE, BACKEND'S ROUTE URL, ETC):
+      if (sectionview === 'ma-bibliotheque') {
+        this.currentCollection = 'ma bibliotheque'
+        this.fromGeneralCollection = false
+
+        // Getting the book selection:
+        axios
+          .get(`http://localhost:8001/${backendRoute}`, { withCredentials: true })
+          .then(res => {
+            if (res.data.success) {
+              this.bookSelection = res.data.userLibrary.allBooks
+              return this.bookSelection
+            }
+          })
+          .catch(err => {
+            return err
+          })
+        return this.bookSelection
+      }
+      // IF THE ROUTE IS REDIRECTING TO THE USER'S FAVORITES:
+      if (sectionview === 'favoris') {
+        this.currentCollection = 'favoris'
+        this.fromGeneralCollection = false
+
+        // Getting the book selection:
+        axios
+          .get(`http://localhost:8001/${backendRoute}`, { withCredentials: true })
+          .then(res => {
+            if (res.data.success) {
+              this.bookSelection = res.data.userLibrary.favorites
+              return this.bookSelection
+            }
+          })
+          .catch(err => {
+            return err
+          })
+        return this.bookSelection
+      }
+      // IF THE ROUTE IS REDIRECTING TO THE TALES:
+      if (sectionview === 'contes') {
+        this.currentCollection = 'contes'
+        this.fromGeneralCollection = true
+
+        // Getting the book selection:
+        axios
+          .get(`http://localhost:8001/${backendRoute}`, { withCredentials: true })
+          .then(res => {
+            if (res.data.success) {
+              let bookSelection = res.data.bookList
+              bookSelection = bookSelection.filter(book => book.genre.toLowerCase() === 'conte')
+              this.bookSelection = bookSelection
+              return this.bookSelection
+            }
+          })
+          .catch(err => err)
+        return this.bookSelection
+      }
+      // IF THE ROUTE IS REDIRECTING TO THE NOVELS:
+      if (sectionview === 'romans') {
+        this.currentCollection = 'romans'
+        this.fromGeneralCollection = true
+
+        // Getting the book selection:
+        axios
+          .get(`http://localhost:8001/${backendRoute}`, { withCredentials: true })
+          .then(res => {
+            if (res.data.success) {
+              let bookSelection = res.data.bookList
+              bookSelection = bookSelection.filter(book => book.genre.toLowerCase() === 'roman')
+              this.bookSelection = bookSelection
+              return this.bookSelection
+            }
+          })
+          .catch(err => err)
+        return this.bookSelection
+      }
+      // IF THE ROUTE IS REDIRECTING TO THE COMICS:
+      if (sectionview === 'bandes-dessinees') {
+        this.backendRouteName = 'books'
+        this.currentCollection = 'bandes dessinées'
+        this.fromGeneralCollection = true
+
+        // Getting the book selection:
+        axios
+          .get(`http://localhost:8001/${backendRoute}`, { withCredentials: true })
+          .then(res => {
+            if (res.data.success) {
+              let bookSelection = res.data.bookList
+              bookSelection = bookSelection.filter(book => book.genre.toLowerCase() === 'bande dessinée')
+              this.bookSelection = bookSelection
+              return this.bookSelection
+            }
+          })
+          .catch(err => err)
+        return this.bookSelection
+      }
+      // IF THE ROUTE IS REDIRECTING TO THE BIOGRAPHIES:
+      if (sectionview === 'biographies') {
+        this.currentCollection = 'biographies'
+        this.fromGeneralCollection = true
+
+        // Getting the book selection:
+        axios
+          .get(`http://localhost:8001/${backendRoute}`, { withCredentials: true })
+          .then(res => {
+            if (res.data.success) {
+              let bookSelection = res.data.bookList
+              bookSelection = bookSelection.filter(book => book.genre.toLowerCase() === 'biographie' || book.genre.toLowerCase() === 'autobiographie')
+              this.bookSelection = bookSelection
+              return this.bookSelection
+            }
+          })
+          .catch(err => err)
+        return this.bookSelection
+      }
+      // IF THE ROUTE IS REDIRECTING TO SEMA'S WHOLE BOOK LIST:
+      if (sectionview === 'tous-les-livres') {
+        this.currentCollection = 'tous les livres'
+        this.fromGeneralCollection = true
+
+        // Getting the book selection:
+        axios
+          .get(`http://localhost:8001/${backendRoute}`, { withCredentials: true })
+          .then(res => {
+            if (res.data.success) {
+            //   console.log(res.data)
+              this.bookSelection = res.data.bookList
+              return this.bookSelection
+            }
+          })
+          .catch(err => err)
+        return this.bookSelection
+      }
+      // IF THE ROUTE IS REDIRECTING TO THE NEWLY ADDED BOOKS:
+      if (sectionview === 'nouveautes') {
+        this.currentCollection = 'nouveautes'
+        this.fromGeneralCollection = true
+
+        // Getting the book selection:
+        axios
+          .get(`http://localhost:8001/${backendRoute}`, { withCredentials: true })
+          .then(res => {
+            if (res.data.success) {
+            //   console.log(res.data)
+              this.bookSelection = res.data.bookList
+              const bookSelection = res.data.bookList
+              // Step 1 : Flatten the obj before sorting them:
+              const flattenObj = (ob) => {
+                // The object which contains the final result
+                const result = {}
+                // loop through the object "ob"
+                for (const i in ob) {
+                // We check the type of the i using typeof() function and recursively call the function again
+                  if ((typeof ob[i]) === 'object' && !Array.isArray(ob[i])) {
+                    const temp = flattenObj(ob[i])
+                    for (const j in temp) {
+                      // Store temp in result
+                      result[i + j] = temp[j]
+                    }
+                  } else { // Else store ob[i] in result directly
+                    result[i] = ob[i]
+                  }
+                }
+                return result
+              }
+              const flattenBooksOjects = bookSelection.map(book => {
+                book = flattenObj(book)
+                return book
+              })
+              // Step 2 : sorting the books:
+              const newlyAddedBooks = flattenBooksOjects.slice().sort((a, b) => b.dateAddedparsedFormat - a.dateAddedparsedFormat)
+              //  console.log('newlyAddedBooks', newlyAddedBooks)
+              this.bookSelection = newlyAddedBooks
+              return this.bookSelection
+            }
+          })
+          .catch(err => err)
+        return this.bookSelection
+      }
     },
     addToLibrary (bookId) {
       // Adding the book to the corresponding collection : favorites or library:
@@ -385,9 +633,8 @@ export default {
         axios
           .delete('http://localhost:8001/user/library/allbooks', { withCredentials: true, data: { bookToDeleteID } })
           .then(res => {
-            console.log(res)
             if (res.data.success) {
-              console.log(res.data)
+            //   console.log(res.data)
               // Displaying a success notification
               this.$buefy.toast.open({
                 message: 'Supprimé de votre bibliothèque',
@@ -413,9 +660,8 @@ export default {
         axios
           .delete('http://localhost:8001/user/library/favorites', { withCredentials: true, data: { bookToDeleteID } })
           .then(res => {
-            console.log(res)
             if (res.data.success) {
-              console.log(res.data)
+            //   console.log(res.data)
               // Displaying a success notification
               this.$buefy.toast.open({
                 message: 'Supprimé de vos favoris',

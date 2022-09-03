@@ -74,37 +74,56 @@ export default {
       .get('http://localhost:8001/user/', { withCredentials: true })
       .then(res => {
         // console.log(res.data)
+        this.firstname = res.data.user.firstname
         this.age = res.data.user.age
         this.goals = res.data.user.preferences.goals
         this.interests = res.data.user.preferences.interests
+        // Put interests to sg:
         // Updating the store with user data:
         this.$store.commit('updateAge', this.age)
-        this.goals && this.goals.forEach(goal => this.$store.commit('addNewGoals', goal))
-        this.interests && this.interests.forEach(interest => this.$store.commit('addNewInterests', interest))
+        this.$store.commit('updateGoals', this.goals)
+        // Putting interests to plural:
+        this.interests = this.interests.map(interest => this.putToPlural(interest))
+        this.$store.commit('updateInterests', this.interests)
       })
       .catch(err => {
         return console.error(err)
       })
   },
   methods: {
-    ...mapActions(['updateAge', 'addNewGoals', 'removeGoals', 'addNewInterests', 'removeInterests', 'putWordsToSingular']),
+    ...mapActions(['updateAge', 'addNewGoals', 'removeGoals', 'addNewInterests', 'removeInterests', 'putWordsToSingular', 'updateInterests']),
+    putToPlural (word) {
+      if (word.toLowerCase() === 'biographie' || word.toLowerCase() === 'conte' || word.toLowerCase() === 'roman') {
+        word = word.concat('', 's')
+      }
+      return word
+    },
     validateForm () {
       const firstname = this.firstname
       const age = this.$store.state.age
       const goals = this.$store.state.preferences.goals
-      const interests = this.$store.state.preferences.interests
+      let interests = this.$store.state.preferences.interests
 
       // Guard : checking if any field is empty. If so, an error notification gets displayed:
-      if (firstname.length === 0 || age.length === 0 || goals.length === 0 || interests.length === 0) {
+      if (age.length === 0 || goals.length === 0 || interests.length === 0) {
         this.NotifErrorEmptyVal = true
         setTimeout(() => {
           this.NotifErrorEmptyVal = false
         }, 1800)
         return console.error('Champ(s) vide(s)')
       }
-      // Putting interests in singular:
+      // Guard: checking if hideName option is activated : if not, it means that the name needs to be filled too:
+      if (!this.hideName && firstname.length === 0) {
+        this.NotifErrorEmptyVal = true
+        setTimeout(() => {
+          this.NotifErrorEmptyVal = false
+        }, 1800)
+        return console.error('Champ(s) vide(s)')
+      }
+      // Putting interests to singular:
       this.$store.commit('putWordsToSingular')
-
+      interests = this.$store.state.preferences.interests
+      console.log('before updating interests in userInfos : ', interests)
       // Creating updated user's infos object:
       const userInfos = {
         firstname,
@@ -120,7 +139,13 @@ export default {
         .then(res => {
           console.log(res.data)
           if (res.data.success) {
-            this.$router.push('/')
+            this.$buefy.toast.open({
+              message: 'Enregistré',
+              type: 'is-success'
+            })
+            setTimeout(() => {
+              this.$router.push('/')
+            }, 1300)
           }
         })
         .catch(err => {
@@ -153,9 +178,11 @@ export default {
           if (button === e.target) {
             if (e.target.className.includes('selected')) {
               e.target.classList.remove('selected')
+              console.log('button unselected', e.target.value)
               this.$store.commit('removeGoals', button.value)
             } else if (!e.target.className.includes('selected')) {
               e.target.classList.add('selected')
+              console.log('button selected', e.target.value)
               this.$store.commit('addNewGoals', button.value)
             }
           }
@@ -188,6 +215,7 @@ export default {
     position: fixed !important;
     z-index: 1;
     top: 10%;
+    left: 5%;
     transform: translate(50%,-100%);
 }
 

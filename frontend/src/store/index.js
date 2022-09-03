@@ -23,7 +23,9 @@ export default new Vuex.Store({
     },
     // Modify mutations to : delete or add Goal => same for interests
     addNewGoals (state, payload) {
-      state.preferences.goals.push(payload)
+      if (state.preferences.goals.filter(goal => goal === payload).length === 0) {
+        state.preferences.goals.push(payload)
+      }
     },
     removeGoals (state, payload) {
       state.preferences.goals.forEach(goal => {
@@ -33,8 +35,13 @@ export default new Vuex.Store({
         }
       })
     },
+    updateGoals (state, payload) {
+      state.preferences.goals = payload
+    },
     addNewInterests (state, payload) {
-      state.preferences.interests.push(payload)
+      if (state.preferences.interests.filter(pref => pref === payload).length === 0) {
+        state.preferences.interests.push(payload)
+      }
     },
     removeInterests (state, payload) {
       state.preferences.interests.forEach(interest => {
@@ -43,6 +50,9 @@ export default new Vuex.Store({
           state.preferences.interests.splice(index, 1)
         }
       })
+    },
+    updateInterests (state, payload) {
+      state.preferences.interests = payload
     },
     putWordsToSingular (state) {
       const interests = state.preferences.interests
@@ -61,9 +71,11 @@ export default new Vuex.Store({
     updateFirstName: ({ commit }) => commit('updateFirstName'),
     addNewGoals: ({ commit }) => commit('addNewGoals'),
     removeGoals: ({ commit }) => commit('removeGoals'),
+    updateGoals: ({ commit }) => commit('updateGoals'),
     addNewInterests: ({ commit }) => commit('addNewInterests'),
     removeInterests: ({ commit }) => commit('removeInterests'),
-    putWordsToSingular: ({ commit }) => commit('putWordsToSingular')
+    putWordsToSingular: ({ commit }) => commit('putWordsToSingular'),
+    updateInterests: ({ commit }) => commit('updateInterests')
   },
   modules: {
 

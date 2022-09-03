@@ -87,7 +87,7 @@
             <h4 class="synopsis-title">Synopsis:</h4>
             <p> {{ personalisedSuggestion.synopsis}}</p>
 
-            <div class="btns">
+            <div class="btns" v-if="isUserConnected">
               <button class="btn-option" @click="addToLibrary(personalisedSuggestion._id)">Ajouter à ma bibliothèque</button>
               <button class="btn-option" @click="addToFavorites(personalisedSuggestion._id)">Ajouter à mes favoris</button>
             </div>

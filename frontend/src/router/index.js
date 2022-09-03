@@ -37,11 +37,6 @@ const routes = [
     name: 'inscription',
     component: InscriptionView
   },
-  // {
-  //   path: '/section/ma-bibliotheque',
-  //   name: 'LibraryUserView',
-  //   component: LibraryUserView
-  // },
   {
     path: '/section/:sectionview',
     name: 'SectionView',
@@ -68,36 +63,6 @@ const routes = [
     name: 'BookView',
     component: BookView
   }
-  // {
-  //   path: '/livres/nouveautes',
-  //   name: 'home',
-  //   component: HomeView
-  // },
-  // {
-  //   path: '/tout-les-livres',
-  //   name: 'AllBooksView',
-  //   component: AllBooksView
-  // },
-  // {
-  //   path: '/livres/biographies',
-  //   name: 'home',
-  //   component: HomeView
-  // },
-  // {
-  //   path: '/livres/romans',
-  //   name: 'home',
-  //   component: HomeView
-  // },
-  // {
-  //   path: '/livres/bandes-dessinees',
-  //   name: 'home',
-  //   component: HomeView
-  // },
-  // {
-  //   path: '/ma-librairie/deja-lus',
-  //   name: 'home',
-  //   component: HomeView
-  // },
   // {
   //   path: '/admin/back-office',
   //   name: 'home',

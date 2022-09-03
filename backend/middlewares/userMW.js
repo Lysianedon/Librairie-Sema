@@ -26,7 +26,7 @@ function joiUserValidation(req,res,next){
 
   const newUser = req.body;
   const validateNewUser = Joi.object({
-    firstname: Joi.string().min(1).max(100).required(),
+    firstname: Joi.string().max(100),
     password: Joi.string().min(1).max(100).required(),
     age: Joi.string().min(1).max(100).required(),
     email: Joi.string().email().required(),

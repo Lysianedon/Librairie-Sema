@@ -116,7 +116,7 @@ export default ({
           return null
         }
         const user = {
-          firstname: 'cher lecteur',
+          firstname: ' ',
           email: this.email,
           password: this.password,
           age: 'Non indiqué',
