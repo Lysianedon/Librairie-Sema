@@ -10,6 +10,7 @@ import FavoriteUserView from '@/views/user/FavoriteUserView.vue'
 import SettingsUserView from '@/views/user/SettingsUserView.vue'
 import HelpView from '@/views/HelpView.vue'
 import BookView from '@/views/BookView.vue'
+import ReadersListView from '@/views/admin/ReadersListView.vue'
 
 Vue.use(VueRouter)
 
@@ -62,19 +63,19 @@ const routes = [
     path: '/livres/:bookId',
     name: 'BookView',
     component: BookView
+  },
+  // {
+  //   path: '/admin//back-office/bibliotheque',
+  //   name: 'home',
+  //   component: HomeView
+  // },
+  {
+    path: '/admin/back-office/lecteurs',
+    name: 'ReadersListView',
+    component: ReadersListView
   }
   // {
-  //   path: '/admin/back-office',
-  //   name: 'home',
-  //   component: HomeView
-  // },
-  // {
-  //   path: '/admin/back-office/utilisateurs',
-  //   name: 'home',
-  //   component: HomeView
-  // },
-  // {
-  //   path: '/admin/back-office/livres',
+  //   path: '/admin/back-office/bibliotheque/ajouter-un-livre',
   //   name: 'home',
   //   component: HomeView
   // }

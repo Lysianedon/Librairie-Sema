@@ -94,7 +94,12 @@ export default ({
           .then((res) => {
             console.log(res.data)
             if (res.data.success) {
+              if (res.data.user.isAdmin) {
+                this.$router.push('/admin/back-office/lecteurs')
+                return null
+              }
               this.$router.push('/')
+              return null
             }
           })
           .catch((error) => {
