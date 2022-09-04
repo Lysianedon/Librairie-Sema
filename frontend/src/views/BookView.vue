@@ -15,8 +15,7 @@
       <a class="btn-retour" @click="$router.go(-1)"> &lt;&lt; Retour</a>
       <div class="white-space"></div>
       <Book
-         :personalisedSuggestion="book"
-         @updated-library="updateLibrary"/>
+         :personalisedSuggestion="book"/>
     </div>
 
       <div class="footer-component">
@@ -51,7 +50,7 @@ export default {
       .get(`http://localhost:8001/books/${this.$route.params.bookId}`)
       .then(res => {
         if (res.data.success) {
-          console.log(res.data)
+          // console.log(res.data)
           this.book = res.data.selectedBook
         }
       })
