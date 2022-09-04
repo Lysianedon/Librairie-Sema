@@ -114,7 +114,7 @@ export default {
 <style scoped>
 .users-list{
     border: 1px solid rgb(218, 217, 217);
-    width: 85%;
+    width: 65vw;
     margin: auto;
     height: 67vh;
     overflow-y: scroll;
@@ -143,6 +143,7 @@ export default {
 .user{
     border-radius: 10px;
     width: 47%;
+    min-width: 47%;
     margin: 2.5% auto;
     height: 29vh;
     padding: 4%;
@@ -158,6 +159,7 @@ export default {
 .enlarge{
     height: 61vh;
     width: 50%;
+    min-width: 47%;
     margin: auto;
 }
 h4, span{
