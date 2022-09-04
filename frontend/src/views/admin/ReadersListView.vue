@@ -5,13 +5,14 @@
           <NavbarAdmin
           @get-name="getName"/>
         </div>
-        <h3 class="has-text-centered-mobile has-text-right-tablet">Bonjour, {{adminName}} !</h3>
-        <h1 class="has-text-centered">Back Office Admin</h1>
-        <h2 class="has-text-centered">Gérer les lecteurs</h2>
+        <h3 class="has-text-centered-mobile has-text-right-tablet hello-msg">Bonjour, {{adminName}} !</h3>
+        <h1 class="has-text-centered">BACK OFFICE</h1>
+        <h2 class="gerer-lecteurs ml-5 p-5">Gérer les lecteurs</h2>
 
         <div class="readers-list">
           <ReadersListComponent
-          :usersList="usersList"/>
+          :usersList="usersList"
+          @update-search-results="filterUsersList"/>
         </div>
 
       </div>
@@ -19,6 +20,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 import NavbarAdmin from '@/components/admin/NavbarAdmin.vue'
 import ReadersListComponent from '@/components/admin/ReadersListComponent.vue'
 export default {
@@ -26,16 +28,28 @@ export default {
   data () {
     return {
       adminName: '',
-      usersList: ['Katie', 'Perry']
+      usersList: []
     }
   },
   components: { NavbarAdmin, ReadersListComponent },
   mounted () {
-
+    axios
+      .get('http://localhost:8001/admin/user-list', { withCredentials: true })
+      .then(res => {
+        if (res.data.success) {
+          console.log(res.data.usersList)
+          this.usersList = res.data.usersList
+          // Removing the admins from the list:
+          this.usersList = this.usersList.filter(user => !user.isAdmin)
+        }
+      })
   },
   methods: {
     getName (payload) {
       this.adminName = payload.adminName
+    },
+    filterUsersList (payload) {
+      this.usersList = payload.searchResults
     }
   }
 }
@@ -43,8 +57,9 @@ export default {
 
 <style scoped>
 .content{
-  margin: 3% auto 0 22vw;
+  margin: 1% auto 0 22vw;
   width: 74vw;
+  padding: 2% 0 4% 0;
   /* border: 1px solid black; */
 }
 
@@ -53,9 +68,13 @@ export default {
   top: 6%;
   left: 1%;
 }
-
 .readers-list{
   margin-top: 5%;
-  /* border: 1px solid brown; */
+}
+.hello-msg{
+  font-weight: 100;
+}
+.gerer-lecteurs{
+  background-color: #ECEEE5;
 }
 </style>
