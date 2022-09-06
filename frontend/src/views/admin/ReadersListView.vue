@@ -12,7 +12,7 @@
         <div class="readers-list">
           <ReadersListComponent
           :usersList="usersList"
-          @update-search-results="filterUsersList"/>
+          @updateListUsers="updateListUsersFromParentElem"/>
         </div>
 
       </div>
@@ -37,7 +37,7 @@ export default {
       .get('http://localhost:8001/admin/user-list', { withCredentials: true })
       .then(res => {
         if (res.data.success) {
-          console.log(res.data.usersList)
+          // console.log(res.data.usersList)
           this.usersList = res.data.usersList
           // Removing the admins from the list:
           this.usersList = this.usersList.filter(user => !user.isAdmin)
@@ -50,6 +50,20 @@ export default {
     },
     filterUsersList (payload) {
       this.usersList = payload.searchResults
+    },
+    updateListUsersFromParentElem (payload) {
+      if (payload.deletedUser || payload.updatedUser) {
+        axios
+          .get('http://localhost:8001/admin/user-list', { withCredentials: true })
+          .then(res => {
+            if (res.data.success) {
+              // console.log(res.data.usersList)
+              this.usersList = res.data.usersList
+              // Removing the admins from the list:
+              this.usersList = this.usersList.filter(user => !user.isAdmin)
+            }
+          })
+      }
     }
   }
 }
