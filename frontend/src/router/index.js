@@ -11,6 +11,7 @@ import SettingsUserView from '@/views/user/SettingsUserView.vue'
 import HelpView from '@/views/HelpView.vue'
 import BookView from '@/views/BookView.vue'
 import ReadersListView from '@/views/admin/ReadersListView.vue'
+import BookListView from '@/views/admin/BookListView.vue'
 
 Vue.use(VueRouter)
 
@@ -64,11 +65,11 @@ const routes = [
     name: 'BookView',
     component: BookView
   },
-  // {
-  //   path: '/admin//back-office/bibliotheque',
-  //   name: 'home',
-  //   component: HomeView
-  // },
+  {
+    path: '/admin/back-office/bibliotheque',
+    name: 'BookListView',
+    component: BookListView
+  },
   {
     path: '/admin/back-office/lecteurs',
     name: 'ReadersListView',

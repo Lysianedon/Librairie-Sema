@@ -150,7 +150,14 @@ export default {
       const firstname = document.querySelector(`.input-firstname-${this.user._id}`).value
       const age = document.querySelector(`.input-age-${this.user._id}`).value
       const email = document.querySelector(`.input-email-${this.user._id}`).value
-
+      //  Guard: checking if the required fileds are not empty:
+      if (firstname === '' || age === '' || email === '') {
+        this.$buefy.toast.open({
+          message: 'Champs vides ou incomplets. Veuillez vérifier la fiche.',
+          type: 'is-danger'
+        })
+        return null
+      }
       const updatedUser = {
         firstname,
         age,
