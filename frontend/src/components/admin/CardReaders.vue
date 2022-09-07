@@ -3,7 +3,13 @@
 
                 <!-------------------- MODAL TO UPDATE USER -------------->
                 <div :class="`modify-user ${isModalOpened ? 'display': ''}`">
-                <h2>Modifier l'utilisateur</h2>
+
+                  <font-awesome-icon
+                    icon="fa-solid fa-xmark"
+                    class="icon icon-close"
+                    @click="cancelUpdates"/>
+
+                <h2 class="h2-modify-user">Modifier l'utilisateur</h2>
                     <label for="id">Identifiant</label>
                     <input type="text" name="identifiant" class="input-identifiant" :value="user._id" disabled>
 
@@ -186,7 +192,7 @@ export default {
 .user{
   border-radius: 10px;
   width: 32vw;
-  margin: 2%;
+  margin: 2% 2% 2% 4%;
   height: 33vh;
   padding: 5%;
   background-color: #ECEEE5;
@@ -211,6 +217,7 @@ export default {
   overflow-y: scroll ;
   border-radius: 10px;
   padding: 2%;
+  text-align: center;
   background-color: #fff1cce9;
   backdrop-filter: blur(5px);
   width: 50vw;
@@ -218,7 +225,6 @@ export default {
   right: 45%;
   transform: translate(50%,-50%);
   z-index: 1;
-  text-align: center;
   box-shadow: 0 4px 8px rgba(108, 106, 106, 0.25), 0 4px 15px rgba(136, 134, 134, 0.22);
   visibility: hidden;
   opacity: 0;
@@ -234,10 +240,16 @@ export default {
   top: 50%;
 }
 
+.icon-close{
+  margin-left:42vw;
+}
+
 .btns{
   display:flex;
   justify-content: center;
+  text-align: center;
   margin-top: 6%;
+  font-weight: normal;
 }
 
 .btn {
@@ -252,7 +264,7 @@ export default {
   background-color: rgb(245, 170, 170);
 }
 
-label{
+.modify-user{
   font-weight: bold;
 }
 
@@ -307,6 +319,9 @@ span{
     width: 60vw;
     right: 50%;
   }
+  .icon-close{
+    margin-left:50vw;
+  }
   .btn {
     height: auto;
     line-height: auto;
@@ -337,6 +352,9 @@ span{
   .modify-user h2 {
     padding: 3% 0;
   }
+  .icon-close{
+    padding-top: 3%;
+  }
   .display{
     top: 55%;
   }
@@ -361,6 +379,9 @@ span{
   }
   .modify-user h2 {
     font-size: 1.6rem;
+  }
+  .icon-close{
+    margin-left:65vw;
   }
   input[type="text"], .input-identifiant{
     width: 83%;
