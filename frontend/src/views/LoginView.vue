@@ -92,10 +92,9 @@ export default ({
             { withCredentials: true }
           )
           .then((res) => {
-            console.log(res.data)
+            // console.log(res.data)
             if (res.data.success) {
               if (res.data.user.isAdmin) {
-                console.log('isadmin')
                 this.$router.push('/admin/back-office/lecteurs')
                 return null
               }

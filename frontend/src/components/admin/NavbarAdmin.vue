@@ -35,8 +35,8 @@
                   </span>
                   Gérer la bibliothèque
               </div>
-
             </router-link>
+
             <router-link to="/admin/back-office/bibliotheque/ajouter-un-livre">
               <div class="btn-option">
                 <span class="icon">

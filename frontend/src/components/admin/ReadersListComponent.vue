@@ -1,11 +1,11 @@
 <template>
     <div>
         <input type="search" name="searchbar" id="searchbar" v-model="searchbarValue" placeholder="Rechercher..." >
-        <h4 class="has-text-right-tablet number-of-users">{{numberOfReaders}} résultat(s)</h4>
+        <h4 class="has-text-right number-of-users">{{numberOfReaders}} résultat(s)</h4>
       <div class="users-list is-flex is-flex-direction-row">
           <h2 v-if="numberOfReaders === 0" class="no-results">Aucun résultat</h2>
          <div class="user is-flex" v-for="(user, index) in getFilteredData" :key="index">
-          <Card :user="user"
+          <CardReaders :user="user"
           @update-list-users="updateListUsers"/>
          </div>
       </div>
@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import Card from '@/components/admin/Card.vue'
+import CardReaders from '@/components/admin/CardReaders.vue'
 export default {
   name: 'ReadersListComponent',
   data () {
@@ -24,7 +24,7 @@ export default {
     }
   },
   components: {
-    Card
+    CardReaders
   },
   props: {
     usersList: {
@@ -113,5 +113,34 @@ span{
 }
 .icon{
     cursor: pointer;
+}
+
+/* RESPONSIVE --  RESPONSIVE -- RESPONSIVE -- RESPONSIVE -- RESPONSIVE -- */
+
+@media(max-width: 1070px){
+  .users-list{
+    width: 78vw;
+    padding: 2% 0;
+  }
+  #searchbar{
+    height: 9vh;
+  }
+}
+/* -------MOBILE VERSION --------- */
+@media(max-width: 430px){
+  .users-list{
+    width: 88vw;
+    margin-right: 2%;
+    height: 80vh;
+  }
+  #searchbar{
+    height: 9vh;
+    width: 89%;
+  }
+
+  .number-of-users{
+    margin: 8% 0;
+  }
+
 }
 </style>
