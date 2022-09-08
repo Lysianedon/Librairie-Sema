@@ -67,6 +67,7 @@ export default {
     overflow-y: scroll;
     border-radius: 16px;
     flex-wrap: wrap;
+    background-color: rgba(248, 248, 248, 0.694);
     box-shadow: 2px 4px 6px rgba(108, 106, 106, 0.25), 2px 5px 8px rgba(136, 134, 134, 0.22);
 }
 
@@ -82,6 +83,7 @@ export default {
 #searchbar::placeholder, input[type=search]{
     font-size: 1.2rem;
     padding-left: 2% ;
+    padding-right: 2% ;
 }
 
 .number-of-users{

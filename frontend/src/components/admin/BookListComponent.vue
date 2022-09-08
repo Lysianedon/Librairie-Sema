@@ -67,6 +67,7 @@ export default {
     overflow-y: scroll;
     border-radius: 16px;
     flex-wrap: wrap;
+    background-color: rgba(248, 248, 248, 0.694);
     box-shadow: 2px 4px 6px rgba(108, 106, 106, 0.25), 2px 5px 8px rgba(136, 134, 134, 0.22);
 }
 
@@ -76,14 +77,14 @@ export default {
     height: 7vh;
     margin: 0 auto 5% 8%;
     border: none;
-    border: 1px solid rgb(242, 236, 236);
+    border: 1px solid rgba(242, 236, 236, 0.925);
     box-shadow: -2px 5px 10px rgba(0, 0, 0, 0.1);
 }
 #searchbar::placeholder, input[type=search]{
     font-size: 1.2rem;
     padding-left: 2% ;
+    padding-right: 2% ;
 }
-
 .number-of-books{
     width: 91%;
     margin-bottom: 2%;

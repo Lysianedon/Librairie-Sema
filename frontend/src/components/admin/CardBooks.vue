@@ -35,16 +35,16 @@
                     <input type="text" name="country" :class="`input-linkStore-${book._id}`" :value="book.bookStore.link">
 
                     <label for="dateAdded">Date d'ajout</label>
-                    <input type="text" name="dateAdded" :class="`input-dateAdded-${book._id}`" :value="book.dateAdded.stringFormat" disabled>
+                    <input type="text" name="dateAdded" :class="`input-dateAdded input-dateAdded-${book._id}`" :value="book.dateAdded.stringFormat" disabled>
 
                     <label for="ageRanges">Tranches d'âge</label>
                      <ul>
-                         <input type="text" name="ageRanges" :class="`inputs-ageRanges-${book._id}`" v-for="(age, index) in book.ageRange" :key="index" :value="age">
+                         <input type="text" name="ageRanges" :class="`inputs-ageRanges inputs-ageRanges-${book._id}`" v-for="(age, index) in book.ageRange" :key="index" :value="age">
                     </ul>
 
                     <label for="synopsis">Synopsis</label>
                     <!-- <input type="text" name="synopsis" :class="`input-synopsis-${book._id}`" :value="book.synopsis"> -->
-                    <textarea name="synopsis" :class="`input-synopsis-${book._id}`" id="" cols="70" rows="10" :value="book.synopsis"></textarea>
+                    <textarea name="synopsis" :class="`input-synopsis input-synopsis-${book._id}`" id="" cols="70" rows="10" :value="book.synopsis"></textarea>
 
                     <div class="btns">
                         <div class=" btn btn-valider" @click="saveUpdates(book._id)">Sauvegarder les modifications</div>
@@ -70,11 +70,13 @@
                         </ul>
                     </div>
                 </div>
-                 <div class="bookstore" v-if="book.bookStore">
+                 <div :class="`bookstore ${enlarged ? '' : 'hidden'}`" v-if="book.bookStore">
                     <h4 class="h4-id">Où l'acheter: <span class="light"><a :href="`${book.bookStore.link}`" target="_blank" rel="noopener noreferrer">{{book.bookStore.name}}</a></span> </h4>
                 </div>
-                <h4 class="h4-id">Synopsis: <span class="light synopsis">{{book.synopsis}}</span> </h4>
+                <h4 :class="`h4-id ${enlarged ? '' : 'mobile-hidden'}`">Synopsis: <span class="light synopsis">{{book.synopsis}}</span> </h4>
             </div>
+
+            <h4 class="voir-plus" @click="openModal"> Afficher tout...</h4>
 
             <div class="icons is-flex is-flex-direction-column is-justify-content-space-between">
                 <b-tooltip
@@ -232,7 +234,7 @@ export default {
   width: 65vw;
   margin: 2%;
   height: 38vh;
-  padding: 5%;
+  padding: 4%;
   background-color: #ECEEE5;
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
   transition: ease-in-out 400ms all;
@@ -254,6 +256,13 @@ export default {
   height: 100vh;
   padding-bottom: 3%;
   min-width: 47%;
+}
+.voir-plus{
+    display: none;
+}
+
+.hidden{
+    visibility: hidden;
 }
 .removed{
   display: none;
@@ -280,15 +289,15 @@ img{
 
 .modify-book{
   height: 71vh;
+  width: 60vw;
   overflow-y: scroll ;
   border-radius: 10px;
   padding: 2%;
   text-align: center;
   background-color: #fff1cce9;
   backdrop-filter: blur(5px);
-  width: 50vw;
   position: fixed;
-  right: 45%;
+  right: 42%;
   transform: translate(50%,-50%);
   z-index: 1;
   box-shadow: 0 4px 8px rgba(108, 106, 106, 0.25), 0 4px 15px rgba(136, 134, 134, 0.22);
@@ -297,6 +306,19 @@ img{
   z-index: -1;
   top: -50%; /*Put it on the very top*/
   transition: all .4s ease-in-out; /*make it smooth*/
+}
+label{
+    display: block;
+}
+.input-synopsis{
+  border-radius: 10px;
+  font-family: 'Roboto', sans-serif;
+  margin-top: 3%;
+  padding: 3%;
+  border: 1px solid rgb(238, 235, 235);
+  font-size: .9rem;
+  line-height: 200%;
+  box-shadow: 0 4px 8px rgba(108, 106, 106, 0.25), 0 4px 15px rgba(136, 134, 134, 0.22);
 }
 
 .display{
@@ -307,7 +329,7 @@ img{
 }
 
 .icon-close{
-  margin-left:42vw;
+  margin-left:52vw;
 }
 
 .btns{
@@ -319,7 +341,7 @@ img{
 }
 
 .btn {
-  width: 37%;
+  width: 30%;
   font-family: 'Roboto', sans-serif;
   height: 8vh;
   line-height: auto;
@@ -377,8 +399,6 @@ span{
 
 @media(max-width: 1070px){
   .book{
-    /* height: 31vh; */
-    /* margin: 2% 1% 2% 6%; */
     width: 78vw;
   }
   .modify-book{
@@ -401,8 +421,12 @@ span{
   .book{
     justify-content: space-evenly;
   }
+  img{
+    display: none;
+  }
+
   .enlarge{
-    height: 67vh;
+    height: 150vh;
     min-width: 47%;
   }
   .icons{
@@ -425,16 +449,28 @@ span{
   input[type="text"]{
     width: 70%;
   }
+  .input-synopsis{
+    width: 80%;
+  }
+  .btn{
+    width: 39%;
+  }
 }
 /* -------MOBILE VERSION --------- */
 @media(max-width: 430px){
   .book{
-    height: 30vh;
-    margin: 2% 2% 2% 3%;
+    margin: 2% 2% 2% 4%;
     justify-content: space-evenly;
+    width: 85vw;
+  }
+  .mobile-hidden{
+    display: none;
+  }
+  .cols-infos{
+    flex-direction: column;
   }
   .enlarge{
-    height: 75vh;
+    height: 250vh;
     min-width: 47%;
   }
   .modify-book{
@@ -463,11 +499,24 @@ span{
     margin-left: 1%;
     width: 90%;
   }
+  .input-identifiant, .input-dateAdded {
+    width: 82% !important;
+    margin-left: 8% !important;
+  }
 }
 @media(max-width: 380px){
   .book{
     flex-direction: column;
-    height: 76vh;
+    height: fit-content;
+  }
+  .enlarge{
+    height: fit-content;
+  }
+  .voir-plus{
+    display: block;
+    text-align: center;
+    text-decoration: underline;
+    margin-bottom: 10vh;
   }
   label{
     font-size: 1rem;
@@ -479,6 +528,8 @@ span{
     flex-direction: row !important;
     justify-content: space-between !important;
     margin: 8% 30% 0 0;
+    height: fit-content;
+    padding-bottom: 4%;
   }
   .icon-eye{
     display:none;
