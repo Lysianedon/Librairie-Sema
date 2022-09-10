@@ -93,7 +93,7 @@ router.put("/user-list", auth, checkIfAdmin, async (req, res) => {
 //----------------------- ADD A BOOK TO SEMA'S LIBRARY //-------------------------//
 router.post("/booklist", auth, checkIfAdmin,joiBookValidation, async (req,res) => {
     
-    const newBook = req.body;
+    const newBook = req.body.newBook;
     let addedBook;
     
     try {

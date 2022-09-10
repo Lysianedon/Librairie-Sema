@@ -7,6 +7,7 @@ const bookSchema = mongoose.Schema({
         required: true,
         minlength: 1,
         maxlength: 100,
+        unique: true,
         // lowercase: true,
         trim: true
     },
@@ -15,7 +16,7 @@ const bookSchema = mongoose.Schema({
         required: true,
         minlength: 1,
         maxlength: 100,
-        lowercase: true,
+        // lowercase: true,
         trim: true
     },
     synopsis : {
@@ -38,7 +39,7 @@ const bookSchema = mongoose.Schema({
         required: true,
         minlength: 1,
         maxlength: 50,
-        lowercase: true,
+        // lowercase: true,
         default : "Non précisé",
         trim: true
     },
@@ -47,7 +48,7 @@ const bookSchema = mongoose.Schema({
         contentType: String,
         required: true,
         minlength: 1,
-        maxlength: 3
+        maxlength: 4
     },
     image :{
         // type: {data: Buffer, contentType: String},
