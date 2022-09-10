@@ -62,7 +62,7 @@ export default new Vuex.Store({
         }
         return word
       })
-      console.log(singularInterests)
+      // console.log(singularInterests)
       state.preferences.interests = singularInterests
     }
   },

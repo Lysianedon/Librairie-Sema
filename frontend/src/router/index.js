@@ -12,6 +12,7 @@ import HelpView from '@/views/HelpView.vue'
 import BookView from '@/views/BookView.vue'
 import ReadersListView from '@/views/admin/ReadersListView.vue'
 import BookListView from '@/views/admin/BookListView.vue'
+import AddBookView from '@/views/admin/AddBookView.vue'
 
 Vue.use(VueRouter)
 
@@ -74,12 +75,12 @@ const routes = [
     path: '/admin/back-office/lecteurs',
     name: 'ReadersListView',
     component: ReadersListView
+  },
+  {
+    path: '/admin/back-office/bibliotheque/ajouter-un-livre',
+    name: 'AddBookView',
+    component: AddBookView
   }
-  // {
-  //   path: '/admin/back-office/bibliotheque/ajouter-un-livre',
-  //   name: 'home',
-  //   component: HomeView
-  // }
 ]
 
 const router = new VueRouter({

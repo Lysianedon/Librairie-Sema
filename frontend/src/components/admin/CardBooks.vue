@@ -43,7 +43,6 @@
                     </ul>
 
                     <label for="synopsis">Synopsis</label>
-                    <!-- <input type="text" name="synopsis" :class="`input-synopsis-${book._id}`" :value="book.synopsis"> -->
                     <textarea name="synopsis" :class="`input-synopsis input-synopsis-${book._id}`" id="" cols="70" rows="10" :value="book.synopsis"></textarea>
 
                     <div class="btns">
