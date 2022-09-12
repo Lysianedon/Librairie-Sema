@@ -8,8 +8,21 @@
         <label for="author">Auteur(s)*</label>
         <input type="text" name="author" class="author" v-model="newBook.author">
 
-        <label for="image">Lien de l'image*</label>
-        <input type="text" name="image" class="image" v-model="newBook.image">
+        <!-- <label for="image">Lien de l'image*</label>
+        <input type="text" name="image" class="image" v-model="newBook.image"> -->
+
+        <div class="label-img-div">
+            <label for="image">Image*</label>
+            <div class="btn-option select-img" @click="onPickFile">Selectionner une image</div>
+            <input
+                type="file"
+                name="image"
+                id="image"
+                ref="fileInput"
+                accept="image/*"
+                @change="onFilePicked"
+                hidden>
+        </div>
 
         <div class="wrapper-genre-country">
             <div class="content-genre">
@@ -89,24 +102,56 @@ export default {
     }
   },
   methods: {
+    onPickFile () {
+      console.log('click')
+      this.$refs.fileInput.click()
+    },
+    onFilePicked () {
+    //   const preview = document.querySelector('img')
+      const file = document.querySelector('input[type=file]').files[0]
+      const reader = new FileReader()
+
+      reader.addEventListener('load', () => {
+        // Converting the img into a base64 string
+        // preview.src = reader.result
+        if (typeof reader.result === 'string') {
+          this.newBook.image = reader.result.split(',')[1]
+        }
+      }, false)
+      if (file) {
+        reader.readAsDataURL(file)
+      }
+    },
     submitBookForm () {
       this.errorEmptyFields = false
       // Guard : checking the format of the links with a regex:
       const expression = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_.~#?&//=]*)/
       const regex = new RegExp(expression)
-      if (!this.newBook.image.match(regex) || !this.newBook.bookStore.link.match(regex)) {
+      //   if (!this.newBook.image.match(regex) || !this.newBook.bookStore.link.match(regex)) {
+      if (!this.newBook.bookStore.link.match(regex)) {
         this.$buefy.toast.open({
           message: 'Format des liens invalides',
           type: 'is-danger'
         })
         return null
       }
+      axios
+        .post(`https://api.imgbb.com/1/upload?key=496b2da1b746361573cc64bfe04e1ffa&image=${this.newBook.image}`, { withCredentials: true }, {
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' }
+        })
+        .then(res => {
+          console.log(res.data)
+          if (res.data.success) {
+            console.log(res.data)
+          }
+        })
+        .catch(err => console.log(err))
 
       //   Adding the dateAdded to newBook obj:
       this.newBook.dateAdded.stringFormat = new Date().toDateString()
       this.newBook.dateAdded.parsedFormat = Date.parse(new Date().toDateString())
-      console.log(this.newBook)
-      const newBook = this.newBook
+      //   console.log(this.newBook)
+      //   const newBook = this.newBook
       //   Checking if any mandatory field of the form is empty: if so, an error message gets displayed
       const formValues = Object.values(this.newBook)
       formValues.forEach(val => {
@@ -139,46 +184,46 @@ export default {
           return null
         }
       })
-      if (!this.errorEmptyFields) {
-        console.log('before axios: ', this.newBook)
-        axios
-          .post('http://localhost:8001/admin/booklist', { newBook }, { withCredentials: true })
-          .then(res => {
-            if (res.data.success) {
-              this.$buefy.toast.open({
-                message: 'Référence ajoutée à la bibliothèque',
-                type: 'is-success'
-              })
-              //   Resetting the bookform
-              this.newBook = {
-                title: '',
-                author: '',
-                country: '',
-                synopsis: '',
-                genre: '',
-                ageRange: [],
-                image: '',
-                dateAdded: {
-                  parsedFormat: '',
-                  stringFormat: ''
-                },
-                bookStore: {
-                  name: '',
-                  link: ''
-                }
-              }
-            }
-          })
-          .catch(err => {
-            this.$buefy.toast.open({
-              message: 'Oups.. Un problème est survenu. Veuillez réessayer.',
-              type: 'is-danger'
-            })
-            return console.log(err)
-          })
-        return null
-      }
-      return null
+    //   if (!this.errorEmptyFields) {
+    //     console.log('before axios: ', this.newBook)
+    //     axios
+    //       .post('http://localhost:8001/admin/booklist', { newBook }, { withCredentials: true })
+    //       .then(res => {
+    //         if (res.data.success) {
+    //           this.$buefy.toast.open({
+    //             message: 'Référence ajoutée à la bibliothèque',
+    //             type: 'is-success'
+    //           })
+    //           //   Resetting the bookform
+    //           this.newBook = {
+    //             title: '',
+    //             author: '',
+    //             country: '',
+    //             synopsis: '',
+    //             genre: '',
+    //             ageRange: [],
+    //             image: '',
+    //             dateAdded: {
+    //               parsedFormat: '',
+    //               stringFormat: ''
+    //             },
+    //             bookStore: {
+    //               name: '',
+    //               link: ''
+    //             }
+    //           }
+    //         }
+    //       })
+    //       .catch(err => {
+    //         this.$buefy.toast.open({
+    //           message: 'Oups.. Un problème est survenu. Veuillez réessayer.',
+    //           type: 'is-danger'
+    //         })
+    //         return console.log(err)
+    //       })
+    //     return null
+    //   }
+    //   return null
     }
   }
 }
@@ -209,6 +254,19 @@ input[type="text"]{
   border: none;
   border: 1px solid rgb(234, 234, 234);
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+.label-img-div{
+    display:flex;
+    margin: 3% 0;
+    /* border: 1px solid black; */
+    /* width: 70%;
+    justify-content: space-evenly; */
+    /* margin: auto; */
+}
+.select-img{
+  border-radius: 16px;
+  width: fit-content;
+  font-family: 'Roboto', sans-serif;
 }
 input[type="checkbox"]{
   width: 20px;
