@@ -93,8 +93,8 @@
           </div>
       </div>
         <h2 class="is-size-1 is-size-2-mobile has-text-centered-mobile"
-        v-if="getCurrentCollection === 'ma bibliotheque'">Déjà lus</h2>
-        <h3 class="h3-notif-no-books-read" v-if="getAlreadyReadBookCollection.length === 0">Vous n'avez lu aucun livre pour le moment.</h3>
+        v-if="getCurrentCollection === currentCollections.bibliotheque">Déjà lus</h2>
+        <h3 class="h3-notif-no-books-read" v-if="getAlreadyReadBookCollection.length === 0 && getCurrentCollection === currentCollections.bibliotheque">Vous n'avez lu aucun livre pour le moment.</h3>
         <div class="container-books">
             <Book
             :bookSelection="getAlreadyReadBookCollection"
