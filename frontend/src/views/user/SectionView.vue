@@ -94,13 +94,14 @@
       </div>
         <h2 class="is-size-1 is-size-2-mobile has-text-centered-mobile"
         v-if="getCurrentCollection === 'ma bibliotheque'">Déjà lus</h2>
-        <!-- <div class="container-books">
+        <h3 class="h3-notif-no-books-read" v-if="getAlreadyReadBookCollection.length === 0">Vous n'avez lu aucun livre pour le moment.</h3>
+        <div class="container-books">
             <Book
             :bookSelection="getAlreadyReadBookCollection"
             :fromGeneralCollection="false"
             :currentCollection="'library'"
             @updated-library="updateLibrary"/>
-        </div> -->
+        </div>
 
       <a href="#scrollToTop" class="haut-de-page">
         <b-tooltip
@@ -123,7 +124,7 @@ import axios from 'axios'
 import NavbarUser from '@/components/NavbarUser.vue'
 import FooterComponent from '@/components/FooterComponent.vue'
 import SidebarMobile from '@/components/SidebarMobile.vue'
-// import Book from '@/components/Book.vue'
+import Book from '@/components/Book.vue'
 export default {
   name: 'SectionView',
   data () {
@@ -166,8 +167,8 @@ export default {
   components: {
     NavbarUser,
     FooterComponent,
-    SidebarMobile
-    // Book
+    SidebarMobile,
+    Book
   },
   computed: {
     getCurrentSectionTitle (sectionview) {
@@ -232,10 +233,10 @@ export default {
       sectionview = this.$route.params.sectionview
       // console.log(' this.getBackendRoute: ', this.getBackendRoute)
       return this.getBookCollection(sectionview, this.getBackendRoute)
+    },
+    getAlreadyReadBookCollection () {
+      return this.alreadyReadBookSelection
     }
-    // getAlreadyReadBookCollection () {
-    //   return this.alreadyReadBookSelection
-    // }
   },
   mounted () {
     // CHECKING IF USER IS CONNECTED:
@@ -263,7 +264,7 @@ export default {
         .then(res => {
           if (res.data.success) {
             this.bookSelection = res.data.userLibrary.allBooks
-            // this.alreadyReadBookSelection = res.data.userLibrary.alreadyRead
+            this.alreadyReadBookSelection = res.data.userLibrary.alreadyRead
           }
         })
         .catch(err => {
@@ -695,20 +696,22 @@ export default {
             return console.log(err)
           })
       }
+    },
+    updateLibrary (payload) {
+      if (payload.updatedLibrary) {
+        axios
+          .get('http://localhost:8001/user/library', { withCredentials: true })
+          .then(res => {
+            if (res.data.success) {
+              this.alreadyReadBookSelection = res.data.userLibrary.alreadyRead
+            }
+            return null
+          })
+          .catch(err => {
+            return err
+          })
+      }
     }
-    // updateLibrary () {
-    //   axios
-    //     .get('http://localhost:8001/user/library', { withCredentials: true })
-    //     .then(res => {
-    //       if (res.data.success) {
-    //         this.alreadyReadBookSelection = res.data.userLibrary.alreadyRead
-    //       }
-    //       return null
-    //     })
-    //     .catch(err => {
-    //       return err
-    //     })
-    // }
   }
 }
 </script>
@@ -753,20 +756,25 @@ export default {
 }
 
 .login-invitation h2{
-    font-size: 1.6rem;
-    line-height: 300%;
+  font-size: 1.6rem;
+  line-height: 300%;
 }
 .login-invitation h2:nth-child(1){
-    font-size: 1.7rem;
+  font-size: 1.7rem;
 }
 
 .login-link{
-    cursor: pointer;
+  cursor: pointer;
 }
 .login-link:hover{
-    font-weight: bold;
+  font-weight: bold;
 }
-
+.h3-notif-no-books-read{
+  margin-left: 1vw;
+  color: rgb(171, 168, 168);
+  padding-top: 1vh;
+  font-size: 1.4rem;
+}
 .book{
     height: 75vh;
     height: fit-content;
@@ -801,7 +809,7 @@ h2{
 }
 
 h3{
-    font-size: 1.1rem !important;
+    font-size: 1.1rem ;
     font-weight: 600 !important;
     line-height: 155% !important;
 }
