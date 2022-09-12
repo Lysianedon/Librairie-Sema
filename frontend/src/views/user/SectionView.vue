@@ -92,6 +92,15 @@
               <h4>Pays: {{book.country}}</h4>
           </div>
       </div>
+        <h2 class="is-size-1 is-size-2-mobile has-text-centered-mobile"
+        v-if="getCurrentCollection === 'ma bibliotheque'">Déjà lus</h2>
+        <!-- <div class="container-books">
+            <Book
+            :bookSelection="getAlreadyReadBookCollection"
+            :fromGeneralCollection="false"
+            :currentCollection="'library'"
+            @updated-library="updateLibrary"/>
+        </div> -->
 
       <a href="#scrollToTop" class="haut-de-page">
         <b-tooltip
@@ -114,6 +123,7 @@ import axios from 'axios'
 import NavbarUser from '@/components/NavbarUser.vue'
 import FooterComponent from '@/components/FooterComponent.vue'
 import SidebarMobile from '@/components/SidebarMobile.vue'
+// import Book from '@/components/Book.vue'
 export default {
   name: 'SectionView',
   data () {
@@ -149,6 +159,7 @@ export default {
         books: 'books'
       },
       bookSelection: [],
+      alreadyReadBookSelection: [],
       fromGeneralCollection: false
     }
   },
@@ -156,6 +167,7 @@ export default {
     NavbarUser,
     FooterComponent,
     SidebarMobile
+    // Book
   },
   computed: {
     getCurrentSectionTitle (sectionview) {
@@ -221,6 +233,9 @@ export default {
       // console.log(' this.getBackendRoute: ', this.getBackendRoute)
       return this.getBookCollection(sectionview, this.getBackendRoute)
     }
+    // getAlreadyReadBookCollection () {
+    //   return this.alreadyReadBookSelection
+    // }
   },
   mounted () {
     // CHECKING IF USER IS CONNECTED:
@@ -248,6 +263,7 @@ export default {
         .then(res => {
           if (res.data.success) {
             this.bookSelection = res.data.userLibrary.allBooks
+            // this.alreadyReadBookSelection = res.data.userLibrary.alreadyRead
           }
         })
         .catch(err => {
@@ -409,6 +425,7 @@ export default {
           .then(res => {
             if (res.data.success) {
               this.bookSelection = res.data.userLibrary.allBooks
+              this.alreadyReadBookSelection = res.data.userLibrary.alreadyRead
               return this.bookSelection
             }
           })
@@ -679,6 +696,19 @@ export default {
           })
       }
     }
+    // updateLibrary () {
+    //   axios
+    //     .get('http://localhost:8001/user/library', { withCredentials: true })
+    //     .then(res => {
+    //       if (res.data.success) {
+    //         this.alreadyReadBookSelection = res.data.userLibrary.alreadyRead
+    //       }
+    //       return null
+    //     })
+    //     .catch(err => {
+    //       return err
+    //     })
+    // }
   }
 }
 </script>
