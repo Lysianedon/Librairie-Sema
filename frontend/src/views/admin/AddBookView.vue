@@ -43,10 +43,6 @@ export default {
 
 <style scoped>
 .content{
-  /* background: url('@/assets/bookmark.png') no-repeat;
-  background-position-y: 42vh;
-  background-position-x: 52vw;
-  background-size: 30%; */
   margin: 1% auto 0 22vw;
   width: 74vw;
   padding: 2% 0 4% 0;
@@ -74,4 +70,39 @@ export default {
   margin-top: 10vh;
 }
 /* RESPONSIVE --  RESPONSIVE -- RESPONSIVE -- RESPONSIVE -- RESPONSIVE -- */
+
+@media(max-width: 1070px){
+  .nav{
+    display: none;
+  }
+  .nav-mobile{
+    display: initial;
+    position: fixed;
+    top: 8%;
+    left: 3%;
+  }
+  .content{
+    margin: 0;
+    width: 100vw;
+    max-width: 100vw;
+    padding: 2% 0 4% 0;
+  }
+  .hello-msg{
+    padding-right: 4vw;
+  }
+  .gerer-livres{
+    margin: 4vh 0 !important;
+    width: 100% !important;
+    text-align: center;
+  }
+}
+
+@media(max-width: 450px){
+  .gerer-livres{
+    line-height: 180%;
+  }
+  .nav-mobile{
+    top: 5%;
+  }
+}
 </style>

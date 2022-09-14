@@ -124,6 +124,8 @@ export default {
     },
     submitBookForm () {
       this.errorEmptyFields = false
+      const fileSource = document.querySelector('input[type=file]').files[0]
+      console.log(fileSource)
       // Guard : checking the format of the links with a regex:
       const expression = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_.~#?&//=]*)/
       const regex = new RegExp(expression)
@@ -136,11 +138,8 @@ export default {
         return null
       }
       axios
-        .post(`https://api.imgbb.com/1/upload?key=496b2da1b746361573cc64bfe04e1ffa&image=${this.newBook.image}`, { withCredentials: true }, {
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' }
-        })
+        .get(`http://localhost:8001/admin/upload-image/${fileSource}`, { withCredentials: true })
         .then(res => {
-          console.log(res.data)
           if (res.data.success) {
             console.log(res.data)
           }
@@ -258,10 +257,6 @@ input[type="text"]{
 .label-img-div{
     display:flex;
     margin: 3% 0;
-    /* border: 1px solid black; */
-    /* width: 70%;
-    justify-content: space-evenly; */
-    /* margin: auto; */
 }
 .select-img{
   border-radius: 16px;
@@ -335,5 +330,66 @@ label{
 .btn-valider:hover{
   background-color: #FFF1CC;
 }
+/* RESPONSIVE --  RESPONSIVE -- RESPONSIVE -- RESPONSIVE -- RESPONSIVE -- */
 
+@media(max-width: 1070px){
+  form{
+    width: 80vw;
+  }
+  .input-synopsis{
+    width: 65vw;
+  }
+  input[type="text"]{
+    width: 85%;
+  }
+  .btn-valider{
+    width: 30vw;
+    margin: 3% auto 0 25%;
+  }
+  .wrapper-genre-country{
+    display: flex;
+    margin: 4% 30% 0 0;
+  }
+ .genre-options-wrapper{
+   width: 22vw;
+ }
+}
+
+@media(max-width: 440px){
+  .label-img-div{
+    flex-direction: column;
+  }
+  .wrapper-genre-country{
+    flex-direction: column;
+    margin: 4%;
+  }
+  .genre-options-wrapper{
+    width: 60vw;
+    height: 6vh;
+    padding: 1% 4%;
+ }
+  .medium{
+    width: 60vw !important;
+  }
+  .btn-valider{
+    width: 50vw;
+    margin: 3% auto 5% 12%;
+  }
+}
+@media(max-width: 380px){
+  .select-img{
+    width: 45vw;
+    font-size: .9rem;
+    text-align: center;
+  }
+    .btn-valider{
+      width: 58vw;
+      margin: 3% auto 5% 6%;
+    }
+}
+@media(max-width: 330px){
+  .select-img{
+    width: 50vw;
+  }
+}
 </style>

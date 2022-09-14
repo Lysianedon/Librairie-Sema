@@ -3,6 +3,7 @@
 const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
+const axios = require("axios");
 
 //--------------- AUTH ----------------//
 const bcrypt = require("bcrypt");
@@ -27,6 +28,25 @@ const {
 
 //---------------------------- USERS PARAMETERS //------------------------------//
 //-----------------------------------------------------------------------------//
+
+//-------------------GET THE IMAGE UPLOADS INFOS: ---------------------//
+
+router.get("/upload-image/:imagePath", auth, checkIfAdmin, async (req,res) => {
+    const imagePath = { name: "img.png", lastModified: 1662997316430, webkitRelativePath: "", size: 137708, type: "image/png" }
+    console.log(imagePath)
+    axios
+      .post(`https://freeimage.host/api/1/upload/?key=6d207e02198a847aa98d0a2a901485a5&source=${imagePath}&format=json`)
+      .then(resp => {
+        if (resp.data.success) {
+            return res.json({ success: true, imageInfos: res.data})
+        }
+      })
+      .catch(error => {
+        return res.json({ error })
+      })
+    return null
+})
+
 
 // --------------------- GET THE LIST OF USERS ---------------------
 router.get("/user-list", auth, checkIfAdmin, async (_req,res) => {
