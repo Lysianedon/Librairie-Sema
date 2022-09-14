@@ -12,16 +12,23 @@
         <input type="text" name="image" class="image" v-model="newBook.image"> -->
 
         <div class="label-img-div">
-            <label for="image">Image*</label>
-            <div class="btn-option select-img" @click="onPickFile">Selectionner une image</div>
-            <input
-                type="file"
-                name="image"
-                id="image"
-                ref="fileInput"
-                accept="image/*"
-                @change="onFilePicked"
-                hidden>
+          <label for="image">Image*</label>
+          <input
+            class="btn-option select-img"
+            type="hidden"
+            role="uploadcare-uploader"
+            data-public-key="7b2af848e57976ed1e8e"
+            data-tabs="file url gdrive">
+            <!-- <div class="btn-option select-img" @click="onPickFile">Selectionner une image</div> -->
+          <input
+              type="file"
+              name="image"
+              id="image"
+              ref="fileInput"
+              accept="image/*"
+              @change="onFilePicked"
+              hidden>
+
         </div>
 
         <div class="wrapper-genre-country">
@@ -75,6 +82,8 @@
 
 <script>
 import axios from 'axios'
+// import UploadClient from '@uploadcare/upload-client'
+import uploadcare from 'uploadcare-widget/uploadcare.lang.en.min.js'
 export default {
   name: 'BookFormComponent',
   data () {
@@ -101,6 +110,15 @@ export default {
       }
     }
   },
+  mounted () {
+    // get a widget reference
+    const widget = uploadcare.Widget('[role=uploadcare-uploader]', { crop: '260x340', imagesOnly: true })
+    // listen to the "upload completed" event
+    widget.onUploadComplete(fileInfo => {
+    // get a CDN URL from the file info and assigning the value to newBook.image
+      this.newBook.image = `https://ucarecdn.com/${fileInfo.uuid}/`
+    })
+  },
   methods: {
     onPickFile () {
       console.log('click')
@@ -124,34 +142,25 @@ export default {
     },
     submitBookForm () {
       this.errorEmptyFields = false
-      const fileSource = document.querySelector('input[type=file]').files[0]
-      console.log(fileSource)
+      const widget = uploadcare.Widget('[role=uploadcare-uploader]')
       // Guard : checking the format of the links with a regex:
       const expression = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_.~#?&//=]*)/
       const regex = new RegExp(expression)
-      //   if (!this.newBook.image.match(regex) || !this.newBook.bookStore.link.match(regex)) {
-      if (!this.newBook.bookStore.link.match(regex)) {
+      if (!this.newBook.image.match(regex) || !this.newBook.bookStore.link.match(regex)) {
+      // if (!this.newBook.bookStore.link.match(regex)) {
         this.$buefy.toast.open({
           message: 'Format des liens invalides',
           type: 'is-danger'
         })
         return null
       }
-      axios
-        .get(`http://localhost:8001/admin/upload-image/${fileSource}`, { withCredentials: true })
-        .then(res => {
-          if (res.data.success) {
-            console.log(res.data)
-          }
-        })
-        .catch(err => console.log(err))
 
-      //   Adding the dateAdded to newBook obj:
+      // Adding the dateAdded to newBook obj:
       this.newBook.dateAdded.stringFormat = new Date().toDateString()
       this.newBook.dateAdded.parsedFormat = Date.parse(new Date().toDateString())
       //   console.log(this.newBook)
-      //   const newBook = this.newBook
-      //   Checking if any mandatory field of the form is empty: if so, an error message gets displayed
+      const newBook = this.newBook
+      // Checking if any mandatory field of the form is empty: if so, an error message gets displayed
       const formValues = Object.values(this.newBook)
       formValues.forEach(val => {
         if (typeof val === 'object') {
@@ -183,46 +192,47 @@ export default {
           return null
         }
       })
-    //   if (!this.errorEmptyFields) {
-    //     console.log('before axios: ', this.newBook)
-    //     axios
-    //       .post('http://localhost:8001/admin/booklist', { newBook }, { withCredentials: true })
-    //       .then(res => {
-    //         if (res.data.success) {
-    //           this.$buefy.toast.open({
-    //             message: 'Référence ajoutée à la bibliothèque',
-    //             type: 'is-success'
-    //           })
-    //           //   Resetting the bookform
-    //           this.newBook = {
-    //             title: '',
-    //             author: '',
-    //             country: '',
-    //             synopsis: '',
-    //             genre: '',
-    //             ageRange: [],
-    //             image: '',
-    //             dateAdded: {
-    //               parsedFormat: '',
-    //               stringFormat: ''
-    //             },
-    //             bookStore: {
-    //               name: '',
-    //               link: ''
-    //             }
-    //           }
-    //         }
-    //       })
-    //       .catch(err => {
-    //         this.$buefy.toast.open({
-    //           message: 'Oups.. Un problème est survenu. Veuillez réessayer.',
-    //           type: 'is-danger'
-    //         })
-    //         return console.log(err)
-    //       })
-    //     return null
-    //   }
-    //   return null
+      if (!this.errorEmptyFields) {
+        // console.log('before axios: ', this.newBook)
+        axios
+          .post('http://localhost:8001/admin/booklist', { newBook }, { withCredentials: true })
+          .then(res => {
+            if (res.data.success) {
+              this.$buefy.toast.open({
+                message: 'Référence ajoutée à la bibliothèque',
+                type: 'is-success'
+              })
+              //   Resetting the bookform
+              this.newBook = {
+                title: '',
+                author: '',
+                country: '',
+                synopsis: '',
+                genre: '',
+                ageRange: [],
+                image: '',
+                dateAdded: {
+                  parsedFormat: '',
+                  stringFormat: ''
+                },
+                bookStore: {
+                  name: '',
+                  link: ''
+                }
+              }
+              widget.fileInfo = {}
+            }
+          })
+          .catch(err => {
+            this.$buefy.toast.open({
+              message: 'Oups.. Un problème est survenu. Veuillez réessayer.',
+              type: 'is-danger'
+            })
+            return console.log(err)
+          })
+        return null
+      }
+      return null
     }
   }
 }
@@ -241,7 +251,11 @@ form{
   /* backdrop-filter: blur(4px); */
   box-shadow: 2px 5px 8px rgba(214, 214, 214, 0.563), 2px 5px 8px rgba(214, 214, 214, 0.563);
 }
-
+.uploadcare--widget__button:focus, .uploadcare--widget__button:hover, .uploadcare--widget__button_type_open:focus, .uploadcare--widget__button_type_open:hover, .uploadcare--widget__button {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+}
+/* */
 input[type="text"]{
   font-size: 1rem;
   padding-left: 3%;
