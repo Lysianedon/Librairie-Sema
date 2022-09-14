@@ -100,7 +100,7 @@ const joiValidateUserPreferences = (req,res,next) => {
 }
 
 const joiBookValidation = (req, res, next) => {
-  const newBook = req.body;
+  const newBook = req.body.newBook;
 
   const bookSchema = Joi.object({
     title: Joi.string().min(1).max(100).required(),
@@ -112,7 +112,7 @@ const joiBookValidation = (req, res, next) => {
     image: Joi.string().min(1).max(500).required(),
     dateAdded: Joi.object({
       stringFormat: Joi.string().min(1).max(90).required(),
-      parsedFormat: Joi.number.min(1).max(30).required(),
+      parsedFormat: Joi.number().min(1).max(999999999999930).required(),
     }).required(),
     bookStore: Joi.object({
       name: Joi.string().min(1).max(50).required(),

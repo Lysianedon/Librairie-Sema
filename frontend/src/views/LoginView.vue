@@ -251,8 +251,8 @@ a{
     text-align: center;
     font-family: 'Ibarra Real Nova', 'serif';
     color: black;
-    -webkit-animation: 4s ease 0s normal forwards 1 fadein;
-    animation: 4s ease 0s normal forwards 1 fadein;
+    -webkit-animation: 10s ease 0s normal forwards 1 fadein;
+    animation: 10s ease 0s normal forwards 1 fadein;
 }
 /* QUOTE FADE IN ANIMATION */
 @keyframes fadein{

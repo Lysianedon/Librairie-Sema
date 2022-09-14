@@ -28,7 +28,7 @@
               </div>
             </router-link>
 
-            <router-link to="/admin//back-office/bibliotheque">
+            <router-link to="/admin/back-office/bibliotheque">
               <div class="btn-option">
                 <span class="icon">
                   <font-awesome-icon icon="fa-solid fa-book"/>

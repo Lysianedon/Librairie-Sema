@@ -39,7 +39,7 @@ export default {
           allBooks: []
         }
       },
-      ageArr: ['Entre 16 et 24 ans', 'Entre 25 et 30 ans', 'Plus de 30 ans', 'Je ne souhaite pas \nrépondre'],
+      ageArr: ['Entre 12 et 17 ans', 'Entre 18 et 24 ans', 'Entre 25 et 30 ans', 'Plus de 30 ans', 'Je ne souhaite pas \nrépondre'],
       goalsArr: ['Découvrir des \nauteurs africains',
         'Effectuer des \nrecherches',
         'Par curiosité'

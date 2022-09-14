@@ -1,39 +1,39 @@
 <template>
     <div>
         <input type="search" name="searchbar" id="searchbar" v-model="searchbarValue" placeholder="Rechercher..." >
-        <h4 class="has-text-right number-of-users">{{numberOfReaders}} résultat(s)</h4>
-      <div class="users-list is-flex is-flex-direction-row">
-          <h2 v-if="numberOfReaders === 0" class="no-results">Aucun résultat</h2>
-         <div class="user is-flex" v-for="(user, index) in getFilteredData" :key="index">
-          <CardReaders :user="user"
-          @update-list-users="updateListUsers"/>
+        <h4 class="has-text-right number-of-books">{{numberOfBooks}} résultat(s)</h4>
+      <div class="books-list is-flex is-flex-direction-row">
+          <h2 v-if="numberOfBooks === 0" class="no-results">Aucun résultat</h2>
+         <div class="book is-flex" v-for="(book, index) in getFilteredData" :key="index">
+          <CardBooks :book="book"
+          @update-list-books="updateListBooks"/>
          </div>
       </div>
     </div>
 </template>
 
 <script>
-import CardReaders from '@/components/admin/CardReaders.vue'
+import CardBooks from '@/components/admin/CardBooks.vue'
 export default {
-  name: 'ReadersListComponent',
+  name: 'BookListComponent',
   data () {
     return {
       searchbarValue: '',
-      copyUsersList: this.usersList,
-      deletedUser: null
+      copyBooksList: this.bookList,
+      deletedBook: null
     }
   },
   components: {
-    CardReaders
+    CardBooks
   },
   props: {
-    usersList: {
+    bookList: {
       type: Array,
       required: true
     }
   },
   computed: {
-    numberOfReaders () {
+    numberOfBooks () {
       return this.getFilteredData.length
     },
     getSearchbarValue () {
@@ -41,17 +41,17 @@ export default {
     },
     getFilteredData () {
       if (this.getSearchbarValue !== '') {
-        const filteredData = this.usersList.filter(user => JSON.stringify(user).includes(this.searchbarValue))
+        const filteredData = this.bookList.filter(book => JSON.stringify(book).includes(this.searchbarValue))
         return filteredData
       }
-      return this.usersList
+      return this.bookList
     }
   },
   methods: {
-    updateListUsers (payload) {
-      this.$emit('updateListUsers', {
-        deletedUser: payload.deletedUser,
-        updatedUser: payload.updatedUser
+    updateListBooks (payload) {
+      this.$emit('updateListBooks', {
+        deletedBook: payload.deletedBook,
+        updatedBook: payload.updatedBook
       })
     }
   }
@@ -59,7 +59,7 @@ export default {
 </script>
 
 <style scoped>
-.users-list{
+.books-list{
     border: 1px solid rgb(218, 217, 217);
     width: 65vw;
     margin: auto;
@@ -77,7 +77,7 @@ export default {
     height: 7vh;
     margin: 0 auto 5% 8%;
     border: none;
-    border: 1px solid rgb(242, 236, 236);
+    border: 1px solid rgba(242, 236, 236, 0.925);
     box-shadow: -2px 5px 10px rgba(0, 0, 0, 0.1);
 }
 #searchbar::placeholder, input[type=search]{
@@ -85,8 +85,7 @@ export default {
     padding-left: 2% ;
     padding-right: 2% ;
 }
-
-.number-of-users{
+.number-of-books{
     width: 91%;
     margin-bottom: 2%;
 }
@@ -120,7 +119,7 @@ span{
 /* RESPONSIVE --  RESPONSIVE -- RESPONSIVE -- RESPONSIVE -- RESPONSIVE -- */
 
 @media(max-width: 1070px){
-  .users-list{
+  .books-list{
     width: 78vw;
     padding: 2% 0;
   }
@@ -130,7 +129,7 @@ span{
 }
 /* -------MOBILE VERSION --------- */
 @media(max-width: 430px){
-  .users-list{
+  .books-list{
     width: 88vw;
     margin-right: 2%;
     height: 80vh;
@@ -140,7 +139,7 @@ span{
     width: 89%;
   }
 
-  .number-of-users{
+  .number-of-books{
     margin: 8% 0;
   }
 

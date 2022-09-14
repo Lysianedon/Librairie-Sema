@@ -1,5 +1,6 @@
 <template>
-    <div class="wrapper">
+    <div>
+       <div class="wrapper">
       <div class="content">
          <div class="nav">
           <NavbarAdmin
@@ -11,15 +12,16 @@
         </div>
         <h3 class="has-text-right hello-msg">Bonjour, {{adminName}} !</h3>
         <h1 class="has-text-centered back-office">BACK OFFICE</h1>
-        <h2 class="gerer-lecteurs ml-5 p-5">Gérer les lecteurs</h2>
+        <h2 class="gerer-livres ml-5 p-5">Gérer la bibliothèque</h2>
 
-        <div class="readers-list">
-          <ReadersListComponent
-          :usersList="usersList"
-          @updateListUsers="updateListUsersFromParentElem"/>
+        <div class="book-list">
+          <BookListComponent
+          :bookList="bookList"
+          @updateListBooks="updateListBooksFromParentElem"/>
         </div>
 
       </div>
+    </div>
     </div>
 </template>
 
@@ -27,25 +29,23 @@
 import axios from 'axios'
 import NavbarAdmin from '@/components/admin/NavbarAdmin.vue'
 import NavbarMobileAdmin from '@/components/admin/NavbarMobileAdmin.vue'
-import ReadersListComponent from '@/components/admin/ReadersListComponent.vue'
+import BookListComponent from '@/components/admin/BookListComponent.vue'
 export default {
-  name: 'ReadersListView',
+  name: 'BookListView',
   data () {
     return {
       adminName: '',
-      usersList: []
+      bookList: []
     }
   },
-  components: { NavbarAdmin, ReadersListComponent, NavbarMobileAdmin },
+  components: { NavbarAdmin, NavbarMobileAdmin, BookListComponent },
   mounted () {
     axios
-      .get('http://localhost:8001/admin/user-list', { withCredentials: true })
+      .get('http://localhost:8001/books', { withCredentials: true })
       .then(res => {
         if (res.data.success) {
-          // console.log(res.data.usersList)
-          this.usersList = res.data.usersList
-          // Removing the admins from the list:
-          this.usersList = this.usersList.filter(user => !user.isAdmin)
+          // console.log(res.data.bookList)
+          this.bookList = res.data.bookList
         }
       })
   },
@@ -53,19 +53,14 @@ export default {
     getName (payload) {
       this.adminName = payload.adminName
     },
-    filterUsersList (payload) {
-      this.usersList = payload.searchResults
-    },
-    updateListUsersFromParentElem (payload) {
-      if (payload.deletedUser || payload.updatedUser) {
+    updateListBooksFromParentElem (payload) {
+      if (payload.deletedBook || payload.updatedBook) {
         axios
-          .get('http://localhost:8001/admin/user-list', { withCredentials: true })
+          .get('http://localhost:8001/books', { withCredentials: true })
           .then(res => {
             if (res.data.success) {
-              // console.log(res.data.usersList)
-              this.usersList = res.data.usersList
-              // Removing the admins from the list:
-              this.usersList = this.usersList.filter(user => !user.isAdmin)
+              // console.log(res.data.bookList)
+              this.bookList = res.data.bookList
             }
           })
       }
@@ -89,16 +84,15 @@ export default {
 .nav-mobile{
   display: none;
 }
-.readers-list{
+.book-list{
   margin-top: 5%;
 }
 .hello-msg{
   font-weight: 100;
 }
-.gerer-lecteurs{
+.gerer-livres{
   background-color: #ECEEE5;
 }
-
 /* RESPONSIVE --  RESPONSIVE -- RESPONSIVE -- RESPONSIVE -- RESPONSIVE -- */
 
 @media(max-width: 1070px){
@@ -116,10 +110,10 @@ export default {
     width: 100vw;
     padding: 2% 0 4% 0;
   }
-  .readers-list{
+  .book-list{
     margin-top: 6%;
   }
-  .gerer-lecteurs{
+  .gerer-livres{
     width: 100%;
     text-align: center;
   }
@@ -136,7 +130,7 @@ export default {
     font-size: 1.8rem;
     margin: 12% auto;
   }
-  .gerer-lecteurs{
+  .gerer-livres{
     font-size: 1.5rem;
     margin: 3% 3% 10% 3% !important;
     width: 100%;
