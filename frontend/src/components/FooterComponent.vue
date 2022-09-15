@@ -6,7 +6,7 @@
         <router-link to="/" class="links">Conditions Générales d’utilisation</router-link>
       </div>
       <div class="blocks block-two">
-        <router-link to="/tout-les-livres" class="links">Tous les ouvrages</router-link>
+        <router-link to="/section/tous-les-livres" class="links">Tous les ouvrages</router-link>
         <router-link to="" class="links">Suivez-nous</router-link>
         <div class="icons">
           <a href="https://www.linkedin.com/in/lysianedon/" target="_blank" rel="noopener noreferrer">
