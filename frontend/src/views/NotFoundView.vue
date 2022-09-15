@@ -1,0 +1,151 @@
+<template>
+    <div class="wrapper">
+      <div class="login-invitation">
+        <h1> <span class="big-yellow"> <span class="oups">Oups...</span> La page ou le livre recherché n'est pas ici... </span>Ou peut-être n' a-t-il jamais existé et n'est que le fruit de votre imagination...Imagination qui donnera naissance à votre tout premier livre à succès, qui sera bien évidemment répertorié sur Sema. Qui sait... !</h1>
+        <p>En attendant que vous saisissiez votre plume...</p>
+        <router-link to="/"><div class="btn-valider">Retour à la page d'accueil</div></router-link>
+      </div>
+      <div class="book">
+        <div :class="`icon-option ${isLiked ? '': 'hidden'} `">
+          <font-awesome-icon
+            icon="fa-solid fa-heart"
+            color=" rgb(108, 105, 105)"
+            :class="`icon ${isLiked ? 'liked' : ''}`"
+            @click="toggleLike"/>
+        </div>
+        <div class="content-book">
+          <div class="book-infos">
+            <h3 class="author"> <span class="bold">De: </span> Not Found</h3>
+            <h5 class="illustration"> <span class="bold">Illustration: </span> Open Peeps</h5>
+          </div>
+          <div class="not-found">
+            <h2 class="margin">4</h2>
+            <h2>4</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+</template>
+
+<script>
+export default {
+  name: 'NotFoundView',
+  data () {
+    return {
+      isLiked: false
+    }
+  },
+  methods: {
+    toggleLike () {
+      console.log('isLiked', this.isLiked)
+      this.isLiked = !this.isLiked
+    }
+  }
+}
+</script>
+
+<style scoped>
+.wrapper{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.login-invitation{
+  width: 40vw;
+}
+.big-yellow, .oups{
+  font-size: 3rem;
+  color: #f2b818;
+  font-weight: bold;
+  display:block;
+  line-height: 160%;
+}
+.oups{
+  font-size: 5.5rem;
+}
+h1{
+  font-size: .9rem;
+  line-height: 200%;
+}
+.content-book{
+  width: 32vw;
+  height: 76vh;
+  padding: 2%;
+  background-image: url('@/assets/cyclope.png');
+  background-image: url('@/assets/not-found-img.png');
+  background-repeat: no-repeat;
+  background-size: 81%;
+  background-position-y: 13vh;
+  background-position-x: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid rgb(220, 216, 216);
+  background-color: rgba(250, 235, 215, 0.759);
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(128, 124, 124, 0.25), 0 2px 7px rgba(100, 98, 98, 0.22);
+  /* border: 1px solid black; */
+}
+.icon{
+  text-align: center;
+  cursor: pointer;
+  margin-left: 15vw;
+  color:black;
+}
+.hidden{
+  opacity: 0;
+}
+.book{
+  padding: 2%;
+}
+.book:hover{
+  box-shadow: 0 2px 4px rgba(128, 124, 124, 0.25), 0 2px 7px rgba(100, 98, 98, 0.22);
+}
+.book:hover > * {
+    opacity: 1 !important;
+}
+.icon:hover{
+  color:red;
+}
+.liked{
+  color:red !important;
+}
+.bold{
+  font-weight: bold;
+  color: black;
+}
+.author{
+  font-size: 2rem;
+  line-height: 200%;
+  /* color: rgb(91, 89, 89); */
+}
+.illustration{
+  line-height: 270%;
+  text-align: center;
+}
+.not-found{
+  display:flex;
+  align-items: center;
+  justify-content: space-between;
+  /* border: 1px solid black; */
+  width: 28vw;
+}
+h2{
+  font-size: 12rem !important;
+  height: fit-content;
+  color:black;
+}
+.margin{
+  margin-right: 3% !important;
+}
+.btn-valider{
+  text-align: center;
+  margin-top: 7vh;
+  color: black;
+  font-size: 1.2rem;
+  border: 1px solid rgb(241, 241, 241);
+}
+.btn-valider:hover{
+  border: none;
+}
+</style>

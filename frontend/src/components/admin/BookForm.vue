@@ -254,6 +254,7 @@ form{
 .uploadcare--widget__button:focus, .uploadcare--widget__button:hover, .uploadcare--widget__button_type_open:focus, .uploadcare--widget__button_type_open:hover, .uploadcare--widget__button {
   background-color: #ffffff !important;
   color: #000000 !important;
+  padding-top: 2vh;
 }
 /* */
 input[type="text"]{
