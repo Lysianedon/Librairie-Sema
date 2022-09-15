@@ -38,7 +38,6 @@ export default {
   },
   methods: {
     toggleLike () {
-      console.log('isLiked', this.isLiked)
       this.isLiked = !this.isLiked
     }
   }
