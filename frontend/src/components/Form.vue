@@ -91,21 +91,3 @@ export default ({
 })
 </script>
 
-<img src="https://i.ibb.co/JWYrdZq/14.png" alt="14" border="0">
-<img src="https://i.ibb.co/St3WCXj/15.png" alt="15" border="0"> // Lady b - contours noirs
-<img src="https://i.ibb.co/g9PGpnQ/12.png" alt="12" border="0"> // Le pagne noir - Bernard Dadié
-<img src="https://i.ibb.co/jfmGcGK/13.png" alt="13" border="0">  // Ellen Johnson Sirleaf
-<img src="https://i.ibb.co/GPNDdh6/9.png" alt="9" border="0">
-<img src="https://i.ibb.co/yW7TBTd/10.png" alt="10" border="0">
-<img src="https://i.ibb.co/YTXzRg6/11.png" alt="11" border="0">
-<img src="https://i.ibb.co/YbtLnRc/7.png" alt="7" border="0">
-<img src="https://i.ibb.co/Kj7hXFr/8.png" alt="8" border="0">
-<img src="https://i.ibb.co/WK4TC9b/4.png" alt="4" border="0">
-<img src="https://i.ibb.co/Dw8ZY9F/5.png" alt="5" border="0">
-<img src="https://i.ibb.co/yQc0RS3/6.png" alt="6" border="0">
-<img src="https://i.ibb.co/S7Md2CC/2.png" alt="2" border="0">
-<img src="https://i.ibb.co/NsPDYhW/3.png" alt="3" border="0">
-<img src="https://i.ibb.co/NxTdHbb/1.png" alt="1" border="0">
-
-<img src="https://i.ibb.co/RbHq1Q8/2.png" alt="2" border="0">
-<img src="https://i.ibb.co/R7m2yZR/1.png" alt="1" border="0">

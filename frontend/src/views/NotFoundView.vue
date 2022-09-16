@@ -98,12 +98,13 @@ h3{
 }
 .book{
   padding: 2%;
+  border-radius: 8px;
 }
 .book:hover{
   box-shadow: 0 2px 4px rgba(128, 124, 124, 0.25), 0 2px 7px rgba(100, 98, 98, 0.22);
 }
 .book:hover > * {
-    opacity: 1 !important;
+  opacity: 1 !important;
 }
 .icon:hover{
   color:red;
