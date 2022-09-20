@@ -47,7 +47,6 @@ router.get("/upload-image/:imagePath", auth, checkIfAdmin, async (req,res) => {
     return null
 })
 
-
 // --------------------- GET THE LIST OF USERS ---------------------
 router.get("/user-list", auth, checkIfAdmin, async (_req,res) => {
     let usersList;
