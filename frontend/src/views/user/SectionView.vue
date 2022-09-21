@@ -9,7 +9,7 @@
 
       <a href="" id="scrollToTop"></a>
       <div class="login-wrapper" v-if="!isUserConnected">
-          <img :src="getImgUrl(getCurrentBanner)" alt="banniere" srcset="" class="banner">
+          <img :src="getImgUrl(getCurrentBanner)" alt="banniere" srcset="" class="banner home-banner">
 
           <div class="login-invitation">
             <h2>Qui va là ?
@@ -24,7 +24,8 @@
       </div>
       <div class="content" v-if="isUserConnected">
 
-        <img :src="getImgUrl(getCurrentBanner)" alt="banniere" srcset="" class="banner">
+        <!-- <img :src="getImgUrl(getCurrentBanner)" alt="banniere" srcset="" class="banner"> -->
+        <img :src="getImgUrl(getCurrentBanner)" alt="banniere" srcset="" :class=" `banner ${getCurrentCollection === 'favoris'? 'banner-favorites' : ''} ${getCurrentCollection === 'ma bibliotheque'? 'banner-library' : ''} ${getCurrentCollection !== 'favoris' && getCurrentCollection !== 'ma bibliotheque' ?  'home-banner' : ''}` ">
 
         <h2 class="is-size-1 is-size-2-mobile has-text-centered-mobile"> {{getCurrentSectionTitle}}</h2>
         <div class="books" v-if="getCurrentBookCollection">
@@ -903,7 +904,15 @@ button{
   .nav{
     display: none;
   }
-
+  .login-wrapper{
+    margin: 3% auto 4% 5vw;
+  }
+  .login-invitation{
+    width: 90%;
+    padding: 3%;
+    text-align: center;
+    margin: 6% auto auto auto;
+  }
   .sidebar-mobile{
     display: block;
     position: fixed;
@@ -911,7 +920,6 @@ button{
     left: 2%;
     z-index: 2;
   }
-
   .content{
     margin: auto;
     width: 95vw;
@@ -961,9 +969,22 @@ button{
 /*-------------  MOBILE MODE ------------ */
 @media(max-width: 450px){
 
+  .login-invitation h2{
+    font-size: 1.6rem !important;
+    line-height: 200%;
+  }
   .container-books{
     width: 50%;
     padding: 0;
+  }
+  .banner-library{
+    content:url('@/assets/banner-library-mobile.png') !important;
+  }
+  .banner-favorites{
+    content:url('@/assets/banner-favorites-mobile.png') !important;
+  }
+  .home-banner{
+    content:url('@/assets/home-banner-mobile.png') !important;
   }
 
   .book{
@@ -982,6 +1003,9 @@ button{
   }
 }
 @media(max-width: 330px){
+  .login-invitation h2{
+    font-size: 1.3rem !important;
+  }
   .book{
     height: fit-content;
     width: 80vw;

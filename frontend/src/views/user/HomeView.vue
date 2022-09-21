@@ -9,7 +9,8 @@
       <a href="" id="scrollToTop"></a>
 
     <div class="content">
-      <img src="@/assets/banner.png" alt="banniere de page d'accueil" srcset="" class="banner">
+      <img src="@/assets/banner.png" alt="banniere de page d'accueil" srcset="" class="banner banner-homepage">
+      <img src="@/assets/home-banner-mobile.png" alt="banniere de page d'accueil" srcset="" class="banner banner-mobile">
 
       <div
         class="title-button"
@@ -235,6 +236,9 @@ export default {
   border: 2px solid rgb(88, 88, 88);
   border-radius: 15px;
 }
+.banner-mobile{
+  display: none;
+}
 
 .title-button{
   display: flex;
@@ -353,6 +357,14 @@ h2{
   .haut-de-page{
     padding:6%;
      margin-left: 75vw;
+  }
+}
+@media(max-width: 460px){
+  .banner-mobile{
+    display: initial;
+  }
+  .banner-homepage{
+    display: none;
   }
 }
 @media(max-width: 330px){
