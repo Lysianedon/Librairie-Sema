@@ -181,7 +181,6 @@ const checkIfAdmin = async (req,res,next) => {
 const addBookToAllBooksCategory = async (req,res,next) => {
   const userId = req.userId;
   let userLibrary, addedBook = req.body.bookToAddID, updatedLibrary;
-  
   //Finding the user:
   try {
       userLibrary = await User.findById(userId)

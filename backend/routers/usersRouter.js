@@ -282,14 +282,13 @@ router.delete('/library/favorites', auth,checkIfBookAlreadyInList, async (req,re
 })
 
 // ---------------- ADD A BOOK IN USER'S "ALREADY READ" CATEGORY ----------------
-router.post('/library/alreadyread', auth, addBookToAllBooksCategory, checkIfBookAlreadyInList, async (req,res) => {
+router.post('/library/alreadyread', auth, checkIfBookAlreadyInList, async (req,res) => {
     //GET BOOK ID AND ADD IT :
     const userId = req.userId;
     let userAlreadyreadLibrary, addedBook = req.body.bookToAddID, updatedLibrary;
-    
     //Guard
     if (req.isBookAlreadyInAlreadyReadCategory === true) {
-        return res.status(400).json({ error: true, message: "Book already in the list !" });     
+        return res.status(400).json({ error: true, isAlreadyInList: true, message: "Book already in the list !" });     
     }
 
     //Finding the user:
@@ -314,7 +313,7 @@ router.post('/library/alreadyread', auth, addBookToAllBooksCategory, checkIfBook
             return res.status(400).json({ error: true, message: "Bad request."});   
     }
     userAlreadyreadLibrary = userAlreadyreadLibrary.books.alreadyRead;
-    return res.status(201).json({success: true, userAlreadyreadLibrary})
+    return res.status(201).json({success: true, isAlreadyInList: false, userAlreadyreadLibrary})
 })
 
 // ---------------- DELETE A BOOK IN USER'S "ALREADY READ" CATEGORY ----------------
@@ -359,7 +358,6 @@ router.get('/library/personalised-suggestion', auth, async (req, res) => {
     //What we need:
     let userId = req.userId, 
         user, 
-        userGoals, 
         userInterests, 
         userAge, 
         userLibrary, 
@@ -369,12 +367,16 @@ router.get('/library/personalised-suggestion', auth, async (req, res) => {
 
     //Make a book suggestion based on :
 
-    //-If not in user's library:
-    //-interests: if exists, prioritize this category, otherwise: check goals
-    //- age range, if answer === "no answer", random suggestion out of Sema's library (if existing ingo)
+    // Step 1 - Filter the books that are already in the user's library 
+    // Step 2 - Get the user's interests: if exists, it randomly picks a book that corresponds to the user's interests
+    // Step 3 - If the interests are undefined, it randomly selects a book which match the user's age range
+    // Step 4 - If the user's age range is undefined, it randomly suggest a book out of Sema's library
 
     try {
         user = await User.findById(userId).populate({path: 'books.allBooks', model: 'Books'})
+        if (user.isAdmin) {
+            return null
+        }
         semasListOfBooks = await Book.find();
     } catch (error) {
         console.log(error);
@@ -384,14 +386,12 @@ router.get('/library/personalised-suggestion', auth, async (req, res) => {
     userPreferences = user.preferences;
     userAge = user.age;
     userLibrary = user.books.allBooks;
-    userGoals = user.preferences.goals;
     userInterests = user.preferences.interests;
     suggestionsArr = semasListOfBooks;
     
     //STEP 1 : Filter the books that are already in the user's library :
     const stringifiedUserLibraryArr = JSON.stringify(userLibrary)
     suggestionsArr = suggestionsArr.filter(book => !stringifiedUserLibraryArr.includes(JSON.stringify(book)));
-    // console.log('suggestionsArr', suggestionsArr)
 
     //STEP 2: if the user has specified his interest(s), only keep the books that correspond to it:
     const filteredByGenre = suggestionsArr.filter(book => userInterests.includes(book.genre))
@@ -405,7 +405,6 @@ router.get('/library/personalised-suggestion', auth, async (req, res) => {
         //If there is just one suggestion, we return the element :
     } else if(filteredByGenre.length === 1){
         personalisedSuggestion = filteredByGenre[0];
-        console.log(personalisedSuggestion)
         return res.status(200).json({success: true, personalisedSuggestion})
     } 
     
