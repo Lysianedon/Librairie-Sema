@@ -15,7 +15,6 @@
 </template>
 
 <script>
-import axios from 'axios'
 import ButtonsAgeOptions from '@/components/ButtonsOptions.vue'
 export default {
   name: 'InscriptionView',
@@ -46,18 +45,6 @@ export default {
       ],
       interestsArr: ['Biographies', 'Contes', 'Romans', 'Tout !']
     }
-  },
-  beforeMount () {
-    axios
-      .get('http://localhost:8001/user', { withCredentials: true })
-      .then(res => {
-        if (res.data.success) {
-          console.log(res.data.user)
-        }
-      })
-      .catch(err => {
-        return console.log(err)
-      })
   }
 }
 </script>

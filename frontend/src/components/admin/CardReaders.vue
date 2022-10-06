@@ -117,7 +117,7 @@ export default {
     },
     deleteUser (userId) {
       axios
-        .delete('http://localhost:8001/admin/user-list', { withCredentials: true, data: { userId } })
+        .delete(`http://localhost:${process.env.VUE_APP_PORT}/admin/user-list`, { withCredentials: true, data: { userId } })
         .then(res => {
           if (res.data.success) {
             this.$buefy.toast.open({
@@ -165,7 +165,7 @@ export default {
       }
       console.log('updatedUser', updatedUser)
       axios
-        .put('http://localhost:8001/admin/user-list', { id, updatedUser }, { withCredentials: true })
+        .put(`http://localhost:${process.env.VUE_APP_PORT}/admin/user-list`, { id, updatedUser }, { withCredentials: true })
         .then(res => {
           if (res.data.success) {
             this.$buefy.toast.open({

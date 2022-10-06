@@ -121,17 +121,14 @@ export default {
   },
   methods: {
     onPickFile () {
-      console.log('click')
       this.$refs.fileInput.click()
     },
     onFilePicked () {
-    //   const preview = document.querySelector('img')
       const file = document.querySelector('input[type=file]').files[0]
       const reader = new FileReader()
 
       reader.addEventListener('load', () => {
         // Converting the img into a base64 string
-        // preview.src = reader.result
         if (typeof reader.result === 'string') {
           this.newBook.image = reader.result.split(',')[1]
         }
@@ -147,7 +144,6 @@ export default {
       const expression = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_.~#?&//=]*)/
       const regex = new RegExp(expression)
       if (!this.newBook.image.match(regex) || !this.newBook.bookStore.link.match(regex)) {
-      // if (!this.newBook.bookStore.link.match(regex)) {
         this.$buefy.toast.open({
           message: 'Format des liens invalides',
           type: 'is-danger'
@@ -158,7 +154,6 @@ export default {
       // Adding the dateAdded to newBook obj:
       this.newBook.dateAdded.stringFormat = new Date().toDateString()
       this.newBook.dateAdded.parsedFormat = Date.parse(new Date().toDateString())
-      //   console.log(this.newBook)
       const newBook = this.newBook
       // Checking if any mandatory field of the form is empty: if so, an error message gets displayed
       const formValues = Object.values(this.newBook)
@@ -193,16 +188,15 @@ export default {
         }
       })
       if (!this.errorEmptyFields) {
-        // console.log('before axios: ', this.newBook)
         axios
-          .post('http://localhost:8001/admin/booklist', { newBook }, { withCredentials: true })
+          .post(`http://localhost:${process.env.VUE_APP_PORT}/admin/booklist`, { newBook }, { withCredentials: true })
           .then(res => {
             if (res.data.success) {
               this.$buefy.toast.open({
                 message: 'Référence ajoutée à la bibliothèque',
                 type: 'is-success'
               })
-              //   Resetting the bookform
+              // Resetting the bookform
               this.newBook = {
                 title: '',
                 author: '',

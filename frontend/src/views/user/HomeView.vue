@@ -112,7 +112,7 @@ export default {
   },
   beforeMount () {
     axios
-      .get('http://localhost:8001/user', { withCredentials: true })
+      .get(`http://localhost:${process.env.VUE_APP_PORT}/user`, { withCredentials: true })
       .then(res => {
         if (res.data.success) {
           // console.log(res.data.user)
@@ -126,7 +126,7 @@ export default {
   },
   mounted () {
     axios
-      .get('http://localhost:8001/books', { withCredentials: true })
+      .get(`http://localhost:${process.env.VUE_APP_PORT}/books`, { withCredentials: true })
       .then(res => {
         if (res.data.success) {
           // Getting the book list:
@@ -184,7 +184,7 @@ export default {
 
           // Getting the user's personalised book suggestion:
           axios
-            .get('http://localhost:8001/user/library/personalised-suggestion', { withCredentials: true })
+            .get(`http://localhost:${process.env.VUE_APP_PORT}/user/library/personalised-suggestion`, { withCredentials: true })
             .then(res => {
               if (res.data.success) {
                 // console.log(res.data)
@@ -193,7 +193,7 @@ export default {
             })
           // Getting the user's library:
           axios
-            .get('http://localhost:8001/user/library/', { withCredentials: true })
+            .get(`http://localhost:${process.env.VUE_APP_PORT}/user/library/`, { withCredentials: true })
             .then(res => {
               if (res.data.success) {
                 // console.log(res.data)

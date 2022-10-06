@@ -47,7 +47,7 @@ export default {
   },
   mounted () {
     axios
-      .get(`http://localhost:8001/books/${this.$route.params.bookId}`)
+      .get(`http://localhost:${process.env.VUE_APP_PORT}/books/${this.$route.params.bookId}`)
       .then(res => {
         if (res.data.success) {
           // console.log(res.data)

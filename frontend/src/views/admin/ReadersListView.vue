@@ -39,7 +39,7 @@ export default {
   components: { NavbarAdmin, ReadersListComponent, NavbarMobileAdmin },
   mounted () {
     axios
-      .get('http://localhost:8001/admin/user-list', { withCredentials: true })
+      .get(`http://localhost:${process.env.VUE_APP_PORT}/admin/user-list`, { withCredentials: true })
       .then(res => {
         if (res.data.success) {
           // console.log(res.data.usersList)
@@ -59,7 +59,7 @@ export default {
     updateListUsersFromParentElem (payload) {
       if (payload.deletedUser || payload.updatedUser) {
         axios
-          .get('http://localhost:8001/admin/user-list', { withCredentials: true })
+          .get(`http://localhost:${process.env.VUE_APP_PORT}/admin/user-list`, { withCredentials: true })
           .then(res => {
             if (res.data.success) {
               // console.log(res.data.usersList)

@@ -71,7 +71,7 @@ export default {
   },
   mounted () {
     axios
-      .get('http://localhost:8001/user/', { withCredentials: true })
+      .get(`http://localhost:${process.env.VUE_APP_PORT}/user/`, { withCredentials: true })
       .then(res => {
         // console.log(res.data)
         this.firstname = res.data.user.firstname
@@ -123,7 +123,7 @@ export default {
       // Putting interests to singular:
       this.$store.commit('putWordsToSingular')
       interests = this.$store.state.preferences.interests
-      console.log('before updating interests in userInfos : ', interests)
+      // console.log('before updating interests in userInfos : ', interests)
       // Creating updated user's infos object:
       const userInfos = {
         firstname,
@@ -135,7 +135,7 @@ export default {
       }
       // Updating user's infos in database:
       axios
-        .put('http://localhost:8001/user/', { ...userInfos }, { withCredentials: true })
+        .put(`http://localhost:${process.env.VUE_APP_PORT}/user/`, { ...userInfos }, { withCredentials: true })
         .then(res => {
           console.log(res.data)
           if (res.data.success) {
@@ -178,11 +178,9 @@ export default {
           if (button === e.target) {
             if (e.target.className.includes('selected')) {
               e.target.classList.remove('selected')
-              console.log('button unselected', e.target.value)
               this.$store.commit('removeGoals', button.value)
             } else if (!e.target.className.includes('selected')) {
               e.target.classList.add('selected')
-              console.log('button selected', e.target.value)
               this.$store.commit('addNewGoals', button.value)
             }
           }

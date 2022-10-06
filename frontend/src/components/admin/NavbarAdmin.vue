@@ -63,7 +63,7 @@ export default {
   },
   mounted () {
     axios
-      .get('http://localhost:8001/user/', { withCredentials: true })
+      .get(`http://localhost:${process.env.VUE_APP_PORT}/user/`, { withCredentials: true })
       .then(res => {
         if (res.data.success) {
           this.username = res.data.user.firstname
@@ -79,7 +79,7 @@ export default {
   methods: {
     logout () {
       axios
-        .get('http://localhost:8001/logout/', { withCredentials: true })
+        .get(`http://localhost:${process.env.VUE_APP_PORT}/logout/`, { withCredentials: true })
         .then(res => {
           if (res.data.success) {
             this.$router.push('/login')

@@ -64,7 +64,7 @@ export default {
   components: { NavbarUser, SidebarMobile, ButtonsOptions, FooterComponent },
   mounted () {
     axios
-      .get('http://localhost:8001/user/', { withCredentials: true })
+      .get(`http://localhost:${process.env.VUE_APP_PORT}/user/`, { withCredentials: true })
       .then(res => {
         if (res.data.success) {
           // console.log(res.data)
@@ -76,7 +76,7 @@ export default {
   methods: {
     deleteAccount () {
       axios
-        .delete('http://localhost:8001/user/delete-account', { withCredentials: true })
+        .delete(`http://localhost:${process.env.VUE_APP_PORT}/user/delete-account`, { withCredentials: true })
         .then(res => {
           if (res.data.success) {
             // Redirecting the user to the homepage

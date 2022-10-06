@@ -41,7 +41,7 @@ export default {
   components: { NavbarAdmin, NavbarMobileAdmin, BookListComponent },
   mounted () {
     axios
-      .get('http://localhost:8001/books', { withCredentials: true })
+      .get(`http://localhost:${process.env.VUE_APP_PORT}/books`, { withCredentials: true })
       .then(res => {
         if (res.data.success) {
           // console.log(res.data.bookList)
@@ -56,7 +56,7 @@ export default {
     updateListBooksFromParentElem (payload) {
       if (payload.deletedBook || payload.updatedBook) {
         axios
-          .get('http://localhost:8001/books', { withCredentials: true })
+          .get(`http://localhost:${process.env.VUE_APP_PORT}/books`, { withCredentials: true })
           .then(res => {
             if (res.data.success) {
               // console.log(res.data.bookList)

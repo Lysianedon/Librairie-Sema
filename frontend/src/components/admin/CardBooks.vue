@@ -72,7 +72,7 @@
                  <div :class="`bookstore ${enlarged ? '' : 'hidden'}`" v-if="book.bookStore">
                     <h4 class="h4-id">Où l'acheter: <span class="light"><a :href="`${book.bookStore.link}`" target="_blank" rel="noopener noreferrer">{{book.bookStore.name}}</a></span> </h4>
                 </div>
-                <h4 :class="`h4-id ${enlarged ? '' : 'mobile-hidden'}`">Synopsis: <span class="light synopsis">{{book.synopsis}}</span> </h4>
+                <h4 :class="`h4-id ${enlarged ? '' : 'hidden mobile-hidden'}`">Synopsis: <span class="light synopsis">{{book.synopsis}}</span> </h4>
             </div>
 
             <h4 class="voir-plus" @click="openModal"> Afficher tout...</h4>
@@ -134,7 +134,7 @@ export default {
     },
     deleteBook (bookToDeleteID) {
       axios
-        .delete('http://localhost:8001/admin/booklist', { withCredentials: true, data: { bookToDeleteID } })
+        .delete(`http://localhost:${process.env.VUE_APP_PORT}/admin/booklist`, { withCredentials: true, data: { bookToDeleteID } })
         .then(res => {
           if (res.data.success) {
             this.$buefy.toast.open({
@@ -197,7 +197,7 @@ export default {
       }
 
       axios
-        .put('http://localhost:8001/admin/booklist', { id, updatedBook }, { withCredentials: true })
+        .put(`http://localhost:${process.env.VUE_APP_PORT}/admin/booklist`, { id, updatedBook }, { withCredentials: true })
         .then(res => {
           if (res.data.success) {
             this.$buefy.toast.open({

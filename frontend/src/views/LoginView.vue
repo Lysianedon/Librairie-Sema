@@ -87,7 +87,7 @@ export default ({
       if (this.userHasAnAccount) {
         axios
           .post(
-            'http://localhost:8001/login',
+            `http://localhost:${process.env.VUE_APP_PORT}/login`,
             { email: this.email, password: this.password },
             { withCredentials: true }
           )
@@ -138,7 +138,7 @@ export default ({
         }
         axios
           .post(
-            'http://localhost:8001/signup',
+            `http://localhost:${process.env.VUE_APP_PORT}/signup`,
             { ...user },
             { withCredentials: true }
           )

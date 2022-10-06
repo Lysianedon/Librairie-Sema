@@ -1,8 +1,8 @@
 <template>
     <div class="wrapper">
       <div class="login-invitation">
-        <h1> <span class="big-yellow"> <span class="oups">Oups...</span> La page ou le livre recherché n'est pas ici... </span></h1>
-        <h3>Ou peut-être n' a-t-il jamais existé et n'est que le fruit de votre imagination...Imagination qui donnera naissance à votre tout premier livre à succès, qui sera bien évidemment répertorié sur Sema. Qui sait !</h3>
+        <h1> <span class="big-yellow"> <span class="oups">Oups...</span> La page ou le livre recherché(e) n'est pas ici... </span></h1>
+        <h3>Ou peut-être n' a-t-il/elle jamais existé et n'est que le fruit de votre imagination...Imagination qui donnera naissance à votre tout premier livre à succès, qui sera bien évidemment répertorié sur Sema. Qui sait !</h3>
         <p>En attendant que vous preniez la plume...</p>
         <router-link to="/"><div class="btn-valider">Retour à la page d'accueil</div></router-link>
       </div>
@@ -72,11 +72,10 @@ h3{
   width: 32vw;
   height: 74vh;
   padding: 2%;
-  background-image: url('@/assets/cyclope.png');
   background-image: url('@/assets/not-found-img.png');
   background-repeat: no-repeat;
-  background-size: 81%;
-  background-position-y: 13vh;
+  background-size: 72%;
+  background-position-y: 17vh;
   background-position-x: center;
   display: flex;
   flex-direction: column;

@@ -243,7 +243,7 @@ export default {
   mounted () {
     // CHECKING IF USER IS CONNECTED:
     axios
-      .get('http://localhost:8001/user/', { withCredentials: true })
+      .get(`http://localhost:${process.env.VUE_APP_PORT}/user/`, { withCredentials: true })
       .then(res => {
         if (res.data.success) {
           this.isUserConnected = true
@@ -262,7 +262,7 @@ export default {
 
       // Getting the book selection:
       axios
-        .get(`http://localhost:8001/${this.backendRouteName}`, { withCredentials: true })
+        .get(`http://localhost:${process.env.VUE_APP_PORT}/${this.backendRouteName}`, { withCredentials: true })
         .then(res => {
           if (res.data.success) {
             this.bookSelection = res.data.userLibrary.allBooks
@@ -279,7 +279,7 @@ export default {
 
       // Getting the book selection:
       axios
-        .get(`http://localhost:8001/${this.backendRouteName}`, { withCredentials: true })
+        .get(`http://localhost:${process.env.VUE_APP_PORT}/${this.backendRouteName}`, { withCredentials: true })
         .then(res => {
           if (res.data.success) {
             this.bookSelection = res.data.userLibrary.favorites
@@ -295,7 +295,7 @@ export default {
 
       // Getting the book selection:
       axios
-        .get(`http://localhost:8001/${this.backendRouteName}`, { withCredentials: true })
+        .get(`http://localhost:${process.env.VUE_APP_PORT}/${this.backendRouteName}`, { withCredentials: true })
         .then(res => {
           if (res.data.success) {
             let bookSelection = res.data.bookList
@@ -311,7 +311,7 @@ export default {
 
       // Getting the book selection:
       axios
-        .get(`http://localhost:8001/${this.backendRouteName}`, { withCredentials: true })
+        .get(`http://localhost:${process.env.VUE_APP_PORT}/${this.backendRouteName}`, { withCredentials: true })
         .then(res => {
           if (res.data.success) {
             let bookSelection = res.data.bookList
@@ -327,7 +327,7 @@ export default {
 
       // Getting the book selection:
       axios
-        .get(`http://localhost:8001/${this.backendRouteName}`, { withCredentials: true })
+        .get(`http://localhost:${process.env.VUE_APP_PORT}/${this.backendRouteName}`, { withCredentials: true })
         .then(res => {
           if (res.data.success) {
             let bookSelection = res.data.bookList
@@ -343,7 +343,7 @@ export default {
 
       // Getting the book selection:
       axios
-        .get(`http://localhost:8001/${this.backendRouteName}`, { withCredentials: true })
+        .get(`http://localhost:${process.env.VUE_APP_PORT}/${this.backendRouteName}`, { withCredentials: true })
         .then(res => {
           if (res.data.success) {
             let bookSelection = res.data.bookList
@@ -359,7 +359,7 @@ export default {
 
       // Getting the book selection:
       axios
-        .get(`http://localhost:8001/${this.backendRouteName}`, { withCredentials: true })
+        .get(`http://localhost:${process.env.VUE_APP_PORT}/${this.backendRouteName}`, { withCredentials: true })
         .then(res => {
           if (res.data.success) {
             console.log(res.data)
@@ -374,7 +374,7 @@ export default {
 
       // Getting the book selection:
       axios
-        .get(`http://localhost:8001/${this.backendRouteName}`, { withCredentials: true })
+        .get(`http://localhost:${process.env.VUE_APP_PORT}/${this.backendRouteName}`, { withCredentials: true })
         .then(res => {
           if (res.data.success) {
             console.log(res.data)
@@ -424,7 +424,7 @@ export default {
 
         // Getting the book selection:
         axios
-          .get(`http://localhost:8001/${backendRoute}`, { withCredentials: true })
+          .get(`http://localhost:${process.env.VUE_APP_PORT}/${backendRoute}`, { withCredentials: true })
           .then(res => {
             if (res.data.success) {
               this.bookSelection = res.data.userLibrary.allBooks
@@ -444,7 +444,7 @@ export default {
 
         // Getting the book selection:
         axios
-          .get(`http://localhost:8001/${backendRoute}`, { withCredentials: true })
+          .get(`http://localhost:${process.env.VUE_APP_PORT}/${backendRoute}`, { withCredentials: true })
           .then(res => {
             if (res.data.success) {
               this.bookSelection = res.data.userLibrary.favorites
@@ -463,7 +463,7 @@ export default {
 
         // Getting the book selection:
         axios
-          .get(`http://localhost:8001/${backendRoute}`, { withCredentials: true })
+          .get(`http://localhost:${process.env.VUE_APP_PORT}/${backendRoute}`, { withCredentials: true })
           .then(res => {
             if (res.data.success) {
               let bookSelection = res.data.bookList
@@ -482,7 +482,7 @@ export default {
 
         // Getting the book selection:
         axios
-          .get(`http://localhost:8001/${backendRoute}`, { withCredentials: true })
+          .get(`http://localhost:${process.env.VUE_APP_PORT}/${backendRoute}`, { withCredentials: true })
           .then(res => {
             if (res.data.success) {
               let bookSelection = res.data.bookList
@@ -502,7 +502,7 @@ export default {
 
         // Getting the book selection:
         axios
-          .get(`http://localhost:8001/${backendRoute}`, { withCredentials: true })
+          .get(`http://localhost:${process.env.VUE_APP_PORT}/${backendRoute}`, { withCredentials: true })
           .then(res => {
             if (res.data.success) {
               let bookSelection = res.data.bookList
@@ -521,7 +521,7 @@ export default {
 
         // Getting the book selection:
         axios
-          .get(`http://localhost:8001/${backendRoute}`, { withCredentials: true })
+          .get(`http://localhost:${process.env.VUE_APP_PORT}/${backendRoute}`, { withCredentials: true })
           .then(res => {
             if (res.data.success) {
               let bookSelection = res.data.bookList
@@ -540,7 +540,7 @@ export default {
 
         // Getting the book selection:
         axios
-          .get(`http://localhost:8001/${backendRoute}`, { withCredentials: true })
+          .get(`http://localhost:${process.env.VUE_APP_PORT}/${backendRoute}`, { withCredentials: true })
           .then(res => {
             if (res.data.success) {
             //   console.log(res.data)
@@ -558,7 +558,7 @@ export default {
 
         // Getting the book selection:
         axios
-          .get(`http://localhost:8001/${backendRoute}`, { withCredentials: true })
+          .get(`http://localhost:${process.env.VUE_APP_PORT}/${backendRoute}`, { withCredentials: true })
           .then(res => {
             if (res.data.success) {
             //   console.log(res.data)
@@ -602,7 +602,7 @@ export default {
       // Adding the book to the corresponding collection : favorites or library:
       const bookToAddID = bookId
       axios
-        .post('http://localhost:8001/user/library/allbooks', { bookToAddID }, { withCredentials: true })
+        .post(`http://localhost:${process.env.VUE_APP_PORT}/user/library/allbooks`, { bookToAddID }, { withCredentials: true })
         .then(res => {
           if (res.data.success) {
             // console.log(res.data)
@@ -627,7 +627,7 @@ export default {
       // Adding the book to the general library first, and then to the favorites:
       this.addToLibrary(bookId)
       axios
-        .post('http://localhost:8001/user/library/favorites', { bookToAddID }, { withCredentials: true })
+        .post(`http://localhost:${process.env.VUE_APP_PORT}/user/library/favorites`, { bookToAddID }, { withCredentials: true })
         .then(res => {
           if (res.data.success) {
             // console.log(res.data)
@@ -651,7 +651,7 @@ export default {
       if (currentCollection === 'ma bibliotheque') {
         const bookToDeleteID = bookId
         axios
-          .delete('http://localhost:8001/user/library/allbooks', { withCredentials: true, data: { bookToDeleteID } })
+          .delete(`http://localhost:${process.env.VUE_APP_PORT}/user/library/allbooks`, { withCredentials: true, data: { bookToDeleteID } })
           .then(res => {
             if (res.data.success) {
             //   console.log(res.data)
@@ -664,7 +664,7 @@ export default {
           })
         // Deleting the book from the favorites too, if found in the collection:
         axios
-          .delete('http://localhost:8001/user/library/favorites', { withCredentials: true, data: { bookToDeleteID } })
+          .delete(`http://localhost:${process.env.VUE_APP_PORT}/user/library/favorites`, { withCredentials: true, data: { bookToDeleteID } })
           .catch(err => {
             // Displaying an error notification
             this.$buefy.toast.open({
@@ -678,7 +678,7 @@ export default {
       if (currentCollection === 'favoris') {
         const bookToDeleteID = bookId
         axios
-          .delete('http://localhost:8001/user/library/favorites', { withCredentials: true, data: { bookToDeleteID } })
+          .delete(`http://localhost:${process.env.VUE_APP_PORT}/user/library/favorites`, { withCredentials: true, data: { bookToDeleteID } })
           .then(res => {
             if (res.data.success) {
             //   console.log(res.data)
@@ -702,7 +702,7 @@ export default {
     updateLibrary (payload) {
       if (payload.updatedLibrary) {
         axios
-          .get('http://localhost:8001/user/library', { withCredentials: true })
+          .get(`http://localhost:${process.env.VUE_APP_PORT}/user/library`, { withCredentials: true })
           .then(res => {
             if (res.data.success) {
               this.alreadyReadBookSelection = res.data.userLibrary.alreadyRead
@@ -756,7 +756,6 @@ export default {
     justify-content: center;
     background-color: #FFF1CC;
 }
-
 .login-invitation h2{
   font-size: 1.6rem;
   line-height: 300%;

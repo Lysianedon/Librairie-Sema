@@ -37,6 +37,16 @@
               </b-tooltip>
 
               <b-tooltip
+                label="Marquer comme lu"
+                type="is-black"
+                position="is-top">
+                <font-awesome-icon
+                  icon="fa-solid fa-book-open"
+                  class="icon"
+                  @click="AddToAlreadyRead(book._id)"/>
+              </b-tooltip>
+
+              <b-tooltip
                 label="Supprimer"
                 type="is-black"
                 position="is-top"
@@ -125,7 +135,7 @@ export default {
   },
   mounted () {
     axios
-      .get('http://localhost:8001/user', { withCredentials: true })
+      .get(`http://localhost:${process.env.VUE_APP_PORT}/user`, { withCredentials: true })
       .then(res => {
         if (res.data.success) {
           // console.log(res.data.user)
@@ -141,7 +151,7 @@ export default {
       // Adding the book to the corresponding collection : favorites or library:
       const bookToAddID = bookId
       axios
-        .post('http://localhost:8001/user/library/allbooks', { bookToAddID }, { withCredentials: true })
+        .post(`http://localhost:${process.env.VUE_APP_PORT}/user/library/allbooks`, { bookToAddID }, { withCredentials: true })
         .then(res => {
           if (res.data.success) {
             // console.log(res.data)
@@ -168,12 +178,12 @@ export default {
     addToFavorites (bookId) {
       const bookToAddID = bookId
       axios
-        .post('http://localhost:8001/user/library/favorites', { bookToAddID }, { withCredentials: true })
+        .post(`http://localhost:${process.env.VUE_APP_PORT}/user/library/favorites`, { bookToAddID }, { withCredentials: true })
         .then(res => {
           if (res.data.success) {
             // If the book is successfully added to the favorites categ., the updated userlibrary (allBooks) is sent to the parent component too:
             axios
-              .get('http://localhost:8001/user/library/', { withCredentials: true })
+              .get(`http://localhost:${process.env.VUE_APP_PORT}/user/library/`, { withCredentials: true })
               .then(resp => {
                 if (resp.data.success) {
                   // console.log('resp', resp.data.userLibrary)
@@ -209,7 +219,7 @@ export default {
       if (collection === 'library') {
         const bookToDeleteID = bookId
         axios
-          .delete('http://localhost:8001/user/library/allbooks', { withCredentials: true, data: { bookToDeleteID } })
+          .delete(`http://localhost:${process.env.VUE_APP_PORT}/user/library/allbooks`, { withCredentials: true, data: { bookToDeleteID } })
           .then(res => {
             // console.log(res)
             if (res.data.success) {
@@ -235,7 +245,7 @@ export default {
           })
         // Deleting the book from the favorites too, if found in the collection:
         axios
-          .delete('http://localhost:8001/user/library/favorites', { withCredentials: true, data: { bookToDeleteID } })
+          .delete(`http://localhost:${process.env.VUE_APP_PORT}/user/library/favorites`, { withCredentials: true, data: { bookToDeleteID } })
           .then(res => {
             if (res.data.success) {
               this.$emit('updated-favorites',
@@ -257,7 +267,7 @@ export default {
       if (collection === 'favorites') {
         const bookToDeleteID = bookId
         axios
-          .delete('http://localhost:8001/user/library/favorites', { withCredentials: true, data: { bookToDeleteID } })
+          .delete(`http://localhost:${process.env.VUE_APP_PORT}/user/library/favorites`, { withCredentials: true, data: { bookToDeleteID } })
           .then(res => {
             // console.log(res)
             if (res.data.success) {
@@ -282,6 +292,43 @@ export default {
             return console.log(err)
           })
       }
+    },
+    AddToAlreadyRead (bookId) {
+      //  Adding the book to "already read" category:
+      const bookToAddID = bookId
+      axios
+        .post(`http://localhost:${process.env.VUE_APP_PORT}/user/library/alreadyread`, { bookToAddID }, { withCredentials: true })
+        .then(res => {
+          if (res.data.success) {
+            console.log(res.data)
+            // Displaying a success notification
+            this.$buefy.toast.open({
+              message: 'Livre ajouté à la collection "Déjà lu"',
+              type: 'is-success'
+            })
+          }
+        })
+        .catch(err => {
+          // Displaying an error notification
+          this.$buefy.toast.open({
+            message: 'Livre déjà dans la collection "Déjà lu"',
+            type: 'is-danger'
+          })
+          return console.log(err)
+        })
+        //  Adding the book to "all books" category:
+      // axios
+      //   .post(`http://localhost:${process.env.VUE_APP_PORT}/user/library/allbooks`, { bookToAddID }, { withCredentials: true })
+      //   .then(res => {
+      //     if (res.data.success) {
+      //       // console.log(res.data)
+      //       this.$emit('updated-library',
+      //         {
+      //           updatedLibrary: res.data.userLibrary
+      //         })
+      //     }
+      //   })
+      //   .catch(err => console.error(err))
     }
   }
 }
