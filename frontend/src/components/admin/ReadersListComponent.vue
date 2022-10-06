@@ -41,7 +41,7 @@ export default {
     },
     getFilteredData () {
       if (this.getSearchbarValue !== '') {
-        const filteredData = this.usersList.filter(user => JSON.stringify(user).includes(this.searchbarValue))
+        const filteredData = this.usersList.filter(user => JSON.stringify(user).toLowerCase().includes(this.searchbarValue.toLocaleLowerCase()))
         return filteredData
       }
       return this.usersList
