@@ -41,7 +41,7 @@ export default {
     },
     getFilteredData () {
       if (this.getSearchbarValue !== '') {
-        const filteredData = this.bookList.filter(book => JSON.stringify(book).includes(this.searchbarValue))
+        const filteredData = this.bookList.filter(book => JSON.stringify(book).toLowerCase().includes(this.searchbarValue.toLowerCase()))
         return filteredData
       }
       return this.bookList
