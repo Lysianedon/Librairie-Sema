@@ -28,7 +28,8 @@
               <b-tooltip
                 label="Ajouter aux favoris"
                 type="is-black"
-                position="is-top">
+                position="is-top"
+                v-if="currentCollection !== 'favoris'">
               <font-awesome-icon
                 icon="fa-solid fa-heart"
                 color=" rgb(108, 105, 105)"
@@ -280,7 +281,7 @@ export default {
           })
       }
       // --------------------------- IF COLLECTION = FAVORITES ---------------
-      if (collection === 'favorites') {
+      if (collection === 'favorites' || collection === 'favoris') {
         const bookToDeleteID = bookId
         axios
           .delete(`http://localhost:${process.env.VUE_APP_PORT}/user/library/favorites`, { withCredentials: true, data: { bookToDeleteID } })
@@ -351,19 +352,6 @@ export default {
           })
           return console.log(err)
         })
-        //  Adding the book to "all books" category:
-      // axios
-      //   .post(`http://localhost:${process.env.VUE_APP_PORT}/user/library/allbooks`, { bookToAddID }, { withCredentials: true })
-      //   .then(res => {
-      //     if (res.data.success) {
-      //       // console.log(res.data)
-      //       this.$emit('updated-library',
-      //         {
-      //           updatedLibrary: res.data.userLibrary
-      //         })
-      //     }
-      //   })
-      //   .catch(err => console.error(err))
     }
   }
 }
