@@ -24,84 +24,31 @@
       </div>
       <div class="content" v-if="isUserConnected">
 
-        <!-- <img :src="getImgUrl(getCurrentBanner)" alt="banniere" srcset="" class="banner"> -->
-        <img :src="getImgUrl(getCurrentBanner)" alt="banniere" srcset="" :class=" `banner ${getCurrentCollection === 'favoris'? 'banner-favorites' : ''} ${getCurrentCollection === 'ma bibliotheque'? 'banner-library' : ''} ${getCurrentCollection !== 'favoris' && getCurrentCollection !== 'ma bibliotheque' ?  'home-banner' : ''}` ">
+        <img
+        :src="getImgUrl(getCurrentBanner)"
+        alt="banniere"
+        srcset=""
+        :class="`banner ${getCurrentCollection === 'favoris'? 'banner-favorites' : ''} ${getCurrentCollection === 'ma bibliotheque'? 'banner-library' : ''} ${getCurrentCollection !== 'favoris' && getCurrentCollection !== 'ma bibliotheque' ?  'home-banner' : ''}`">
 
         <h2 class="is-size-1 is-size-2-mobile has-text-centered-mobile"> {{getCurrentSectionTitle}}</h2>
         <div class="books" v-if="getCurrentBookCollection">
-            <div :v-if="typeof getCurrentBookCollection === Array"
-                v-for="(book, index) in getCurrentBookCollection" :key="index"
-                class="book">
-                <div class="icons-options" v-if="isUserConnected">
-                    <b-tooltip
-                    label="Voir"
-                    type="is-black"
-                    position="is-top">
-                    <router-link :to="`/livres/${book._id}`" class="grey">
-                        <font-awesome-icon icon="fa-solid fa-eye" class="icon icon-eye"/>
-                    </router-link>
-                    </b-tooltip>
-
-                    <b-tooltip
-                    label="Ajouter à la bibliothèque"
-                    type="is-black"
-                    position="is-top"
-                    v-if="fromGeneralCollection">
-                    <font-awesome-icon
-                    icon="fa-solid fa-circle-plus"
-                    class="icon"
-                    @click="addToLibrary(book._id)"/>
-                    </b-tooltip>
-
-                    <b-tooltip
-                    label="Ajouter aux favoris"
-                    type="is-black"
-                    position="is-top"
-                    v-if="getCurrentCollection !== 'favoris'">
-                    <font-awesome-icon
-                    icon="fa-solid fa-heart"
-                    color=" rgb(108, 105, 105)"
-                    class="icon icon-red"
-                    @click="addToFavorites(book._id)"/>
-                    </b-tooltip>
-
-                    <b-tooltip
-                    label="Supprimer"
-                    type="is-black"
-                    position="is-top"
-                    v-if="!fromGeneralCollection">
-                    <font-awesome-icon
-                    icon="fa-solid fa-trash-can"
-                    class="icon icon-trashcan"
-                    @click="deleteFromCollection(book._id, getCurrentCollection)"/>
-                    </b-tooltip>
-
-                </div>
-              <router-link :to="`/livres/${book._id}`">
-                <img
-                class="img"
-                :src="book.image"
-                :alt="`page de couverture du livre : \'${book.title} \' `"
-                srcset="">
-              </router-link>
-              <router-link :to="`/livres/${book._id}`">
-                <h3>{{book.title}}</h3>
-              </router-link>
-
-              <h4>De: {{book.author}}</h4>
-              <h4>Genre: {{book.genre}}</h4>
-              <h4>Pays: {{book.country}}</h4>
-          </div>
+                <Book
+                v-if="isUserConnected"
+                :bookSelection="getCurrentBookCollection"
+                :currentCollection="getCurrentCollection"
+                @updated-library="updateLibrary"/>
       </div>
+
         <h2 class="is-size-1 is-size-2-mobile has-text-centered-mobile"
-        v-if="getCurrentCollection === currentCollections.bibliotheque">Déjà lus</h2>
+        v-if="getCurrentCollection === currentCollections.bibliotheque">Déjà lus ({{getNumberOfAlreadyReadBooks}})</h2>
         <h3 class="h3-notif-no-books-read" v-if="getAlreadyReadBookCollection.length === 0 && getCurrentCollection === currentCollections.bibliotheque">Vous n'avez lu aucun livre pour le moment.</h3>
         <div class="container-books"
         v-if="getCurrentCollection === currentCollections.bibliotheque">
             <Book
             :bookSelection="getAlreadyReadBookCollection"
             :fromGeneralCollection="false"
-            :currentCollection="'library'"
+            :fromAlreadyReadCollection="true"
+            :currentCollection="'alreadyread'"
             @updated-library="updateLibrary"/>
         </div>
 
@@ -238,6 +185,9 @@ export default {
     },
     getAlreadyReadBookCollection () {
       return this.alreadyReadBookSelection
+    },
+    getNumberOfAlreadyReadBooks () {
+      return this.alreadyReadBookSelection.length
     }
   },
   mounted () {
@@ -700,12 +650,25 @@ export default {
       }
     },
     updateLibrary (payload) {
-      if (payload.updatedLibrary) {
+      if (payload.updatedAlreadyRead) {
         axios
           .get(`http://localhost:${process.env.VUE_APP_PORT}/user/library`, { withCredentials: true })
           .then(res => {
             if (res.data.success) {
               this.alreadyReadBookSelection = res.data.userLibrary.alreadyRead
+            }
+            return null
+          })
+          .catch(err => {
+            return err
+          })
+      }
+      if (payload.updatedLibrary) {
+        axios
+          .get(`http://localhost:${process.env.VUE_APP_PORT}/user/library`, { withCredentials: true })
+          .then(res => {
+            if (res.data.success) {
+              this.bookSelection = res.data.userLibrary
             }
             return null
           })
@@ -776,7 +739,7 @@ export default {
   padding-top: 1vh;
   font-size: 1.4rem;
 }
-.book{
+/* .book{
     height: 75vh;
     height: fit-content;
     width: 17vw;
@@ -784,24 +747,24 @@ export default {
     padding: 2.5% 1.5% 3% 1.5%;
     border-radius: 5px;
     cursor: pointer;
-}
+} */
 
 .book:hover{
   /* border: 1px solid rgb(207, 203, 203); */
     box-shadow: 0 2px 4px rgba(128, 124, 124, 0.25), 0 2px 7px rgba(100, 98, 98, 0.22);
 }
 
-.books{
+/* .books{
   display: flex;
   flex-wrap: wrap;
-}
+} */
 
-.img{
+/* .img{
     margin: auto;
     border-radius: 3px;
     box-shadow: 0 8px 10px rgba(108, 106, 106, 0.25), 0 2px 7px rgba(188, 186, 186, 0.22);
     position: relative !important;
-}
+} */
 
 h2{
   font-family: 'Ibarra Real Nova', serif;

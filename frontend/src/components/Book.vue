@@ -39,11 +39,23 @@
               <b-tooltip
                 label="Marquer comme lu"
                 type="is-black"
-                position="is-top">
+                position="is-top"
+                v-if="!fromAlreadyReadCollection">
                 <font-awesome-icon
                   icon="fa-solid fa-book-open"
                   class="icon"
-                  @click="AddToAlreadyRead(book._id)"/>
+                  @click="AddToAlreadyRead(book._id), deleteFromCollection(book._id, currentCollection)"/>
+              </b-tooltip>
+
+              <b-tooltip
+                label="Marquer comme non lu"
+                type="is-black"
+                position="is-top"
+                v-if="fromAlreadyReadCollection">
+                <font-awesome-icon
+                  icon="fa-solid fa-book"
+                  class="icon"
+                  @click="deleteFromCollection(book._id, currentCollection),addToLibrary(book._id)"/>
               </b-tooltip>
 
               <b-tooltip
@@ -125,6 +137,10 @@ export default {
       required: false
     },
     fromGeneralCollection: {
+      type: Boolean,
+      required: false
+    },
+    fromAlreadyReadCollection: {
       type: Boolean,
       required: false
     },
@@ -216,7 +232,7 @@ export default {
         })
     },
     deleteFromCollection (bookId, collection) {
-      if (collection === 'library') {
+      if (collection === 'ma bibliotheque') {
         const bookToDeleteID = bookId
         axios
           .delete(`http://localhost:${process.env.VUE_APP_PORT}/user/library/allbooks`, { withCredentials: true, data: { bookToDeleteID } })
@@ -290,6 +306,25 @@ export default {
               type: 'is-danger'
             })
             return console.log(err)
+          })
+      }
+      // --------------------------- IF COLLECTION = ALREADY READ ---------------
+      if (collection === 'alreadyread') {
+        const bookToDeleteID = bookId
+        axios
+          .delete(`http://localhost:${process.env.VUE_APP_PORT}/user/library/alreadyread`, { withCredentials: true, data: { bookToDeleteID } })
+          .then(res => {
+            if (res.data.success) {
+              this.$emit('updated-library',
+                {
+                  updatedAlreadyRead: res.data.userAlreadyreadLibrary
+                })
+              // Displaying a success notification
+              this.$buefy.toast.open({
+                message: 'Supprimé de la liste "Déjà lu"',
+                type: 'is-success'
+              })
+            }
           })
       }
     },

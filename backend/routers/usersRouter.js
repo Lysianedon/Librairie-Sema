@@ -317,7 +317,7 @@ router.post('/library/alreadyread', auth, checkIfBookAlreadyInList, async (req,r
 })
 
 // ---------------- DELETE A BOOK IN USER'S "ALREADY READ" CATEGORY ----------------
-router.delete('/library/alreadyread', auth,checkIfBookAlreadyInList, deleteBookFromAllBookCategory, async (req,res) => {
+router.delete('/library/alreadyread', auth,checkIfBookAlreadyInList, async (req,res) => {
     //GET BOOK ID AND DELETE IT :
     const userId = req.userId;
     let userAlreadyreadLibrary, deletedBook = req.body.bookToDeleteID, updatedLibrary;
