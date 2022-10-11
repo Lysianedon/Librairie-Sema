@@ -800,7 +800,6 @@ button{
     margin: 3% 2% !important;
     height: 42vh;
   }
-
   .book{
     height: fit-content;
     width: 29vw;
