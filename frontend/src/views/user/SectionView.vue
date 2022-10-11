@@ -180,7 +180,6 @@ export default {
     },
     getCurrentBookCollection (sectionview) {
       sectionview = this.$route.params.sectionview
-      // console.log(' this.getBackendRoute: ', this.getBackendRoute)
       return this.getBookCollection(sectionview, this.getBackendRoute)
     },
     getAlreadyReadBookCollection () {
@@ -739,32 +738,6 @@ export default {
   padding-top: 1vh;
   font-size: 1.4rem;
 }
-/* .book{
-    height: 75vh;
-    height: fit-content;
-    width: 17vw;
-    margin: 1%;
-    padding: 2.5% 1.5% 3% 1.5%;
-    border-radius: 5px;
-    cursor: pointer;
-} */
-
-.book:hover{
-  /* border: 1px solid rgb(207, 203, 203); */
-    box-shadow: 0 2px 4px rgba(128, 124, 124, 0.25), 0 2px 7px rgba(100, 98, 98, 0.22);
-}
-
-/* .books{
-  display: flex;
-  flex-wrap: wrap;
-} */
-
-/* .img{
-    margin: auto;
-    border-radius: 3px;
-    box-shadow: 0 8px 10px rgba(108, 106, 106, 0.25), 0 2px 7px rgba(188, 186, 186, 0.22);
-    position: relative !important;
-} */
 
 h2{
   font-family: 'Ibarra Real Nova', serif;
@@ -778,80 +751,15 @@ h3{
     line-height: 155% !important;
 }
 
-h3::first-letter{
-  text-transform: capitalize;
-}
-
-h4{
-    text-transform: capitalize;
-    font-size: 1rem !important;
-    font-weight: lighter !important;
-    margin-bottom: 3%;
-}
-
-.personalised-suggestion{
-  display: flex;
-  justify-content: space-between;
-  width: 65vw;
-  padding: 2.5% 1.5% 3% 1.5%;
-  border-radius: 5px;
-  cursor: default;
-}
-
 p{
   line-height: 190%;
   width: 90%;
   text-align: justify;
 }
-.synopsis-title{
-  font-weight: bold !important;
-  margin-top: 6%;
-}
-
-.btns{
-  display: flex;
-}
 
 button{
   font-weight: bold;
 }
-
-.icons-options{
-  display: flex;
-  justify-content: space-around;
-  width: 80%;
-  margin: auto 0 auto 10%;
-  background-color: white;
-  opacity: 0;
-  margin-bottom: 5%;
-  color: rgb(77, 76, 76);
-}
-
-.grey{
-  color: rgb(77, 76, 76);
-}
-.icon{
-  width: 19px;
-}
-
-.icon-trashcan{
-  width: 17px;
-}
-.icon-eye{
-  width: 21px;
-}
-
-.book:hover > * {
-  opacity: 1;
-}
-
-.icon:hover{
-  color: black;
-}
-.icon-red:hover{
-  color: red;
-}
-
 .haut-de-page{
   margin-left: 72vw;
   padding-bottom: .8%;
