@@ -130,6 +130,7 @@ h3{
   justify-content: space-between;
   /* border: 1px solid black; */
   width: 28vw;
+  margin-top: 3vh;
 }
 h2{
   font-size: 12rem;
@@ -153,7 +154,12 @@ p{
   border: none;
 }
 /* RESPONSIVE --  RESPONSIVE -- RESPONSIVE -- RESPONSIVE -- RESPONSIVE -- */
-
+@media(min-width: 1500px){
+  h2{
+    font-size: 14vw;
+    margin-top: 3vh;
+  }
+}
 @media(max-width: 1170px){
   .oups{
     font-size: 4rem;
