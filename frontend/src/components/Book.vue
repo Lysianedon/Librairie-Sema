@@ -45,7 +45,7 @@
                 <font-awesome-icon
                   icon="fa-solid fa-book-open"
                   class="icon"
-                  @click="AddToAlreadyRead(book._id), deleteFromCollection(book._id, currentCollection, false)"/>
+                  @click="AddToAlreadyRead(book._id)"/>
               </b-tooltip>
 
               <b-tooltip
@@ -165,23 +165,25 @@ export default {
       })
   },
   methods: {
-    addToLibrary (bookId) {
+    addToLibrary (bookId, notification = true) {
       // Adding the book to the corresponding collection : favorites or library:
       const bookToAddID = bookId
       axios
         .post(`http://localhost:${process.env.VUE_APP_PORT}/user/library/allbooks`, { bookToAddID }, { withCredentials: true })
         .then(res => {
           if (res.data.success) {
-            // console.log(res.data)
+            // console.log('added to library', res.data)
             this.$emit('updated-library',
               {
                 updatedLibrary: res.data.userLibrary
               })
-            // Displaying a success notification
-            this.$buefy.toast.open({
-              message: 'Ajouté à la bibliothèque',
-              type: 'is-success'
-            })
+            if (notification) {
+              // Displaying a success notification
+              this.$buefy.toast.open({
+                message: 'Ajouté à la bibliothèque',
+                type: 'is-success'
+              })
+            }
           }
         })
         .catch(err => {
@@ -208,6 +210,8 @@ export default {
               message: 'Ajouté aux favoris',
               type: 'is-success'
             })
+            // Adding the book to the userLibrary too:
+            this.addToLibrary(bookId, false)
           }
         })
         .catch(err => {
@@ -225,13 +229,15 @@ export default {
         axios
           .delete(`http://localhost:${process.env.VUE_APP_PORT}/user/library/allbooks`, { withCredentials: true, data: { bookToDeleteID } })
           .then(res => {
-            // console.log(res)
             if (res.data.success) {
-              console.log(res.data)
+              // console.log(res.data)
               this.$emit('updated-library',
                 {
                   updatedLibrary: res.data.userLibrary
                 })
+              this.deleteFromCollection(bookId, 'favoris', false)
+              this.deleteFromCollection(bookId, 'alreadyread', false)
+
               // Displaying a success notification
               if (notification) {
                 this.$buefy.toast.open({
@@ -307,16 +313,9 @@ export default {
         .then(res => {
           if (res.data.success) {
             // console.log(res.data)
-            axios
-              .post(`http://localhost:${process.env.VUE_APP_PORT}/user/library/allbooks`, { bookToAddID }, { withCredentials: true })
-              .then(res => {
-                if (res.data.success) {
-                  this.$emit('updated-library',
-                    {
-                      updatedLibrary: res.data.userLibrary
-                    })
-                }
-              })
+            // Adding the book to the userLibrary too:
+            this.addToLibrary(bookId, false)
+
             // Displaying a success notification
             this.$buefy.toast.open({
               message: 'Livre ajouté à la collection "Déjà lu"',

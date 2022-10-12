@@ -36,6 +36,7 @@
         <!------------- BOOK SECTION ------------------>
         <div class="books" v-if="getCurrentBookCollection">
           <Book
+          class="book"
           v-if="isUserConnected"
           :bookSelection="getCurrentBookCollection"
           :currentCollection="getCurrentCollection"
@@ -49,6 +50,7 @@
         <div class="container-books"
         v-if="getCurrentCollection === currentCollections.bibliotheque">
             <Book
+            class="book"
             :bookSelection="getAlreadyReadBookCollection"
             :fromGeneralCollection="false"
             :fromAlreadyReadCollection="true"
@@ -736,6 +738,19 @@ export default {
 .login-link:hover{
   font-weight: bold;
 }
+.books{
+  display: flex;
+  flex-wrap: wrap;
+}
+/* .book{
+  height: 75vh;
+  height: fit-content;
+  width: 17vw;
+  margin: 1%;
+  padding: 2.5% 1.5% 3% 1.5%;
+  border-radius: 5px;
+  cursor: pointer;
+} */
 .h3-notif-no-books-read{
   margin-left: 1vw;
   color: rgb(171, 168, 168);
