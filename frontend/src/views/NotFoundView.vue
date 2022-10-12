@@ -1,7 +1,7 @@
 <template>
     <div class="wrapper">
       <div class="login-invitation">
-        <h1> <span class="big-yellow"> <span class="oups">Oups...</span> La page ou le livre recherché(e) n'est pas ici... </span></h1>
+        <h1> <span class="big-yellow"> <span class="oups">Oups...</span> La page ou le livre recherché n'est pas ici... </span></h1>
         <h3>Ou peut-être n' a-t-il/elle jamais existé et n'est que le fruit de votre imagination...Imagination qui donnera naissance à votre tout premier livre à succès, qui sera bien évidemment répertorié sur Sema. Qui sait !</h3>
         <p>En attendant que vous preniez la plume...</p>
         <router-link to="/"><div class="btn-valider">Retour à la page d'accueil</div></router-link>
