@@ -178,40 +178,39 @@ router.post('/library/allbooks', auth, checkIfBookAlreadyInList, async (req,res)
     //GET BOOK ID AND ADD IT :
     const userId = req.userId;
     let userLibrary, addedBook = req.body.bookToAddID, updatedLibrary;
-    
-    //Guard
-    if (req.isBookAlreadyInAllBooksCategory === true) {
-        return res.status(400).json({ error: true, alreadyInList: true, message: "Book already in the list !" });     
-    }
-
     //Finding the user:
     try {
-        userLibrary = await User.findById(userId)
+        userLibrary = await User.findById(userId).populate({path: 'books.allBooks', model: 'Books'})
     } catch (error) {
         return res.status(400).json({ error: true, message: "Bad request."  });     
     }
-    //Selecting user's library:
     userLibrary = userLibrary.books.allBooks;
-    //Adding the new book's ID to the library:
-    updatedLibrary = [...userLibrary, mongoose.Types.ObjectId(addedBook)];
-
-    try {
-        userLibrary = await User.findByIdAndUpdate(userId, 
-            {
-                $set : {
-                    'books.allBooks': updatedLibrary //Updating user's library in user Schema
-                }
-            }, {new: true}).populate({path: 'books.allBooks', model: 'Books'});
-        } catch (error) {
-            return res.status(400).json({ error: true, message: "Bad request."  });   
-        }
-
-    userLibrary = userLibrary.books.allBooks;
+    //Guard
+    if (!req.isBookAlreadyInAllBooksCategory || req.isBookAlreadyInAllBooksCategory === false) {
+        // return res.status(400).json({ error: true, alreadyInList: true, message: "Book already in the list !" });     
+        //Selecting user's library:
+       
+        //Adding the new book's ID to the library:
+        updatedLibrary = [...userLibrary, mongoose.Types.ObjectId(addedBook)];
+    
+        try {
+            userLibrary = await User.findByIdAndUpdate(userId, 
+                {
+                    $set : {
+                        'books.allBooks': updatedLibrary //Updating user's library in user Schema
+                    }
+                }, {new: true}).populate({path: 'books.allBooks', model: 'Books'});
+            } catch (error) {
+                return res.status(400).json({ error: true, message: "Bad request."  });   
+            }
+    
+        userLibrary = userLibrary.books.allBooks;
+    }
     return res.status(201).json({success: true, userLibrary})
 })
 
 // ---------------- ADD A BOOK IN USER'S FAVORITES CATEGORY ----------------
-router.post('/library/favorites', auth, addBookToAllBooksCategory, checkIfBookAlreadyInList, async (req,res) => {
+router.post('/library/favorites', auth, checkIfBookAlreadyInList, async (req,res) => {
     //GET BOOK ID AND ADD IT :
     const userId = req.userId;
     let userFavoritesLibrary, addedBook = req.body.bookToAddID, updatedLibrary;

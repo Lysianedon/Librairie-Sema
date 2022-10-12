@@ -344,6 +344,7 @@ export default {
     width: 17vw;
     margin: 1%;
     padding: 2.5% 1.5% 3% 1.5%;
+    padding: 18px 20px 13px 20px;
     border-radius: 5px;
     cursor: pointer;
 }

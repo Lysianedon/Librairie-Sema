@@ -35,12 +35,14 @@
         <h2 class="is-size-2 has-text-centered-mobile"> {{getCurrentSectionTitle}}</h2>
         <!------------- BOOK SECTION ------------------>
         <div class="books" v-if="getCurrentBookCollection">
-          <Book
-          class="book"
-          v-if="isUserConnected"
-          :bookSelection="getCurrentBookCollection"
-          :currentCollection="getCurrentCollection"
-          @updated-library="updateLibrary"/>
+          <div v-for="(book, index) in getCurrentBookCollection" :key="index">
+            <Book
+            class="book-component"
+            v-if="isUserConnected"
+            :bookSelection="[book]"
+            :currentCollection="getCurrentCollection"
+            @updated-library="updateLibrary"/>
+          </div>
         </div>
         <!------------- SECTION TITLE FOR "ALREADY READ" SECTION-------------->
         <h2 class="is-size-2 has-text-centered-mobile"
@@ -50,7 +52,6 @@
         <div class="container-books"
         v-if="getCurrentCollection === currentCollections.bibliotheque">
             <Book
-            class="book"
             :bookSelection="getAlreadyReadBookCollection"
             :fromGeneralCollection="false"
             :fromAlreadyReadCollection="true"
@@ -688,8 +689,8 @@ export default {
 
 <style scoped>
 .content, .login-wrapper{
-  margin: 3% auto 0 22vw;
-  width: 91vw;
+  margin: 3% auto 0 20vw;
+  width: 92vw;
 }
 
 .nav{
@@ -741,16 +742,15 @@ export default {
 .books{
   display: flex;
   flex-wrap: wrap;
+  width: 92%;
 }
-/* .book{
-  height: 75vh;
-  height: fit-content;
+
+.book-component{
+  margin: 0 1.2vw;
   width: 17vw;
-  margin: 1%;
-  padding: 2.5% 1.5% 3% 1.5%;
-  border-radius: 5px;
-  cursor: pointer;
-} */
+  height: 70vh;
+}
+
 .h3-notif-no-books-read{
   margin-left: 1vw;
   color: rgb(171, 168, 168);
@@ -819,9 +819,12 @@ button{
     margin: 3% 2% !important;
     height: 42vh;
   }
-  .book{
-    height: fit-content;
+  .books{
+    margin: auto;
+  }
+  .book-component{
     width: 29vw;
+    margin: 0;
   }
 
   .haut-de-page{
@@ -833,10 +836,11 @@ button{
     width: 100vw;
   }
 }
+
 /*-------------  TABLET MODE ------------ */
 
 @media(max-width: 630px){
-  .book{
+  .book-component{
     height: fit-content;
     width: 40vw;
     margin: 3%;
@@ -848,10 +852,6 @@ button{
     flex-direction: column;
     width: 100vw;
     overflow-x: hidden;
-  }
-  p{
-    text-align: left;
-    width: 95%;
   }
 }
 /*-------------  MOBILE MODE ------------ */
@@ -875,7 +875,7 @@ button{
     content:url('@/assets/home-banner-mobile.png') !important;
   }
 
-  .book{
+  .book-component{
     height: fit-content;
     width: 80vw;
     margin:auto;
@@ -894,10 +894,10 @@ button{
   .login-invitation h2{
     font-size: 1.3rem !important;
   }
-  .book{
+  .book-component{
     height: fit-content;
-    width: 80vw;
-    margin-left:5%;
+    width: 78vw;
+    margin-left:0;
   }
 }
 
