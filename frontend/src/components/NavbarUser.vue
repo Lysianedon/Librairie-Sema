@@ -86,7 +86,6 @@ export default {
     }
   },
   mounted () {
-    console.log('process.env.VUE_APP_TEST}', process.env.VUE_APP_TEST)
     axios
       .get(`http://localhost:${process.env.VUE_APP_PORT}/user/`, { withCredentials: true })
       .then(res => {

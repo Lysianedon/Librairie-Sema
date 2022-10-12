@@ -7,7 +7,8 @@
         <SidebarMobile/>
         </div>
 
-      <a href="" id="scrollToTop"></a>
+        <a href="" id="scrollToTop"></a>
+      <!--------------- BANNER ---------------->
       <div class="login-wrapper" v-if="!isUserConnected">
           <img :src="getImgUrl(getCurrentBanner)" alt="banniere" srcset="" class="banner home-banner">
 
@@ -23,25 +24,28 @@
           </div>
       </div>
       <div class="content" v-if="isUserConnected">
-
+        <!--------------- BANNER ---------------->
         <img
         :src="getImgUrl(getCurrentBanner)"
         alt="banniere"
         srcset=""
         :class="`banner ${getCurrentCollection === 'favoris'? 'banner-favorites' : ''} ${getCurrentCollection === 'ma bibliotheque'? 'banner-library' : ''} ${getCurrentCollection !== 'favoris' && getCurrentCollection !== 'ma bibliotheque' ?  'home-banner' : ''}`">
 
-        <h2 class="is-size-1 is-size-2-mobile has-text-centered-mobile"> {{getCurrentSectionTitle}}</h2>
+        <!------------- SECTION TITLE -------------->
+        <h2 class="is-size-2 has-text-centered-mobile"> {{getCurrentSectionTitle}}</h2>
+        <!------------- BOOK SECTION ------------------>
         <div class="books" v-if="getCurrentBookCollection">
-                <Book
-                v-if="isUserConnected"
-                :bookSelection="getCurrentBookCollection"
-                :currentCollection="getCurrentCollection"
-                @updated-library="updateLibrary"/>
-      </div>
-
-        <h2 class="is-size-1 is-size-2-mobile has-text-centered-mobile"
+          <Book
+          v-if="isUserConnected"
+          :bookSelection="getCurrentBookCollection"
+          :currentCollection="getCurrentCollection"
+          @updated-library="updateLibrary"/>
+        </div>
+        <!------------- SECTION TITLE FOR "ALREADY READ" SECTION-------------->
+        <h2 class="is-size-2 has-text-centered-mobile"
         v-if="getCurrentCollection === currentCollections.bibliotheque">Déjà lus ({{getNumberOfAlreadyReadBooks}})</h2>
         <h3 class="h3-notif-no-books-read" v-if="getAlreadyReadBookCollection.length === 0 && getCurrentCollection === currentCollections.bibliotheque">Vous n'avez lu aucun livre pour le moment.</h3>
+        <!------------- BOOK SECTION : ALREADY READ ------------------>
         <div class="container-books"
         v-if="getCurrentCollection === currentCollections.bibliotheque">
             <Book

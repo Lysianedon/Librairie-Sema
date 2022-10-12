@@ -45,7 +45,7 @@
                 <font-awesome-icon
                   icon="fa-solid fa-book-open"
                   class="icon"
-                  @click="AddToAlreadyRead(book._id), deleteFromCollection(book._id, currentCollection)"/>
+                  @click="AddToAlreadyRead(book._id), deleteFromCollection(book._id, currentCollection, false)"/>
               </b-tooltip>
 
               <b-tooltip
@@ -113,6 +113,7 @@
             <div class="btns" v-if="isUserConnected">
               <button class="btn-option" @click="addToLibrary(personalisedSuggestion._id)">Ajouter à ma bibliothèque</button>
               <button class="btn-option" @click="addToFavorites(personalisedSuggestion._id)">Ajouter à mes favoris</button>
+              <button class="btn-option" @click="AddToAlreadyRead(personalisedSuggestion._id)">Ajouter à la section "Déjà lu"</button>
             </div>
           </div>
     </div>
@@ -198,20 +199,6 @@ export default {
         .post(`http://localhost:${process.env.VUE_APP_PORT}/user/library/favorites`, { bookToAddID }, { withCredentials: true })
         .then(res => {
           if (res.data.success) {
-            // If the book is successfully added to the favorites categ., the updated userlibrary (allBooks) is sent to the parent component too:
-            axios
-              .get(`http://localhost:${process.env.VUE_APP_PORT}/user/library/`, { withCredentials: true })
-              .then(resp => {
-                if (resp.data.success) {
-                  // console.log('resp', resp.data.userLibrary)
-                  this.$emit('updated-library',
-                    {
-                      updatedLibrary: resp.data.userLibrary.allBooks
-                    })
-                }
-              })
-              .catch(err => console.log('err', err))
-            // console.log(res.data)
             this.$emit('updated-favorites',
               {
                 updatedFavorites: res.data.userFavoritesLibrary
@@ -232,7 +219,7 @@ export default {
           return console.log(err)
         })
     },
-    deleteFromCollection (bookId, collection) {
+    deleteFromCollection (bookId, collection, notification = true) {
       if (collection === 'ma bibliotheque') {
         const bookToDeleteID = bookId
         axios
@@ -246,29 +233,12 @@ export default {
                   updatedLibrary: res.data.userLibrary
                 })
               // Displaying a success notification
-              this.$buefy.toast.open({
-                message: 'Supprimé de votre bibliothèque',
-                type: 'is-success'
-              })
-            }
-          })
-          .catch(err => {
-            // Displaying an error notification
-            this.$buefy.toast.open({
-              message: 'Oups...Erreur, veuillez réessayer',
-              type: 'is-danger'
-            })
-            return console.log(err)
-          })
-        // Deleting the book from the favorites too, if found in the collection:
-        axios
-          .delete(`http://localhost:${process.env.VUE_APP_PORT}/user/library/favorites`, { withCredentials: true, data: { bookToDeleteID } })
-          .then(res => {
-            if (res.data.success) {
-              this.$emit('updated-favorites',
-                {
-                  updatedFavorites: res.data.userFavoritesLibrary
+              if (notification) {
+                this.$buefy.toast.open({
+                  message: 'Supprimé de votre bibliothèque',
+                  type: 'is-success'
                 })
+              }
             }
           })
           .catch(err => {
@@ -336,7 +306,17 @@ export default {
         .post(`http://localhost:${process.env.VUE_APP_PORT}/user/library/alreadyread`, { bookToAddID }, { withCredentials: true })
         .then(res => {
           if (res.data.success) {
-            console.log(res.data)
+            // console.log(res.data)
+            axios
+              .post(`http://localhost:${process.env.VUE_APP_PORT}/user/library/allbooks`, { bookToAddID }, { withCredentials: true })
+              .then(res => {
+                if (res.data.success) {
+                  this.$emit('updated-library',
+                    {
+                      updatedLibrary: res.data.userLibrary
+                    })
+                }
+              })
             // Displaying a success notification
             this.$buefy.toast.open({
               message: 'Livre ajouté à la collection "Déjà lu"',
@@ -426,7 +406,7 @@ h4 a {
 
 p{
   line-height: 190%;
-  width: 90%;
+  width: 97%;
   text-align: justify;
 }
 .synopsis-title{
@@ -440,6 +420,7 @@ p{
 
 button{
   font-weight: bold;
+  /* margin-left: .1rem; */
 }
 
 .icons-options{
