@@ -16,7 +16,7 @@
         class="title-button"
         v-if="userLibrary && userLibrary.allBooks && userLibrary.allBooks.length > 0">
         <h2>MA BIBLIOTHÈQUE</h2>
-        <router-link to="/section/ma-bibliotheque" class="btn-afficher-tout">Afficher tout</router-link>
+        <router-link to="/section/ma-bibliotheque" class="btn-afficher-tout btn-afficher-tout-bigger">Afficher tout</router-link>
       </div>
       <div class="container-books">
         <Book
@@ -57,7 +57,7 @@
 
       <div class="title-button">
         <h2>TOUS LES LIVRES</h2>
-        <router-link to="/section/tous-les-livres" class="btn-afficher-tout">Afficher tout</router-link>
+        <router-link to="/section/tous-les-livres" class="btn-afficher-tout btn-afficher-tout-bigger">Afficher tout</router-link>
       </div>
 
       <div class="container-books">
@@ -274,7 +274,6 @@ h2{
   .nav{
     display: none;
   }
-
   .sidebar-mobile{
     display: block;
     position: fixed;
@@ -282,7 +281,6 @@ h2{
     left: 2%;
     z-index: 2;
   }
-
   .content{
     margin: auto;
     width: 95vw;
@@ -338,6 +336,10 @@ h2{
     height: 7vh;
     text-align: center;
     overflow-wrap: break-word;
+  }
+  .btn-afficher-tout-bigger{
+    padding: 0 2% 5% 2% !important;
+    /* width: 50vw; */
   }
 
   h2{

@@ -8,7 +8,7 @@
       <SidebarMobile/>
     </div>
   <div class="content">
-    <img src="@/assets/banner.png" alt="banniere de page d'accueil" srcset="" class="banner">
+    <img src="@/assets/banner.png" alt="banniere de page d'accueil" srcset="" class="banner home-banner">
 
     <div class="personalised-suggestion">
 
@@ -137,7 +137,10 @@ export default {
     height: 6vh;
   }
 
-  @media(max-width: 425px){
+  @media(max-width: 450px){
+    .home-banner{
+      content:url('@/assets/home-banner-mobile.png') !important;
+    }
     .btn-retour{
       padding: 4%;
     }
