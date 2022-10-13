@@ -41,6 +41,7 @@
             v-if="isUserConnected"
             :bookSelection="[book]"
             :currentCollection="getCurrentCollection"
+            :fromGeneralCollection="fromGeneralCollection"
             @updated-library="updateLibrary"/>
           </div>
         </div>
