@@ -22,9 +22,16 @@
         <Book
         :bookSelection="userLibrary.allBooks"
         :fromGeneralCollection="false"
-        :currentCollection="'library'"
+        :currentCollection="'ma bibliotheque'"
         @updated-library="updateLibrary"/>
       </div>
+
+      <div class="personalisedSelection" v-if="personalisedSuggestion.title">
+          <h2 class="center">SÉLECTIONNÉ POUR VOUS</h2>
+          <Book
+          :personalisedSuggestion="personalisedSuggestion"
+          @updated-library="updateLibrary"/>
+        </div>
 
       <div class="title-button">
         <h2>NOUVEAUTÉS</h2>
@@ -47,13 +54,6 @@
         :fromGeneralCollection="true"
         @updated-library="updateLibrary"/>
       </div>
-
-        <div class="personalisedSelection" v-if="personalisedSuggestion.title">
-          <h2 class="center">SÉLECTIONNÉ POUR VOUS</h2>
-          <Book
-          :personalisedSuggestion="personalisedSuggestion"
-          @updated-library="updateLibrary"/>
-        </div>
 
       <div class="title-button">
         <h2>TOUS LES LIVRES</h2>
