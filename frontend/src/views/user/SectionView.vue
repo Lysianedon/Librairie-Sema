@@ -361,7 +361,7 @@ export default {
             })
             // Step 2 : sorting the books:
             const newlyAddedBooks = flattenBooksOjects.slice().sort((a, b) => b.dateAddedparsedFormat - a.dateAddedparsedFormat)
-            console.log('newlyAddedBooks', newlyAddedBooks)
+            // console.log('newlyAddedBooks', newlyAddedBooks)
             this.bookSelection = newlyAddedBooks
           }
         })
