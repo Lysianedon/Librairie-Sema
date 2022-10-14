@@ -113,7 +113,7 @@
             <div class="btns" v-if="isUserConnected">
               <button class="btn-option" @click="addToLibrary(personalisedSuggestion._id)">Ajouter à ma bibliothèque</button>
               <button class="btn-option" @click="addToFavorites(personalisedSuggestion._id)">Ajouter à mes favoris</button>
-              <button class="btn-option" @click="AddToAlreadyRead(personalisedSuggestion._id)">Ajouter à la section "Déjà lu"</button>
+              <button class="btn-option" @click="AddToAlreadyRead(personalisedSuggestion._id)">Marquer comme "Déjà lu"</button>
             </div>
           </div>
     </div>
