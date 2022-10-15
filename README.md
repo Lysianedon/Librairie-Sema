@@ -2,7 +2,7 @@
 
 # Sema
 
-The literature corner of the afrocurious 
+The literature corner of the afrocurious.
 Sema is an online library specialised in afro-caribean litterature. 
 It provides with a wide selection of books, including personalized suggestions according to your tastes and profile.
 
@@ -20,7 +20,7 @@ In your terminal, run the following commands :
   npm run serve
 
 ```
-Then visit http://localhost:3000 in your browser. 
+Then visit http://localhost:8080 in your browser. 
 
 ## Link to production instance
 Coming soon...
