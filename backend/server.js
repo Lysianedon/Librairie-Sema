@@ -17,7 +17,7 @@ const cookieParser = require("cookie-parser");
 const cors = require("cors");
 app.use(
   cors({
-    origin: "http://localhost:8080",
+    origin: ["http://localhost:8080", "https://lysianedon.github.io"],
     credentials: true,
   })
 );
