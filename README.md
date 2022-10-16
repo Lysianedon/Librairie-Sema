@@ -2,11 +2,11 @@
 # Sema
 ![Homepage's banner Sema](https://github.com/Lysianedon/librairie-sema/blob/master/frontend/src/assets/banner.png?raw=true)
 
-Sema is an online library specialised in afro-caribean litterature. 
+Sema is an online library specialised in afro-caribean litterature. 📚
 It provides with a wide selection of books, including personalized suggestions according to your tastes and profile.
 
 
-## Installation
+## 👩🏾‍💻 Installation
 Start by cloning the repository / opening the folder in your code editor.
 In your terminal, run the following commands : 
 ```bash
@@ -21,10 +21,10 @@ In your terminal, run the following commands :
 ```
 Then visit http://localhost:8080 in your browser. 
 
-## Link to production instance
+## 🚀 Link to production instance
 Coming soon...
 
-## Stacks & features
+## 💻 Stacks & features
 
 ### For the backend:
 - Express JS
@@ -51,14 +51,14 @@ Coming soon...
 - Buefy
 - Uploadcare-Widget
 
-## Links to essential docs
+## 📄 Links to essential docs
 
 - Vue JS - javascript framework : https://vuejs.org/
 - Bulma - open source CSS library : https://bulma.io/documentation
 - Jest - Javascript testing framework : https://jestjs.io/fr/ 
 
 
-## Known issues
+## 🔴 Known issues
 Check board
 
 ## Licence
