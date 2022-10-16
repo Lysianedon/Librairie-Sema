@@ -1,8 +1,7 @@
 
-
 # Sema
+![Homepage's banner Sema](https://github.com/Lysianedon/librairie-sema/blob/master/frontend/src/assets/banner.png?raw=true)
 
-The literature corner of the afrocurious.
 Sema is an online library specialised in afro-caribean litterature. 
 It provides with a wide selection of books, including personalized suggestions according to your tastes and profile.
 
