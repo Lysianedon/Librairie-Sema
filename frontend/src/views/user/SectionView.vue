@@ -32,7 +32,7 @@
         :class="`banner ${getCurrentCollection === 'favoris'? 'banner-favorites' : ''} ${getCurrentCollection === 'ma bibliotheque'? 'banner-library' : ''} ${getCurrentCollection !== 'favoris' && getCurrentCollection !== 'ma bibliotheque' ?  'home-banner' : ''}`">
 
         <!------------- SECTION TITLE -------------->
-        <h2 class="is-size-2 has-text-centered-mobile"> {{getCurrentSectionTitle}}</h2>
+        <h2 class="is-size-2 has-text-centered-mobile"> {{getCurrentSectionTitle}} ({{getNumberOfBooks}})</h2>
         <!------------- BOOK SECTION ------------------>
         <div class="books" v-if="getCurrentBookCollection">
           <div v-for="(book, index) in getCurrentBookCollection" :key="index">
@@ -192,6 +192,9 @@ export default {
     },
     getAlreadyReadBookCollection () {
       return this.alreadyReadBookSelection
+    },
+    getNumberOfBooks () {
+      return this.bookSelection.length
     },
     getNumberOfAlreadyReadBooks () {
       return this.alreadyReadBookSelection.length
