@@ -34,8 +34,14 @@
         <!------------- SECTION TITLE -------------->
         <h2 class="is-size-2 has-text-centered-mobile"> {{getCurrentSectionTitle}} ({{getNumberOfBooks}})</h2>
         <!------------- BOOK SECTION ------------------>
+        <!-- <div class="container-skeleton">
+          <div v-for="(_book, index) in getCurrentBookCollection" :key="index" v-show="isCollectionLoading">
+            <Skeleton/>
+          </div>
+        </div> -->
+
+        <div v-for="(book, index) in getCurrentBookCollection" :key="index">
         <div class="books" v-if="getCurrentBookCollection">
-          <div v-for="(book, index) in getCurrentBookCollection" :key="index">
             <Book
             class="book-component"
             v-if="isUserConnected"
@@ -87,6 +93,7 @@ export default {
   data () {
     return {
       isUserConnected: false,
+      isCollectionLoading: true,
       banners: {
         default: 'banner.png',
         favoris: 'banner-favorites.png',

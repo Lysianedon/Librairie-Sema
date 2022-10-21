@@ -18,7 +18,14 @@
         <h2>MA BIBLIOTHÈQUE</h2>
         <router-link to="/section/ma-bibliotheque" class="btn-afficher-tout btn-afficher-tout-bigger">Afficher tout</router-link>
       </div>
-      <div class="container-books">
+
+      <div class="container-skeleton">
+        <div  v-for="(_book, index) in userLibrary.allBooks" :key="index" v-show="isUserLibraryLoading">
+          <Skeleton/>
+        </div>
+      </div>
+
+      <div class="container-books" v-show="!isUserLibraryLoading">
         <Book
         :bookSelection="userLibrary.allBooks"
         :fromGeneralCollection="false"
@@ -37,7 +44,14 @@
         <h2>NOUVEAUTÉS</h2>
         <router-link to="/section/nouveautes" class="btn-afficher-tout">Afficher tout</router-link>
       </div>
-        <div class="container-books">
+
+      <div class="container-skeleton">
+        <div  v-for="(_book, index) in newBooks" :key="index" v-show="isnewBooksLoading">
+          <Skeleton/>
+        </div>
+      </div>
+
+        <div class="container-books" v-show="!isnewBooksLoading">
           <Book
           :bookSelection="newBooks"
           :fromGeneralCollection="true"
@@ -48,7 +62,14 @@
         <h2>BIOGRAPHIES</h2>
         <router-link to="/section/biographies" class="btn-afficher-tout">Afficher tout</router-link>
       </div>
-      <div class="container-books">
+
+      <div class="container-skeleton">
+        <div  v-for="(_book, index) in biographies" :key="index" v-show="isBiographiesLoading">
+          <Skeleton/>
+        </div>
+      </div>
+
+      <div class="container-books" v-show="!isBiographiesLoading">
         <Book
         :bookSelection="biographies"
         :fromGeneralCollection="true"
@@ -60,7 +81,13 @@
         <router-link to="/section/tous-les-livres" class="btn-afficher-tout btn-afficher-tout-bigger">Afficher tout</router-link>
       </div>
 
-      <div class="container-books">
+      <div class="container-skeleton">
+        <div  v-for="(_book, index) in bookList" :key="index" v-show="isbookListLoading">
+          <Skeleton/>
+        </div>
+      </div>
+
+      <div class="container-books" v-show="!isbookListLoading">
         <Book
         :bookSelection="bookList"
         :fromGeneralCollection="true"
@@ -90,11 +117,16 @@ import NavbarUser from '@/components/NavbarUser.vue'
 import Book from '@/components/Book.vue'
 import FooterComponent from '@/components/FooterComponent.vue'
 import SidebarMobile from '@/components/SidebarMobile.vue'
+import Skeleton from '@/components/Skeleton.vue'
 
 export default {
   name: 'HomeView',
   data () {
     return {
+      isUserLibraryLoading: true,
+      isnewBooksLoading: true,
+      isBiographiesLoading: true,
+      isbookListLoading: true,
       username: '',
       userLibrary: [],
       userInfos: {},
@@ -108,7 +140,8 @@ export default {
     NavbarUser,
     Book,
     FooterComponent,
-    SidebarMobile
+    SidebarMobile,
+    Skeleton
   },
   beforeMount () {
     axios
@@ -165,6 +198,7 @@ export default {
           newlyAddedBooks.length = 4
           // console.log('newlyAddedBooks', newlyAddedBooks)
           this.newBooks = newlyAddedBooks
+          this.isnewBooksLoading = false
 
           // const date = 'Wed Nov 09 2022'
           // console.log(`stringFormat:${date} => parsedFormat:${Date.parse(date)}`)
@@ -176,11 +210,13 @@ export default {
           biographies.length = 4
           // console.log('biographies', biographies)
           this.biographies = biographies
+          this.isBiographiesLoading = false
 
           // Get a selection of four books :
           bookList.length = 4
           // console.log('bookList', bookList)
           this.bookList = bookList
+          this.isbookListLoading = false
 
           // Getting the user's personalised book suggestion:
           axios
@@ -203,6 +239,7 @@ export default {
                   userLibrary.allBooks.length = 4
                 }
                 this.userLibrary = userLibrary
+                this.isUserLibraryLoading = false
               }
             })
         }
@@ -228,7 +265,11 @@ export default {
   margin: 3% auto 0 22vw;
   width: 91vw;
 }
-
+.container-skeleton{
+  display: flex !important;
+  /* flex-direction: row !important; */
+  /* background: rgb(158, 198, 158); */
+}
 .banner{
   width: 82%;
   margin: auto;

@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-    <div class="box">
+    <div class="skel-box">
   <div class="skeleton">
   <div class="skeleton-left">
     <div class="line long-line"></div>
@@ -28,9 +28,11 @@ export default {
 </script>
 
 <style scoped>
- .box{
-    width: fit-content;
-    padding: 5vh 2vw 0 2vw;
+ .skel-box{
+    height: fit-content;
+    width: 17vw;
+    margin: 1%;
+    padding: 18px 20px 13px 20px;
     }
 .skeleton {
     margin-bottom: 20px;
