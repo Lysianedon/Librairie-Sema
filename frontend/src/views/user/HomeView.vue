@@ -37,7 +37,8 @@
           <h2 class="center">SÉLECTIONNÉ POUR VOUS</h2>
           <Book
           :personalisedSuggestion="personalisedSuggestion"
-          @updated-library="updateLibrary"/>
+          @updated-library="updateLibrary"
+          @update-personalised-suggestion="updatePersonalisedSuggestion"/>
         </div>
 
       <div class="title-button">
@@ -253,6 +254,18 @@ export default {
       this.userLibrary.allBooks = payload.updatedLibrary
       if (this.userLibrary.allBooks.length > 4) {
         this.userLibrary.allBooks.length = 4
+      }
+    },
+    updatePersonalisedSuggestion (payload) {
+      if (payload.updatePS) {
+        axios
+          .get(`http://localhost:${process.env.VUE_APP_PORT}/user/library/personalised-suggestion`, { withCredentials: true })
+          .then(res => {
+            if (res.data.success) {
+              // console.log(res.data)
+              this.personalisedSuggestion = res.data.personalisedSuggestion
+            }
+          })
       }
     }
   }

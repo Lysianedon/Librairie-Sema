@@ -6,7 +6,7 @@ describe('BookListComponent.vue', () => {
     const wrapper = shallowMount(BookListComponent, {
       computed: {
         numberOfBooks () {
-            return 3;
+          return 3
         }
       }
     })

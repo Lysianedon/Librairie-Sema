@@ -34,14 +34,14 @@
         <!------------- SECTION TITLE -------------->
         <h2 class="is-size-2 has-text-centered-mobile"> {{getCurrentSectionTitle}} ({{getNumberOfBooks}})</h2>
         <!------------- BOOK SECTION ------------------>
-        <!-- <div class="container-skeleton">
-          <div v-for="(_book, index) in getCurrentBookCollection" :key="index" v-show="isCollectionLoading">
+        <div class="container-skeleton">
+          <div v-for="(_book, index) in loadingArr" :key="index" v-show="isCollectionLoading">
             <Skeleton/>
           </div>
-        </div> -->
+        </div>
 
+        <div class="books" v-if="getCurrentBookCollection" v-show="!isCollectionLoading">
         <div v-for="(book, index) in getCurrentBookCollection" :key="index">
-        <div class="books" v-if="getCurrentBookCollection">
             <Book
             class="book-component"
             v-if="isUserConnected"
@@ -88,12 +88,14 @@ import NavbarUser from '@/components/NavbarUser.vue'
 import FooterComponent from '@/components/FooterComponent.vue'
 import SidebarMobile from '@/components/SidebarMobile.vue'
 import Book from '@/components/Book.vue'
+import Skeleton from '@/components/Skeleton.vue'
 export default {
   name: 'SectionView',
   data () {
     return {
       isUserConnected: false,
       isCollectionLoading: true,
+      loadingArr: [1, 2, 3, 4],
       banners: {
         default: 'banner.png',
         favoris: 'banner-favorites.png',
@@ -132,7 +134,8 @@ export default {
     NavbarUser,
     FooterComponent,
     SidebarMobile,
-    Book
+    Book,
+    Skeleton
   },
   computed: {
     getCurrentSectionTitle (sectionview) {
@@ -208,6 +211,7 @@ export default {
     }
   },
   mounted () {
+    this.isCollectionLoading = true
     // CHECKING IF USER IS CONNECTED:
     axios
       .get(`http://localhost:${process.env.VUE_APP_PORT}/user/`, { withCredentials: true })
@@ -234,6 +238,7 @@ export default {
           if (res.data.success) {
             this.bookSelection = res.data.userLibrary.allBooks
             this.alreadyReadBookSelection = res.data.userLibrary.alreadyRead
+            this.isCollectionLoading = false
           }
         })
         .catch(err => {
@@ -250,6 +255,7 @@ export default {
         .then(res => {
           if (res.data.success) {
             this.bookSelection = res.data.userLibrary.favorites
+            this.isCollectionLoading = false
           }
         })
         .catch(err => {
@@ -268,6 +274,7 @@ export default {
             let bookSelection = res.data.bookList
             bookSelection = bookSelection.filter(book => book.genre.toLowerCase() === 'conte')
             this.bookSelection = bookSelection
+            this.isCollectionLoading = false
           }
         })
         .catch(err => err)
@@ -284,6 +291,7 @@ export default {
             let bookSelection = res.data.bookList
             bookSelection = bookSelection.filter(book => book.genre.toLowerCase() === 'roman')
             this.bookSelection = bookSelection
+            this.isCollectionLoading = false
           }
         })
         .catch(err => err)
@@ -300,6 +308,7 @@ export default {
             let bookSelection = res.data.bookList
             bookSelection = bookSelection.filter(book => book.genre.toLowerCase() === 'bande dessinée')
             this.bookSelection = bookSelection
+            this.isCollectionLoading = false
           }
         })
         .catch(err => err)
@@ -316,6 +325,7 @@ export default {
             let bookSelection = res.data.bookList
             bookSelection = bookSelection.filter(book => book.genre.toLowerCase() === 'biographie' || book.genre.toLowerCase() === 'autobiographie')
             this.bookSelection = bookSelection
+            this.isCollectionLoading = false
           }
         })
         .catch(err => err)
@@ -331,6 +341,7 @@ export default {
           if (res.data.success) {
             console.log(res.data)
             this.bookSelection = res.data.bookList
+            this.isCollectionLoading = false
           }
         })
         .catch(err => err)
@@ -374,6 +385,7 @@ export default {
             const newlyAddedBooks = flattenBooksOjects.slice().sort((a, b) => b.dateAddedparsedFormat - a.dateAddedparsedFormat)
             // console.log('newlyAddedBooks', newlyAddedBooks)
             this.bookSelection = newlyAddedBooks
+            this.isCollectionLoading = false
           }
         })
         .catch(err => err)
@@ -384,6 +396,7 @@ export default {
       return require('@/assets/' + pic)
     },
     getBookCollection (sectionview, backendRoute) {
+      this.isCollectionLoading = true
       // IF THE ROUTE IS REDIRECTING TO THE USER'S LIBRARY, WE GET THE INFOS AND SET THE PARAMETERS ACCORDINGLY (SECTION TITLE, BACKEND'S ROUTE URL, ETC):
       if (sectionview === 'ma-bibliotheque') {
         this.currentCollection = 'ma bibliotheque'
@@ -396,12 +409,14 @@ export default {
             if (res.data.success) {
               this.bookSelection = res.data.userLibrary.allBooks
               this.alreadyReadBookSelection = res.data.userLibrary.alreadyRead
+              this.isCollectionLoading = false
               return this.bookSelection
             }
           })
           .catch(err => {
             return err
           })
+        this.isCollectionLoading = false
         return this.bookSelection
       }
       // IF THE ROUTE IS REDIRECTING TO THE USER'S FAVORITES:
@@ -415,12 +430,14 @@ export default {
           .then(res => {
             if (res.data.success) {
               this.bookSelection = res.data.userLibrary.favorites
+              this.isCollectionLoading = false
               return this.bookSelection
             }
           })
           .catch(err => {
             return err
           })
+        this.isCollectionLoading = false
         return this.bookSelection
       }
       // IF THE ROUTE IS REDIRECTING TO THE TALES:
@@ -436,10 +453,12 @@ export default {
               let bookSelection = res.data.bookList
               bookSelection = bookSelection.filter(book => book.genre.toLowerCase() === 'conte')
               this.bookSelection = bookSelection
+              this.isCollectionLoading = false
               return this.bookSelection
             }
           })
           .catch(err => err)
+        this.isCollectionLoading = false
         return this.bookSelection
       }
       // IF THE ROUTE IS REDIRECTING TO THE NOVELS:
@@ -455,10 +474,12 @@ export default {
               let bookSelection = res.data.bookList
               bookSelection = bookSelection.filter(book => book.genre.toLowerCase() === 'roman')
               this.bookSelection = bookSelection
+              this.isCollectionLoading = false
               return this.bookSelection
             }
           })
           .catch(err => err)
+        this.isCollectionLoading = false
         return this.bookSelection
       }
       // IF THE ROUTE IS REDIRECTING TO THE COMICS:
@@ -475,10 +496,12 @@ export default {
               let bookSelection = res.data.bookList
               bookSelection = bookSelection.filter(book => book.genre.toLowerCase() === 'bande dessinée')
               this.bookSelection = bookSelection
+              this.isCollectionLoading = false
               return this.bookSelection
             }
           })
           .catch(err => err)
+        this.isCollectionLoading = false
         return this.bookSelection
       }
       // IF THE ROUTE IS REDIRECTING TO THE BIOGRAPHIES:
@@ -494,10 +517,12 @@ export default {
               let bookSelection = res.data.bookList
               bookSelection = bookSelection.filter(book => book.genre.toLowerCase() === 'biographie' || book.genre.toLowerCase() === 'autobiographie')
               this.bookSelection = bookSelection
+              this.isCollectionLoading = false
               return this.bookSelection
             }
           })
           .catch(err => err)
+        this.isCollectionLoading = false
         return this.bookSelection
       }
       // IF THE ROUTE IS REDIRECTING TO SEMA'S WHOLE BOOK LIST:
@@ -512,10 +537,12 @@ export default {
             if (res.data.success) {
             //   console.log(res.data)
               this.bookSelection = res.data.bookList
+              this.isCollectionLoading = false
               return this.bookSelection
             }
           })
           .catch(err => err)
+        this.isCollectionLoading = false
         return this.bookSelection
       }
       // IF THE ROUTE IS REDIRECTING TO THE NEWLY ADDED BOOKS:
@@ -560,8 +587,10 @@ export default {
               this.bookSelection = newlyAddedBooks
               return this.bookSelection
             }
+            this.isCollectionLoading = false
           })
           .catch(err => err)
+        this.isCollectionLoading = false
         return this.bookSelection
       }
     },
@@ -703,16 +732,13 @@ export default {
   margin: 3% auto 0 20vw;
   width: 92vw;
 }
-
 .nav{
   position: fixed;
   top: 6%;
 }
-
 .sidebar-mobile{
   display: none;
 }
-
 .banner{
   width: 82%;
   margin: auto;
@@ -720,7 +746,6 @@ export default {
   border: 2px solid rgb(88, 88, 88);
   border-radius: 15px;
 }
-
 .login-invitation{
     cursor: pointer;
     /* border: 1px solid black; */
@@ -743,7 +768,6 @@ export default {
 .login-invitation h2:nth-child(1){
   font-size: 1.7rem;
 }
-
 .login-link{
   cursor: pointer;
 }
@@ -755,38 +779,35 @@ export default {
   flex-wrap: wrap;
   width: 92%;
 }
-
 .book-component{
   margin: 0 1.2vw;
   width: 17vw;
   height: 70vh;
 }
-
+.container-skeleton{
+  display:flex;
+}
 .h3-notif-no-books-read{
   margin-left: 1vw;
   color: rgb(171, 168, 168);
   padding-top: 1vh;
   font-size: 1.4rem;
 }
-
 h2{
   font-family: 'Ibarra Real Nova', serif;
   color: black;
   cursor: default;
 }
-
 h3{
     font-size: 1.1rem ;
     font-weight: 600 !important;
     line-height: 155% !important;
 }
-
 p{
   line-height: 190%;
   width: 90%;
   text-align: justify;
 }
-
 button{
   font-weight: bold;
 }
@@ -797,9 +818,7 @@ button{
 .footer-component{
     margin-top: 3%;
 }
-
 /* RESPONSIVE --  RESPONSIVE -- RESPONSIVE -- RESPONSIVE -- RESPONSIVE -- */
-
 @media(max-width: 1170px){
   .nav{
     display: none;
@@ -824,7 +843,6 @@ button{
     margin: auto;
     width: 95vw;
   }
-
   .banner{
     width: 95%;
     margin: 3% 2% !important;
@@ -837,19 +855,15 @@ button{
     width: 29vw;
     margin: 0;
   }
-
   .haut-de-page{
     padding:2%;
     margin-left: 88vw;
   }
-
   .footer-component{
     width: 100vw;
   }
 }
-
 /*-------------  TABLET MODE ------------ */
-
 @media(max-width: 630px){
   .book-component{
     height: fit-content;
@@ -857,7 +871,6 @@ button{
     margin: 3%;
   }
 }
-
 @media(max-width: 500px){
   .books{
     flex-direction: column;
@@ -867,7 +880,6 @@ button{
 }
 /*-------------  MOBILE MODE ------------ */
 @media(max-width: 450px){
-
   .login-invitation h2{
     font-size: 1.6rem !important;
     line-height: 200%;
@@ -885,17 +897,14 @@ button{
   .home-banner{
     content:url('@/assets/home-banner-mobile.png') !important;
   }
-
   .book-component{
     height: fit-content;
     width: 80vw;
     margin:auto;
   }
-
   h2{
     font-size: 1.9rem;
   }
-
   .haut-de-page{
     padding:6%;
      margin-left: 75vw;
@@ -911,5 +920,4 @@ button{
     margin-left:0;
   }
 }
-
 </style>
