@@ -231,6 +231,7 @@ export default {
           .then(res => {
             if (res.data.success) {
               // console.log(res.data)
+              console.log('deleted', res.data)
               this.$emit('updated-library',
                 {
                   updatedLibrary: res.data.userLibrary
@@ -270,10 +271,12 @@ export default {
                   updatedFavorites: res.data.userFavoritesLibrary
                 })
               // Displaying a success notification
-              this.$buefy.toast.open({
-                message: 'Supprimé de vos favoris',
-                type: 'is-success'
-              })
+              if (notification) {
+                this.$buefy.toast.open({
+                  message: 'Supprimé de vos favoris',
+                  type: 'is-success'
+                })
+              }
             }
           })
           .catch(err => {
@@ -297,10 +300,12 @@ export default {
                   updatedAlreadyRead: res.data.userAlreadyreadLibrary
                 })
               // Displaying a success notification
-              this.$buefy.toast.open({
-                message: 'Supprimé de la liste "Déjà lu"',
-                type: 'is-success'
-              })
+              if (notification) {
+                this.$buefy.toast.open({
+                  message: 'Supprimé de la liste "Déjà lu"',
+                  type: 'is-success'
+                })
+              }
             }
           })
       }

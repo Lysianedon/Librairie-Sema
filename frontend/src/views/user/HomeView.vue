@@ -213,9 +213,12 @@ export default {
   },
   methods: {
     updateLibrary (payload) {
-      this.userLibrary.allBooks = payload.updatedLibrary
-      if (this.userLibrary.allBooks.length > 4) {
-        this.userLibrary.allBooks.length = 4
+      if (payload.updatedLibrary) {
+        this.userLibrary.allBooks = payload.updatedLibrary
+        console.log('updatedLibrary: ', payload.updatedLibrary)
+        if (this.userLibrary.allBooks.length > 4) {
+          this.userLibrary.allBooks.length = 4
+        }
       }
     }
   }
