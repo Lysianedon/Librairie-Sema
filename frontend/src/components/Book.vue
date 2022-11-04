@@ -230,8 +230,6 @@ export default {
           .delete(`http://localhost:${process.env.VUE_APP_PORT}/user/library/allbooks`, { withCredentials: true, data: { bookToDeleteID } })
           .then(res => {
             if (res.data.success) {
-              // console.log(res.data)
-              console.log('deleted', res.data)
               this.$emit('updated-library',
                 {
                   updatedLibrary: res.data.userLibrary

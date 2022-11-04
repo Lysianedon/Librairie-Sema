@@ -215,7 +215,6 @@ export default {
     updateLibrary (payload) {
       if (payload.updatedLibrary) {
         this.userLibrary.allBooks = payload.updatedLibrary
-        console.log('updatedLibrary: ', payload.updatedLibrary)
         if (this.userLibrary.allBooks.length > 4) {
           this.userLibrary.allBooks.length = 4
         }
