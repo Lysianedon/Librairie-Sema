@@ -1,35 +1,5 @@
-const MongodHelper = require('mongodb-prebuilt').MongodHelper;
 const MongoClient = require('mongodb').MongoClient;
 const Book = require("./models/BookModel");
-
-// describe('insert', () => {
-//   let connection;
-//   let db;
-//   beforeAll(async () => {
-//     connection = await MongoClient.connect(global.__MONGO_URI__, {
-//       useNewUrlParser: true,
-//       useUnifiedTopology: true,
-//     });
-//     db = await connection.db();
-//   });
-  
-//   it('should insert a doc into collection', async () => {
-//     const users = db.collection('users');
-  
-//     const mockUser = {_id: 'some-user-id', name: 'John'};
-//     await users.insertOne(mockUser);
-  
-//     const insertedUser = await users.findOne({_id: 'some-user-id'});
-//     expect(insertedUser).toEqual(mockUser);
-
-//     await users.deleteOne(mockUser);
-
-//   });
-
-//   afterAll(async () => {
-//     await connection.close();
-//   });
-// });
 
 describe('insert', () => {
 let connection;
@@ -45,13 +15,13 @@ db = await connection.db();
 it('should insert a doc into collection', async () => {
 const users = db.collection('users');
 
-const mockUser = {_id: 'some-user-id', name: 'John'};
-await users.insertOne(mockUser);
+const mockBook = {_id: 'some-user-id', title: 'Test BookRouter', dateAdded: 168630373, author: 'John Doe', country: 'Nigeria'};
+await users.insertOne(mockBook);
 
 const insertedUser = await users.findOne({_id: 'some-user-id'});
-expect(insertedUser).toEqual(mockUser);
+expect(insertedUser).toEqual(mockBook);
 
-await users.deleteOne(mockUser);
+await users.deleteOne(mockBook);
 
 });
 
