@@ -111,7 +111,7 @@ export default {
     navigateToPage () {
       const componentKey = ref(0)
       componentKey.value += 1
-      console.log(componentKey.value)
+      // console.log(componentKey.value)
       return componentKey.value
     }
   }
