@@ -29,7 +29,7 @@ const {
 router.get('/', auth, async (req,res) => {
     let user = req.userId;
     try {
-        user = await User.findById(user);
+        user = await User.findById(user).populate({path: 'books.allBooks', model: 'Books'});
     } catch (error) {
        return res.status(400).json({ message: "Bad Request.", error: true });
     }
@@ -350,80 +350,6 @@ router.delete('/library/alreadyread', auth,checkIfBookAlreadyInList, async (req,
         }
         userAlreadyreadLibrary = userAlreadyreadLibrary.books.alreadyRead;
         return res.status(200).json({success: true, userAlreadyreadLibrary})
-})
-
-router.get('/library/personalised-suggestion', auth, async (req, res) => {
-
-    //What we need:
-    let userId = req.userId, 
-        user, 
-        userInterests, 
-        userAge, 
-        userLibrary, 
-        semasListOfBooks, 
-        personalisedSuggestion, 
-        suggestionsArr;
-
-    //Make a book suggestion based on :
-
-    // Step 1 - Filter the books that are already in the user's library 
-    // Step 2 - Get the user's interests: if exists, it randomly picks a book that corresponds to the user's interests
-    // Step 3 - If the interests are undefined, it randomly selects a book which match the user's age range
-    // Step 4 - If the user's age range is undefined, it randomly suggest a book out of Sema's library
-
-    try {
-        user = await User.findById(userId).populate({path: 'books.allBooks', model: 'Books'})
-        if (user.isAdmin) {
-            return null
-        }
-        semasListOfBooks = await Book.find();
-    } catch (error) {
-        console.log(error);
-        return res.status(400).json({ error: true, message: "Bad request."});   
-    }
-    
-    userPreferences = user.preferences;
-    userAge = user.age;
-    userLibrary = user.books.allBooks;
-    userInterests = user.preferences.interests;
-    suggestionsArr = semasListOfBooks;
-    
-    //STEP 1 : Filter the books that are already in the user's library :
-    const stringifiedUserLibraryArr = JSON.stringify(userLibrary)
-    suggestionsArr = suggestionsArr.filter(book => !stringifiedUserLibraryArr.includes(JSON.stringify(book)));
-
-    //STEP 2: if the user has specified his interest(s), only keep the books that correspond to it:
-    const filteredByGenre = suggestionsArr.filter(book => userInterests.includes(book.genre))
-
-    //If the array of suggestion is not empty, we randomly pick a book, otherwise, we repeat the same process with the second criteria: the goal:
-    if(filteredByGenre.length > 1 ){
-        // If there are several suggestions, we make a random selection out of filteredByGenre's array:
-        personalisedSuggestion = filteredByGenre[Math.floor(Math.random() * filteredByGenre.length)]
-        return res.status(200).json({success: true, personalisedSuggestion}) 
-        
-        //If there is just one suggestion, we return the element :
-    } else if(filteredByGenre.length === 1){
-        personalisedSuggestion = filteredByGenre[0];
-        return res.status(200).json({success: true, personalisedSuggestion})
-    } 
-    
-    //If there is no suggestion by genre, we repeat the same process with the second criteria: the ageRange: 
-    if(filteredByGenre.length === 0){
-        let filteredByAgeRange = []
-        filteredByAgeRange = suggestionsArr.filter(book => book.ageRange.includes(userAge))
-        
-        if (filteredByAgeRange.length > 1) {
-            personalisedSuggestion = filteredByAgeRange[Math.floor(Math.random() * filteredByAgeRange.length)]
-            return res.status(200).json({success: true, personalisedSuggestion}) 
-            
-        } else if(filteredByAgeRange.length === 1){
-            personalisedSuggestion = filteredByAgeRange[0];
-            return res.status(200).json({success: true, personalisedSuggestion})
-        }
-    } 
-    //Return a random book from Sema's booklist (whole library):
-    personalisedSuggestion = semasListOfBooks[Math.floor(Math.random() * semasListOfBooks.length)]
-    return res.status(200).json({success:true, personalisedSuggestion})
 })
 
 module.exports = router;
