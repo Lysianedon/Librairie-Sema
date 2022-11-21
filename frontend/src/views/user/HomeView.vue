@@ -134,7 +134,6 @@ export default {
       bookList: [],
       newBooks: [],
       biographies: [],
-      test: '',
       personalisedSuggestion: {}
     }
   },
@@ -169,7 +168,6 @@ export default {
   mounted () {
     // Fetch Sema's whole bookList:
     this.fetchSemaLibrary()
-    this.test = 'test'
     // Getting the user's personalised suggestion:
     this.getUserPersonalisedSuggestion()
   },
