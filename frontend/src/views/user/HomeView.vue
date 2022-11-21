@@ -134,7 +134,16 @@ export default {
       bookList: [],
       newBooks: [],
       biographies: [],
+      test: '',
       personalisedSuggestion: {}
+    }
+  },
+  metaInfo () {
+    return {
+      title: 'Sema - La bibliothèque des afrocurieux',
+      meta: [
+        { vmid: 'description', name: 'description', content: 'page d\'accueil de la bibliothèque Sema, le coin littérature des afrocurieux.Le site partage un large éventail d\'ouvrages issus d\'écrivains afro-caribéens ou inspirés des cultures afro-caribéennes.' }
+      ]
     }
   },
   components: {
@@ -160,7 +169,7 @@ export default {
   mounted () {
     // Fetch Sema's whole bookList:
     this.fetchSemaLibrary()
-
+    this.test = 'test'
     // Getting the user's personalised suggestion:
     this.getUserPersonalisedSuggestion()
   },

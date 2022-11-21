@@ -130,6 +130,14 @@ export default {
       fromGeneralCollection: false
     }
   },
+  metaInfo () {
+    return {
+      title: `${this.getCurrentSectionTitle(this.$route.params.sectionview)}`,
+      meta: [
+        { vmid: 'description', name: 'description', content: 'Ma bibliothèque personnelle, regroupant ma sélection d\'ouvrages afo-caribéens' }
+      ]
+    }
+  },
   components: {
     NavbarUser,
     FooterComponent,

@@ -6,6 +6,7 @@ import store from './store'
 import 'bulma/css/bulma.css'
 import Buefy from 'buefy'
 import 'buefy/dist/buefy.css'
+import VueMeta from 'vue-meta'
 
 // IMPORTS MAIN CSS ----------
 import '@/assets/css/main.css'
@@ -28,6 +29,7 @@ Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 Vue.config.productionTip = false
 Vue.use(Buefy)
+Vue.use(VueMeta)
 
 new Vue({
   router,
