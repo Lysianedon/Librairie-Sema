@@ -50,7 +50,6 @@ export default {
       .get(`http://localhost:${process.env.VUE_APP_PORT}/books/${this.$route.params.bookId}`)
       .then(res => {
         if (res.data.success) {
-          // console.log(res.data)
           this.book = res.data.selectedBook
         }
       })

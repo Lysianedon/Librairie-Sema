@@ -129,6 +129,14 @@ export default {
       isUserConnected: false
     }
   },
+  metaInfo () {
+    return {
+      title: `${this.personalisedSuggestion.title} - ${this.personalisedSuggestion.author}`,
+      meta: [
+        { vmid: 'description', name: 'description', content: this.personalisedSuggestion.synopsis }
+      ]
+    }
+  },
   props: {
     bookSelection: {
       type: Array,

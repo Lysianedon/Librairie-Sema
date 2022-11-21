@@ -864,7 +864,7 @@ button{
   }
 }
 /*-------------  TABLET MODE ------------ */
-@media(max-width: 630px){
+@media(max-width: 770px){
   .book-component{
     height: fit-content;
     width: 40vw;
