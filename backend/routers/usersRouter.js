@@ -186,8 +186,7 @@ router.post('/library/allbooks', auth, checkIfBookAlreadyInList, async (req,res)
     }
     userLibrary = userLibrary.books.allBooks;
     //Guard
-    if (!req.isBookAlreadyInAllBooksCategory || req.isBookAlreadyInAllBooksCategory === false) {
-        // return res.status(400).json({ error: true, alreadyInList: true, message: "Book already in the list !" });     
+    if (!req.isBookAlreadyInAllBooksCategory || req.isBookAlreadyInAllBooksCategory === false) {   
         //Selecting user's library:
        
         //Adding the new book's ID to the library:
