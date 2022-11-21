@@ -149,7 +149,6 @@ export default {
       .get(`http://localhost:${process.env.VUE_APP_PORT}/user`, { withCredentials: true })
       .then(res => {
         if (res.data.success) {
-          // console.log(res.data.user)
           this.username = res.data.user.firstname
           this.userInfos = res.data.user
         }
@@ -159,97 +158,83 @@ export default {
       })
   },
   mounted () {
-    axios
-      .get(`http://localhost:${process.env.VUE_APP_PORT}/books`, { withCredentials: true })
-      .then(res => {
-        if (res.data.success) {
-          // Getting the book list:
-          const bookList = res.data.bookList
-          // console.log(bookList)
+    // Fetch Sema's whole bookList:
+    this.fetchSemaLibrary()
 
-          // Getting the newly added books:
-
-          // Step 1 : Flatten the obj before sorting them:
-          const flattenObj = (ob) => {
-            // The object which contains the final result
-            const result = {}
-            // loop through the object "ob"
-            for (const i in ob) {
-              // We check the type of the i using typeof() function and recursively call the function again
-              if ((typeof ob[i]) === 'object' && !Array.isArray(ob[i])) {
-                const temp = flattenObj(ob[i])
-                for (const j in temp) {
-                  // Store temp in result
-                  result[i + j] = temp[j]
-                }
-              } else { // Else store ob[i] in result directly
-                result[i] = ob[i]
-              }
-            }
-            return result
-          }
-          const flattenBooksOjects = bookList.map(book => {
-            book = flattenObj(book)
-            return book
-          })
-          // console.log(flattenBooksOjects)
-
-          // Step 2 : sorting the books:
-          const newlyAddedBooks = flattenBooksOjects.slice().sort((a, b) => b.dateAddedparsedFormat - a.dateAddedparsedFormat)
-          newlyAddedBooks.length = 4
-          // console.log('newlyAddedBooks', newlyAddedBooks)
-          this.newBooks = newlyAddedBooks
-          this.isnewBooksLoading = false
-
-          // const date = 'Wed Nov 09 2022'
-          // console.log(`stringFormat:${date} => parsedFormat:${Date.parse(date)}`)
-          // console.log('date to String', new Date(1665612000000).toDateString())
-          // const books = [1661431787000, 1661429232332, 1661429717940, 1661429717988, 1661429717993, 1660924717993]
-
-          // Getting a selection of 4 biographies:
-          const biographies = bookList.filter(book => book.genre.toLowerCase() === 'biographie' || book.genre.toLowerCase() === 'autobiographie')
-          biographies.length = 4
-          // console.log('biographies', biographies)
-          this.biographies = biographies
-          this.isBiographiesLoading = false
-
-          // Get a selection of four books :
-          bookList.length = 4
-          // console.log('bookList', bookList)
-          this.bookList = bookList
-          this.isbookListLoading = false
-
-          // Getting the user's personalised book suggestion:
-          axios
-            .get(`http://localhost:${process.env.VUE_APP_PORT}/user/library/personalised-suggestion`, { withCredentials: true })
-            .then(res => {
-              if (res.data.success) {
-                // console.log(res.data)
-                this.personalisedSuggestion = res.data.personalisedSuggestion
-              }
-            })
-          // Getting the user's library:
-          axios
-            .get(`http://localhost:${process.env.VUE_APP_PORT}/user/library/`, { withCredentials: true })
-            .then(res => {
-              if (res.data.success) {
-                // console.log(res.data)
-                const userLibrary = res.data.userLibrary
-                // console.log('userLibrary.allBooks', userLibrary)
-                if (userLibrary.allBooks.length > 4) {
-                  userLibrary.allBooks.length = 4
-                }
-                this.userLibrary = userLibrary
-                this.isUserLibraryLoading = false
-              }
-            })
-        }
-      })
-      .catch(err => {
-        return console.log(err)
-      })
+    // Getting the user's personalised suggestion:
+    this.getUserPersonalisedSuggestion()
   },
   methods: {
+    fetchSemaLibrary () {
+      axios
+        .get(`http://localhost:${process.env.VUE_APP_PORT}/books`, { withCredentials: true })
+        .then(res => {
+          if (res.data.success) {
+          // Getting the book list:
+            const bookList = res.data.bookList
+
+            // Getting the newly added books:
+
+            // Step 1 : Flatten the obj before sorting them:
+            const flattenObj = (ob) => {
+            // The object which contains the final result
+              const result = {}
+              // loop through the object "ob"
+              for (const i in ob) {
+              // We check the type of the i using typeof() function and recursively call the function again
+                if ((typeof ob[i]) === 'object' && !Array.isArray(ob[i])) {
+                  const temp = flattenObj(ob[i])
+                  for (const j in temp) {
+                  // Store temp in result
+                    result[i + j] = temp[j]
+                  }
+                } else { // Else store ob[i] in result directly
+                  result[i] = ob[i]
+                }
+              }
+              return result
+            }
+            const flattenBooksOjects = bookList.map(book => {
+              book = flattenObj(book)
+              return book
+            })
+
+            // Step 2 : sorting the books:
+            const newlyAddedBooks = flattenBooksOjects.slice().sort((a, b) => b.dateAddedparsedFormat - a.dateAddedparsedFormat)
+            newlyAddedBooks.length = 4
+            this.newBooks = newlyAddedBooks
+            this.isnewBooksLoading = false
+
+            // Getting a selection of 4 biographies:
+            const biographies = bookList.filter(book => book.genre.toLowerCase() === 'biographie' || book.genre.toLowerCase() === 'autobiographie')
+            biographies.length = 4
+            this.biographies = biographies
+            this.isBiographiesLoading = false
+
+            // Get a selection of four books :
+            bookList.length = 4
+            this.bookList = bookList
+            this.isbookListLoading = false
+
+            // Getting the user's library:
+            axios
+              .get(`http://localhost:${process.env.VUE_APP_PORT}/user/library/`, { withCredentials: true })
+              .then(res => {
+                if (res.data.success) {
+                  const userLibrary = res.data.userLibrary
+                  if (userLibrary.allBooks.length > 4) {
+                    userLibrary.allBooks.length = 4
+                  }
+                  this.userLibrary = userLibrary
+                  this.isUserLibraryLoading = false
+                }
+              })
+          }
+        })
+        .catch(err => {
+          return console.log(err)
+        })
+    },
     updateLibrary (payload) {
       if (payload.updatedLibrary) {
         this.userLibrary.allBooks = payload.updatedLibrary
@@ -258,16 +243,76 @@ export default {
         }
       }
     },
+    getUserPersonalisedSuggestion () {
+      // Getting the user's personalised book suggestion:
+      axios
+        .get(`http://localhost:${process.env.VUE_APP_PORT}/user/`, { withCredentials: true })
+        .then(res => {
+          if (res.data.success) {
+            // What we need:
+            const userInterests = res.data.user.preferences.interests
+            const userAge = res.data.user.age
+            const userLibrary = res.data.user.books.allBooks
+            let semasListOfBooks, personalisedSuggestion, suggestionsArr
+
+            // Getting Sema's whole bookList:
+            axios
+              .get(`http://localhost:${process.env.VUE_APP_PORT}/books`, { withCredentials: true })
+              .then(res => {
+                if (res.data.success) {
+                  semasListOfBooks = res.data.bookList
+                  suggestionsArr = semasListOfBooks
+
+                  // Make a book suggestion based on :
+
+                  // Step 1 - Filter the books that are already in the user's library
+                  // Step 2 - Get the user's interests: if exists, it randomly picks a book that corresponds to the user's interests
+                  // Step 3 - If the interests are undefined, it randomly selects a book which match the user's age range
+                  // Step 4 - If the user's age range is undefined, it randomly suggest a book out of Sema's library
+
+                  // STEP 1 : Filter the books that are already in the user's library:
+                  const stringifiedUserLibraryArr = JSON.stringify(userLibrary)
+                  suggestionsArr = suggestionsArr.filter(book => !stringifiedUserLibraryArr.includes(JSON.stringify(book)))
+
+                  // STEP 2: if the user has specified his interest(s), only keep the books that correspond to it:
+                  const filteredByGenre = suggestionsArr.filter(book => userInterests.includes(book.genre))
+
+                  if (filteredByGenre.length > 1) {
+                    // If there are several suggestions, we make a random selection out of filteredByGenre's array:
+                    personalisedSuggestion = filteredByGenre[Math.floor(Math.random() * filteredByGenre.length)]
+                    this.personalisedSuggestion = personalisedSuggestion
+                    // If there is just one suggestion, we return the element :
+                  } else if (filteredByGenre.length === 1) {
+                    personalisedSuggestion = filteredByGenre[0]
+                    this.personalisedSuggestion = personalisedSuggestion
+                  }
+
+                  // Step 3: If there is no suggestion by genre, we repeat the same process with the second criteria: the ageRange:
+                  if (filteredByGenre.length === 0) {
+                    let filteredByAgeRange = []
+                    filteredByAgeRange = suggestionsArr.filter(book => book.ageRange.includes(userAge))
+
+                    if (filteredByAgeRange.length > 1) {
+                      personalisedSuggestion = filteredByAgeRange[Math.floor(Math.random() * filteredByAgeRange.length)]
+                      this.personalisedSuggestion = personalisedSuggestion
+                    } else if (filteredByAgeRange.length === 1) {
+                      personalisedSuggestion = filteredByAgeRange[0]
+                      this.personalisedSuggestion = personalisedSuggestion
+
+                    // Step 4 - If the user's age range is undefined, it randomly suggest a book out of Sema's library
+                    } else if (filteredByAgeRange.length === 0) {
+                      personalisedSuggestion = suggestionsArr[Math.floor(Math.random() * suggestionsArr.length)]
+                      this.personalisedSuggestion = personalisedSuggestion
+                    }
+                  }
+                }
+              })
+          }
+        })
+    },
     updatePersonalisedSuggestion (payload) {
       if (payload.updatePS) {
-        axios
-          .get(`http://localhost:${process.env.VUE_APP_PORT}/user/library/personalised-suggestion`, { withCredentials: true })
-          .then(res => {
-            if (res.data.success) {
-              // console.log(res.data)
-              this.personalisedSuggestion = res.data.personalisedSuggestion
-            }
-          })
+        this.getUserPersonalisedSuggestion()
       }
     }
   }
