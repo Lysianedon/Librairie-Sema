@@ -11,3 +11,17 @@ describe('BookListComponent.vue', () => {
     expect(numberOfBooks).toMatch('3 résultat(s)')
   })
 })
+
+// describe('BookListComponent.vue', () => {
+//   it('renders the number of books in bookList when set in data', () => {
+//     const wrapper = shallowMount(BookListComponent, {
+//       computed: {
+//         numberOfBooks () {
+//           return 3
+//         }
+//       }
+//     })
+//     const numberOfBooks = wrapper.find('h4').text()
+//     expect(numberOfBooks).toMatch('3 résultat(s)')
+//     })
+//   })
