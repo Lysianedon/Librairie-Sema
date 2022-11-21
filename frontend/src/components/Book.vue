@@ -131,7 +131,7 @@ export default {
   },
   metaInfo () {
     return {
-      title: this.personalisedSuggestion.title,
+      title: `${this.personalisedSuggestion.title} - ${this.personalisedSuggestion.author}`,
       meta: [
         { vmid: 'description', name: 'description', content: this.personalisedSuggestion.synopsis }
       ]
