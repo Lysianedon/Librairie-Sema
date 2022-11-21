@@ -327,8 +327,6 @@ export default {
 }
 .container-skeleton{
   display: flex !important;
-  /* flex-direction: row !important; */
-  /* background: rgb(158, 198, 158); */
 }
 .banner{
   width: 82%;
@@ -355,12 +353,10 @@ h2{
 }
 
 .personalisedSelection{
-  /* width: 50%; */
   margin: 8% auto 8% 5%;
 }
 .center{
   margin: auto;
-  /* border: 1px solid green; */
   width: 70%;
 }
 
@@ -428,8 +424,6 @@ h2{
 
   .container-books{
     width: 50%;
-    /* margin: auto; */
-    /* margin: 0 0 0 12%; */
     padding: 0;
   }
   .btn-afficher-tout{
@@ -440,7 +434,6 @@ h2{
   }
   .btn-afficher-tout-bigger{
     padding: 0 2% 5% 2% !important;
-    /* width: 50vw; */
   }
 
   h2{
