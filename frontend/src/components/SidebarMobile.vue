@@ -40,7 +40,7 @@
                             </div>
                         </router-link>
 
-                        <router-link to="/ma-bibliotheque">
+                        <router-link to="/section/ma-bibliotheque">
                             <div class="btn-option">
                                 <span class="icon">
                                 <font-awesome-icon icon="fa-solid fa-book"/>
@@ -49,7 +49,7 @@
                             </div>
                         </router-link>
 
-                        <router-link to="/favoris">
+                        <router-link to="/section/favoris">
                             <div class="btn-option">
                                 <span class="icon">
                                 <font-awesome-icon icon="fa-solid fa-heart" color="red"/>
