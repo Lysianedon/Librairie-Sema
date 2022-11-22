@@ -37,12 +37,24 @@ export default {
     }
   },
   components: { NavbarAdmin, ReadersListComponent, NavbarMobileAdmin },
+  beforeMount () {
+    // GUARD: if user is not an admin, he gets redirected to the homepage
+    axios
+      .get(`http://localhost:${process.env.VUE_APP_PORT}/user/`, { withCredentials: true })
+      .then(res => {
+        if (res.data.success) {
+          if (!res.data.user.isAdmin) {
+            this.$router.push('/')
+          }
+        }
+      })
+      .catch(err => console.error(err))
+  },
   mounted () {
     axios
       .get(`http://localhost:${process.env.VUE_APP_PORT}/admin/user-list`, { withCredentials: true })
       .then(res => {
         if (res.data.success) {
-          // console.log(res.data.usersList)
           this.usersList = res.data.usersList
           // Removing the admins from the list:
           this.usersList = this.usersList.filter(user => !user.isAdmin)

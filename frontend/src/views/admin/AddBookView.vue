@@ -22,6 +22,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 import NavbarAdmin from '@/components/admin/NavbarAdmin.vue'
 import NavbarMobileAdmin from '@/components/admin/NavbarMobileAdmin.vue'
 import BookForm from '../../components/admin/BookForm.vue'
@@ -31,6 +32,19 @@ export default {
     return {
       adminName: ''
     }
+  },
+  beforeMount () {
+    // GUARD: if user is not an admin, he gets redirected to the homepage
+    axios
+      .get(`http://localhost:${process.env.VUE_APP_PORT}/user/`, { withCredentials: true })
+      .then(res => {
+        if (res.data.success) {
+          if (!res.data.user.isAdmin) {
+            this.$router.push('/')
+          }
+        }
+      })
+      .catch(err => console.error(err))
   },
   components: { NavbarAdmin, NavbarMobileAdmin, BookForm },
   methods: {

@@ -39,12 +39,24 @@ export default {
     }
   },
   components: { NavbarAdmin, NavbarMobileAdmin, BookListComponent },
+  beforeMount () {
+    // GUARD: if user is not an admin, he gets redirected to the homepage
+    axios
+      .get(`http://localhost:${process.env.VUE_APP_PORT}/user/`, { withCredentials: true })
+      .then(res => {
+        if (res.data.success) {
+          if (!res.data.user.isAdmin) {
+            this.$router.push('/')
+          }
+        }
+      })
+      .catch(err => console.error(err))
+  },
   mounted () {
     axios
       .get(`http://localhost:${process.env.VUE_APP_PORT}/books`, { withCredentials: true })
       .then(res => {
         if (res.data.success) {
-          // console.log(res.data.bookList)
           this.bookList = res.data.bookList
         }
       })
@@ -59,7 +71,6 @@ export default {
           .get(`http://localhost:${process.env.VUE_APP_PORT}/books`, { withCredentials: true })
           .then(res => {
             if (res.data.success) {
-              // console.log(res.data.bookList)
               this.bookList = res.data.bookList
             }
           })

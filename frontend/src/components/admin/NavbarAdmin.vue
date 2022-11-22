@@ -67,8 +67,10 @@ export default {
       .then(res => {
         if (res.data.success) {
           this.username = res.data.user.firstname
+          console.log(res.data.user.isAdmin)
           this.$emit('get-name', {
-            adminName: this.username
+            adminName: this.username,
+            isAdmin: res.data.user.isAdmin
           })
           // console.log(res.data)
           this.isConnected = true

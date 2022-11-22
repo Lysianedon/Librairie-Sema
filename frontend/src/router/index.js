@@ -7,12 +7,12 @@ import InscriptionView from '@/views/user/InscriptionView.vue'
 import SectionView from '@/views/user/SectionView.vue'
 import FavoriteUserView from '@/views/user/FavoriteUserView.vue'
 import SettingsUserView from '@/views/user/SettingsUserView.vue'
-import HelpView from '@/views/HelpView.vue'
-import BookView from '@/views/BookView.vue'
+import HelpView from '@/views/user/HelpView.vue'
+import BookView from '@/views/user/BookView.vue'
 import ReadersListView from '@/views/admin/ReadersListView.vue'
 import BookListView from '@/views/admin/BookListView.vue'
 import AddBookView from '@/views/admin/AddBookView.vue'
-import NotFoundView from '@/views/NotFoundView.vue'
+import NotFoundView from '@/views/user/NotFoundView.vue'
 
 Vue.use(VueRouter)
 
@@ -28,7 +28,7 @@ const routes = [
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
+    component: () => import(/* webpackChunkName: "about" */ '../views/user/AboutView.vue')
   },
   {
     path: '/login',
