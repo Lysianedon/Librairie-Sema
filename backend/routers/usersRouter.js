@@ -351,4 +351,78 @@ router.delete('/library/alreadyread', auth,checkIfBookAlreadyInList, async (req,
         return res.status(200).json({success: true, userAlreadyreadLibrary})
 })
 
+// ---------------- GET A USER'S PERSONALISED SUGGESTION ----------------
+router.get('/library/personalised-suggestion', auth, async (req, res) => {
+
+    //What we need:
+    let userId = req.userId, 
+        user,
+        userInterests, 
+        userAge, 
+        userLibrary, 
+        semasListOfBooks, 
+        personalisedSuggestion, 
+        suggestionsArr;
+
+    //Make a book suggestion based on :
+
+    //-If not in user's library:
+    //-interests: if exists, prioritize this category, otherwise: check goals
+    //- age range, if answer === "no answer", random suggestion out of Sema's library (if existing ingo)
+
+    try {
+        user = await User.findById(userId).populate({path: 'books.allBooks', model: 'Books'})
+        semasListOfBooks = await Book.find();
+    } catch (error) {
+        console.log(error);
+        return res.status(400).json({ error: true, message: "Bad request."});   
+    }
+    
+    userPreferences = user.preferences;
+    userAge = user.age;
+    userLibrary = user.books.allBooks;
+    userGoals = user.preferences.goals;
+    userInterests = user.preferences.interests;
+    suggestionsArr = semasListOfBooks;
+    
+    //STEP 1 : Filter the books that are already in the user's library :
+    const stringifiedUserLibraryArr = JSON.stringify(userLibrary)
+    suggestionsArr = suggestionsArr.filter(book => !stringifiedUserLibraryArr.includes(JSON.stringify(book)));
+    // console.log('suggestionsArr', suggestionsArr)
+
+    //STEP 2: if the user has specified his interest(s), only keep the books that correspond to it:
+    const filteredByGenre = suggestionsArr.filter(book => userInterests.includes(book.genre))
+
+    //If the array of suggestion is not empty, we randomly pick a book, otherwise, we repeat the same process with the second criteria: the goal:
+    if(filteredByGenre.length > 1 ){
+        // If there are several suggestions, we make a random selection out of filteredByGenre's array:
+        personalisedSuggestion = filteredByGenre[Math.floor(Math.random() * filteredByGenre.length)]
+        return res.status(200).json({success: true, personalisedSuggestion}) 
+        
+        //If there is just one suggestion, we return the element :
+    } else if(filteredByGenre.length === 1){
+        personalisedSuggestion = filteredByGenre[0];
+        console.log(personalisedSuggestion)
+        return res.status(200).json({success: true, personalisedSuggestion})
+    } 
+    
+    //If there is no suggestion by genre, we repeat the same process with the second criteria: the ageRange: 
+    if(filteredByGenre.length === 0){
+        let filteredByAgeRange = []
+        filteredByAgeRange = suggestionsArr.filter(book => book.ageRange.includes(userAge))
+        
+        if (filteredByAgeRange.length > 1) {
+            personalisedSuggestion = filteredByAgeRange[Math.floor(Math.random() * filteredByAgeRange.length)]
+            return res.status(200).json({success: true, personalisedSuggestion}) 
+            
+        } else if(filteredByAgeRange.length === 1){
+            personalisedSuggestion = filteredByAgeRange[0];
+            return res.status(200).json({success: true, personalisedSuggestion})
+        }
+    } 
+    //Return a random book from Sema's booklist (whole library):
+    personalisedSuggestion = semasListOfBooks[Math.floor(Math.random() * semasListOfBooks.length)]
+    return res.status(200).json({success:true, personalisedSuggestion})
+})
+
 module.exports = router;
