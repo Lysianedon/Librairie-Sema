@@ -257,7 +257,6 @@ export default {
         .then(res => {
           if (res.data.success) {
             this.personalisedSuggestion = res.data.personalisedSuggestion
-            console.log('works!')
           }
         })
     },
