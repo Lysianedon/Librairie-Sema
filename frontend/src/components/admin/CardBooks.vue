@@ -10,8 +10,6 @@
                     @click="cancelUpdates"/>
 
                 <h2 class="h2-modify-book">Modifier le livre</h2>
-                    <label for="identifiant">Identifiant</label>
-                    <input type="text" name="identifiant" class="input-identifiant" :value="book._id" disabled>
 
                     <label for="title">Titre</label>
                     <input type="text" name="title" :class="`input-title-${book._id}`" :value="book.title">
@@ -61,7 +59,6 @@
                         <h4 class="h4-id">Pays: <span class="light">{{book.country}}</span> </h4>
                     </div>
                     <div class="col-two-infos">
-                        <h4 class="h4-id book-id">Identifiant: <span class="light">{{book._id}}</span> </h4>
                         <h4 class="h4-id">Date d'ajout: <span class="light">{{book.dateAdded.stringFormat}}</span> </h4>
                         <h4 class="h4-id">Tranches d'âge:</h4>
                         <ul>
@@ -481,9 +478,6 @@ span{
   .icon-close{
     margin-left:65vw;
   }
-  input[type="text"], .input-identifiant{
-    width: 83%;
-  }
   .btns{
     flex-direction:column;
   }
@@ -498,7 +492,7 @@ span{
     margin-left: 1%;
     width: 90%;
   }
-  .input-identifiant, .input-dateAdded {
+  .input-dateAdded {
     width: 82% !important;
     margin-left: 8% !important;
   }

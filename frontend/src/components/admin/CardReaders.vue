@@ -10,8 +10,6 @@
                     @click="cancelUpdates"/>
 
                 <h2 class="h2-modify-user">Modifier l'utilisateur</h2>
-                    <label for="id">Identifiant</label>
-                    <input type="text" name="identifiant" class="input-identifiant" :value="user._id" disabled>
 
                     <label for="username">Prénom</label>
                     <input type="text" name="username" :class="`input-firstname-${user._id}`" :value="user.firstname">
@@ -37,7 +35,7 @@
                 </div>
                 <!-------------------- USER CARD --------------------------->
             <div class="user-infos">
-                <h4 class="h4-id">Identifiant: <span class="light">{{user._id}}</span> </h4>
+              <div class="details">
                 <h4>Prénom: <span class="light">{{user.firstname}}</span> </h4>
                 <h4>Age: <span class="light">{{user.age}}</span> </h4>
                 <h4>Mail: <span class="light">{{user.email}}</span> </h4>
@@ -53,6 +51,7 @@
                         {{interest}}
                     </li>
                 </ul>
+              </div>
             </div>
 
             <div class="icons is-flex is-flex-direction-column is-justify-content-space-between">
@@ -293,7 +292,10 @@ h4, span{
   line-height: 200%;
   cursor: default;
 }
-
+/* .user-infos{
+  display: flex;
+  flex-direction: column;
+} */
 .no-results{
   text-align:center;
   width: 50%;
@@ -308,7 +310,9 @@ span{
 }
 
 .icons{
-  height: 20vh;
+  border: 1px solid black;
+  margin-left: 20%;
+  height: 25vh;
 }
 .icon{
   cursor: pointer;
@@ -390,9 +394,7 @@ span{
   .icon-close{
     margin-left:65vw;
   }
-  input[type="text"], .input-identifiant{
-    width: 83%;
-  }
+
   .btns{
     flex-direction:column;
   }
