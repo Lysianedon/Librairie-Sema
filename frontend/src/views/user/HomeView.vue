@@ -253,67 +253,10 @@ export default {
     getUserPersonalisedSuggestion () {
       // Getting the user's personalised book suggestion:
       axios
-        .get(`http://localhost:${process.env.VUE_APP_PORT}/user/`, { withCredentials: true })
+        .get(`http://localhost:${process.env.VUE_APP_PORT}/user/library/personalised-suggestion`, { withCredentials: true })
         .then(res => {
           if (res.data.success) {
-            // What we need:
-            const userInterests = res.data.user.preferences.interests
-            const userAge = res.data.user.age
-            const userLibrary = res.data.user.books.allBooks
-            let semasListOfBooks, personalisedSuggestion, suggestionsArr
-
-            // Getting Sema's whole bookList:
-            axios
-              .get(`http://localhost:${process.env.VUE_APP_PORT}/books`, { withCredentials: true })
-              .then(res => {
-                if (res.data.success) {
-                  semasListOfBooks = res.data.bookList
-                  suggestionsArr = semasListOfBooks
-
-                  // Make a book suggestion based on :
-
-                  // Step 1 - Filter the books that are already in the user's library
-                  // Step 2 - Get the user's interests: if exists, it randomly picks a book that corresponds to the user's interests
-                  // Step 3 - If the interests are undefined, it randomly selects a book which match the user's age range
-                  // Step 4 - If the user's age range is undefined, it randomly suggest a book out of Sema's library
-
-                  // STEP 1 : Filter the books that are already in the user's library:
-                  const stringifiedUserLibraryArr = JSON.stringify(userLibrary)
-                  suggestionsArr = suggestionsArr.filter(book => !stringifiedUserLibraryArr.includes(JSON.stringify(book)))
-
-                  // STEP 2: if the user has specified his interest(s), only keep the books that correspond to it:
-                  const filteredByGenre = suggestionsArr.filter(book => userInterests.includes(book.genre))
-
-                  if (filteredByGenre.length > 1) {
-                    // If there are several suggestions, we make a random selection out of filteredByGenre's array:
-                    personalisedSuggestion = filteredByGenre[Math.floor(Math.random() * filteredByGenre.length)]
-                    this.personalisedSuggestion = personalisedSuggestion
-                    // If there is just one suggestion, we return the element :
-                  } else if (filteredByGenre.length === 1) {
-                    personalisedSuggestion = filteredByGenre[0]
-                    this.personalisedSuggestion = personalisedSuggestion
-                  }
-
-                  // Step 3: If there is no suggestion by genre, we repeat the same process with the second criteria: the ageRange:
-                  if (filteredByGenre.length === 0) {
-                    let filteredByAgeRange = []
-                    filteredByAgeRange = suggestionsArr.filter(book => book.ageRange.includes(userAge))
-
-                    if (filteredByAgeRange.length > 1) {
-                      personalisedSuggestion = filteredByAgeRange[Math.floor(Math.random() * filteredByAgeRange.length)]
-                      this.personalisedSuggestion = personalisedSuggestion
-                    } else if (filteredByAgeRange.length === 1) {
-                      personalisedSuggestion = filteredByAgeRange[0]
-                      this.personalisedSuggestion = personalisedSuggestion
-
-                    // Step 4 - If the user's age range is undefined, it randomly suggest a book out of Sema's library
-                    } else if (filteredByAgeRange.length === 0) {
-                      personalisedSuggestion = suggestionsArr[Math.floor(Math.random() * suggestionsArr.length)]
-                      this.personalisedSuggestion = personalisedSuggestion
-                    }
-                  }
-                }
-              })
+            this.personalisedSuggestion = res.data.personalisedSuggestion
           }
         })
     },
