@@ -5,7 +5,7 @@
         <button class="delete"></button>
       </div>
 
-      <h2 class="is-size-4 has-text-centered is-size-4-mobile" v-if="!hideName">Je m'appelle:</h2>
+      <h2 class="is-size-4 has-text-centered is-size-4-mobile" v-if="!hideName">Nom d'utilisateur:</h2>
       <input type="text" name="firstname" id="firstname" v-model="firstname" class="input input-firstname is-medium" v-if="!hideName">
 
       <h2 class="is-size-4 has-text-centered">J'ai:</h2>
@@ -99,7 +99,7 @@ export default {
       return word
     },
     validateForm () {
-      const firstname = this.firstname
+      const firstname = this.firstname.trim()
       const age = this.$store.state.age
       const goals = this.$store.state.preferences.goals
       let interests = this.$store.state.preferences.interests
