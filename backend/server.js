@@ -1,7 +1,7 @@
 //--------- EXPRESS AND MONGOOSE ------------//
 const express = require("express");
 const app = express();
-const port = 8001;
+const PORT = process.env.PORT || 8001;
 const mongoose = require("mongoose");
 // const bcrypt = require("bcrypt");
 
@@ -63,6 +63,6 @@ app.get("*", (_req,res) => {
 })
 
 //------------- START SERVER -------------//
-app.listen(port, () => {
-    console.log(`Server listening at : http://localhost:${port}`);
+app.listen(PORT, () => {
+    console.log(`Server listening at : http://localhost:${PORT}`);
   });
